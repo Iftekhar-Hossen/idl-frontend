@@ -22,14 +22,13 @@ import { MostFeatures } from "@/components/section/project/most-features";
 import { Location } from "@/components/section/project/location";
 import { FloorPlan } from "@/components/section/project/floor-plan";
 import { ApartmentFeatures } from "@/components/section/project/apartment-features";
+import Link from "next/link";
 
 export default function Index({ project }) {
   console.log(project);
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [galleryOpen, setGalleryOpen] = useState(false);
-
-
 
   return (
     <>
@@ -59,13 +58,17 @@ export default function Index({ project }) {
         floor_plans={project.floor_plans}
       />
 
-<ApartmentFeatures apartment_features={project.apartment_features} name={project.name} />
+      <ApartmentFeatures
+        apartment_features={project.apartment_features}
+        apartment_features_text={project.apartment_features_text}
+        name={project.name}
+      />
 
-      <section className="bg-[#F6F3EC] py-16">
-        <div className="container relative mt-8 grid grid-cols-12 gap-12 sm:gap-4">
+      <section className="relative z-10 bg-white pb-28 pt-20">
+        <div className="container relative mt-8 grid grid-cols-12 gap-9 sm:gap-4">
           <div className="col-span-12 flex items-center justify-between text-end sm:col-span-12 sm:flex sm:items-center sm:justify-between">
             <div>
-              <h4 className="text-left text-4xl font-bold sm:text-3xl sm:font-normal">
+              <h4 className="text-left text-4xl font-bold sm:text-2xl sm:font-normal">
                 Explore{" "}
                 <span className="font-saol italic text-primary">
                   {" "}
@@ -74,23 +77,45 @@ export default function Index({ project }) {
               </h4>
             </div>
             <div>
-              <Button
-                onClick={() => setIndex(0)}
-                className="border-2 border-primary bg-transparent font-roboto text-2xl text-primary hover:fill-black hover:text-foreground"
+              <Link
+                href={"/press/"}
+                className="flex items-center justify-between gap-x-1 text-base text-primary"
               >
-                View All{" "}
-              </Button>
+                See More{" "}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.958984 8H14.959"
+                    stroke="#A07758"
+                    stroke-width="1.25"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7.95898 1L14.959 8L7.95898 15"
+                    stroke="#A07758"
+                    stroke-width="1.25"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </Link>
             </div>
           </div>
 
-          <div className="col-span-12 mt-8 grid grid-cols-3 gap-x-6 sm:col-span-12">
+          <div className="col-span-12 mt-0 grid grid-cols-12 gap-6 sm:col-span-12 sm:gap-4">
             {project.gallery.map((image, index) => (
-              <div key={index} className="col-span-1">
+              <div key={index} className="col-span-4 sm:col-span-6">
                 <Image
                   src={
                     process.env.NEXT_PUBLIC_API_URL +
                     "/assets/" +
-                    image.directus_files_id
+                    image.directus_files_id.id
                   }
                   alt="gallery1"
                   width={400}
@@ -106,43 +131,6 @@ export default function Index({ project }) {
         </div>
       </section>
 
-      <AnimatePresence>
-        {galleryOpen && (
-          <motion.div
-            className="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-            onClick={close}
-          >
-            <motion.img
-              src={
-                process.env.NEXT_PUBLIC_API_URL +
-                "/assets/" +
-                project.gallery[selectedImage].directus_files_id
-              }
-              alt="enlarged"
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.5 }}
-              style={{ maxHeight: "80%", maxWidth: "80%" }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <Newsletter />
     </>
   );
@@ -151,7 +139,13 @@ export default function Index({ project }) {
 export async function getServerSideProps({ params }) {
   let data = await directusClient.request(
     readItem("properties", params.slug, {
-      fields: ["*.*", "floor_plans.highlights.*"],
+      fields: [
+        "*.*",
+        "floor_plans.highlights.*",
+        "gallery.directus_files_id.id",
+        "gallery.directus_files_id.width",
+        "gallery.directus_files_id.height",
+      ],
       sort: "completion_date",
     }),
   );

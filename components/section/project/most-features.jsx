@@ -1,9 +1,13 @@
-import Image from "next/image"
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
-export function MostFeatures({features}) {
-    return (<>
-    
-    <section className="bg-[#F6F3EC] pb-20 pt-40 font-roboto md:pt-16 sm:bg-background sm:pt-20">
+import Image from "next/image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+export function MostFeatures({ features }) {
+  return (
+    <>
+      <section className="bg-[#F6F3EC] pb-20 pt-40  font-roboto md:pt-16 sm:bg-background sm:pt-20">
         <div className="container">
           <div className="text-center">
             <h5 className="text-base md:text-xs sm:text-xs sm:font-medium">
@@ -70,6 +74,6 @@ export function MostFeatures({features}) {
           </div>
         </div>
       </section>
-    
-    </>)
+    </>
+  );
 }

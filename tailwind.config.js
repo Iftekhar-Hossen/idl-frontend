@@ -23,9 +23,9 @@ module.exports = {
       padding: {
         DEFAULT: "1rem",
         sm: "1rem",
-        md: "1rem",
-        lg: "1rem",
-        xl: "1rem",
+        md: "0rem",
+        lg: "0rem",
+        xl: "0rem",
       },
       screens: {
         "2xl": "1280px",

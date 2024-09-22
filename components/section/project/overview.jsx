@@ -134,10 +134,10 @@ export const Overview = ({
       <div className="container flex flex-wrap items-end">
         <div className="w-8/12 sm:w-full">
           <div>
-            <h5 className="text-base font-normal text-background sm:text-xs">
+            <h5 className="text-base md:text-xs font-normal text-background sm:text-xs">
               Elevate your life style with
             </h5>
-            <h4 className="font-saol text-5xl font-semibold italic text-primary-300 sm:text-3xl sm:font-medium">
+            <h4 className="font-saol md:text-4xl text-5xl font-semibold italic text-primary-300 sm:text-3xl sm:font-medium">
               {name}
             </h4>
             <div className="mt-6 grid grid-cols-2 gap-5 sm:grid sm:grid-cols-12 sm:gap-2">
@@ -155,42 +155,42 @@ export const Overview = ({
         <div className="w-4/12 font-roboto sm:mt-10 sm:w-full">
           <div className="grid grid-cols-2 gap-8 sm:gap-4">
             <div className="col-span-2">
-              <h5 className="text-base font-normal text-primary sm:text-xs sm:font-medium">
+              <h5 className="text-base md:text-xs font-normal text-primary sm:text-xs sm:font-medium">
                 Project Location
               </h5>
-              <h4 className="text-[23px] font-normal leading-9 text-background sm:text-base sm:font-normal">
+              <h4 className="text-[23px] md:text-xl font-normal leading-9 text-background sm:text-base sm:font-normal">
                 {address.address_line_1}, {address.address_line_2}
               </h4>
             </div>
             <div className="">
-              <h5 className="text-base font-normal text-primary sm:text-xs sm:font-medium">
+              <h5 className="text-base  md:text-xs font-normal text-primary sm:text-xs sm:font-medium">
                 Apartment Size
               </h5>
-              <h4 className="text-[23px] font-semibold leading-9 text-background sm:text-base sm:font-normal">
+              <h4 className="text-[23px] md:text-xl font-semibold leading-9 text-background sm:text-base sm:font-normal">
                 {appartement_size}
               </h4>
             </div>
             <div className="">
-              <h5 className="text-base font-normal text-primary sm:text-xs sm:font-medium">
+              <h5 className="text-base md:text-xs font-normal text-primary sm:text-xs sm:font-medium">
                 Bedroom
               </h5>
-              <h4 className="text-[23px] font-semibold leading-9 text-background sm:text-base sm:font-normal">
+              <h4 className="text-[23px] md:text-xl font-semibold leading-9 text-background sm:text-base sm:font-normal">
                 {bedrooms} {bedrooms > 1 ? "Bedrooms" : "Bedroom"}
               </h4>
             </div>
             <div className="">
-              <h5 className="text-base font-normal text-primary sm:text-xs sm:font-medium">
+              <h5 className="text-base md:text-xs font-normal text-primary sm:text-xs sm:font-medium">
                 Completion Date
               </h5>
-              <h4 className="text-[23px] font-semibold leading-9 text-background sm:text-base sm:font-normal">
+              <h4 className="text-[23px] md:text-xl font-semibold leading-9 text-background sm:text-base sm:font-normal">
                 {completion_date}
               </h4>
             </div>
             <div className="">
-              <h5 className="text-base font-normal text-primary sm:text-xs sm:font-medium">
+              <h5 className="text-base md:text-xs font-normal text-primary sm:text-xs sm:font-medium">
                 Status
               </h5>
-              <h4 className="text-[23px] font-semibold leading-9 text-background sm:text-base sm:font-normal">
+              <h4 className="text-[23px] md:text-xl font-semibold leading-9 text-background sm:text-base sm:font-normal">
                 {current_status}
               </h4>
             </div>

@@ -38,11 +38,11 @@ export function ApartmentFeatures({
             )}
           </div>
         </div>
-        <div className="container z-50 bg-transparent  sm:-mt-20 sm:pt-2">
+        <div className="container z-50 bg-transparent relative sm:-mt-20 sm:pt-2">
           <Carousel className="w-full">
             <CarouselContent>
               {apartment_features.map((data, index) => (
-                <CarouselItem className="group relative z-50  aspect-square basis-1/3 overflow-hidden duration-300 ease-in-out md:basis-1/3 sm:aspect-[1/1.2] sm:basis-1/2">
+                <CarouselItem className="group relative z-50  aspect-square basis-1/3 overflow-hidden duration-300 ease-in-out md:basis-1/3  sm:basis-1/2 sm:h-[280px]">
                   <div className="relative flex h-full w-full items-end overflow-hidden rounded-lg bg-[#262626] bg-[url(/images/mask_bg.png)] bg-cover bg-fixed shadow-lg duration-300 ease-in-out group-hover:bg-secondary-300">
                     <div className="absolute inset-0 z-10" />
                     <div className="">

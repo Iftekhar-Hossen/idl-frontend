@@ -37,9 +37,9 @@ export function Location({map_image, location_highlights}) {
                     />
                     {location.label}
                   </h4>
-                  <ul className="ml-6 list-image-[url(/images/list_style.png)] sm:text-sm">
+                  <ul className="ml-6  list-image-[url(/images/list_style.png)] ">
                     {location.highlights.map((item, index) => (
-                      <li key={index} className="text-base text-background">
+                      <li key={index} className="text-base sm:first:mt-1 sm:text-sm text-background">
                         {item.name}
                       </li>
                     ))}

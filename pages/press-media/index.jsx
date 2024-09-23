@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import Newsletter from "@/components/ui/newsletter";
+import { Newsletter } from "@/components/ui/newsletter";
 import { directusClient } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import { Card, CardContent } from "@/components/ui/card";
@@ -40,33 +40,7 @@ export default function PressMedia({ categories, posts, featuredPost }) {
     [api],
   );
 
-  let pressMediaNav = [
-    {
-      name: "All",
-      link: "/press-releases",
-    },
-    {
-      name: "Events",
-      link: "/media-coverage",
-    },
-    {
-      name: "News",
-      link: "/press-kit",
-    },
-    {
-      name: "Press Release",
-      link: "/contact-us",
-    },
-    {
-      name: "Gallery",
-      link: "/contact-us",
-    },
-    {
-      name: "Brochure",
-      link: "/contact-us",
-    },
-  ];
-
+Carousel
   let socialMedia = [
     {
       name: "Facebook",
@@ -213,7 +187,9 @@ export default function PressMedia({ categories, posts, featuredPost }) {
             <ul className="flex flex-wrap items-center justify-end gap-10">
               {categories.map((item, index) => (
                 <li key={index} className="">
+                  <Link href={`/press-media/${item.slug}`}>
                   {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -232,7 +208,7 @@ export default function PressMedia({ categories, posts, featuredPost }) {
                   className={"h-2 w-2 rounded-full bg-muted p-0"}
                   onClick={() => onDotClick(index)}
                   aria-label={`Go to slide ${index + 1}`}
-                /> 
+                />
               ))}
             </div>
             <Carousel setApi={setApi} className="relative w-full">
@@ -358,7 +334,7 @@ export default function PressMedia({ categories, posts, featuredPost }) {
                   </h4>
                   <Link
                     className="flex items-center gap-2 text-base text-secondary-400"
-                    href={`/press-media/${item.slug}`}
+                    href={`/press-media/${item.category.slug}/${item.slug}`}
                   >
                     See More{" "}
                     <svg

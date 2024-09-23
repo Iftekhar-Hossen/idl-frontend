@@ -1,7 +1,7 @@
 import { directusClient } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 
-import Newsletter from "@/components/ui/newsletter";
+import {Newsletter} from "@/components/ui/newsletter";
 import Link from "next/link";
 import Head from "next/head";
 
@@ -174,7 +174,7 @@ export default function Page({ post }) {
           </div>
           <div className="w-9/12">
             <h1 className="mb-0 text-[15px] font-normal text-secondary-500">
-              Events | {new Date(post.date_created).toDateString({})}
+              <Link href={`/press-media/${post.category.slug}`}>{post.category.name}</Link> | {new Date(post.date_created).toDateString({})}
             </h1>
             <h1 className="mb-4 text-[46px] font-bold leading-tight text-primary">
               {post.title}
@@ -306,6 +306,7 @@ export async function getServerSideProps({ params }) {
         slug: params.slug,
         status: "published"
       },
+      fields: ["*", "category.*", "content.*"],
     }),
   );
 

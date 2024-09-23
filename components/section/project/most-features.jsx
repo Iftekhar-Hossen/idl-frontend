@@ -19,11 +19,10 @@ export function MostFeatures({ features }) {
             </h4>
           </div>
 
-          <div className="mt-24 content-center md:mt-8 sm:mt-0">
-            {/* large screen view */}
-            <div className="grid grid-cols-10 gap-y-10">
+          <div className="mt-24 content-center md:mt-8 sm:mt-4">
+            <div className="grid grid-cols-10 sm:flex sm:flex-nowrap sm:overflow-y-scroll snap-mandatory snap-x gap-y-10">
               {features.map((feature, i) => (
-                <div key={i} className="col-span-2 text-center">
+                <div key={i} className="col-span-2 sm:snap-center text-center">
                   <div className="justify-centerar m-auto flex h-24 w-24 items-center border border-primary md:h-16 md:w-16">
                     <Image
                       src={
@@ -43,34 +42,6 @@ export function MostFeatures({ features }) {
                 </div>
               ))}
             </div>
-
-            <Carousel className="hidden">
-              <CarouselContent className="flex-wrap justify-center sm:flex-nowrap sm:justify-start">
-                {features.map((feature, i) => (
-                  <CarouselItem className="my-8 basis-1/5 sm:basis-1/4">
-                    <div key={i} className="text-center">
-                      {/* <SvgIcon url={item.feature_icon} className="w-12 h-12 m-auto" /> */}
-                      <div className="justify-centerar m-auto flex h-24 w-24 items-center border border-primary">
-                        <Image
-                          src={
-                            process.env.NEXT_PUBLIC_API_URL +
-                            "/assets/" +
-                            feature.icon
-                          }
-                          alt="feature1"
-                          width={48}
-                          height={48}
-                          className="filter-primary m-auto h-10 w-10"
-                        />
-                      </div>
-                      <h5 className="m-auto mt-3 w-24 text-base font-normal sm:text-sm">
-                        {feature.name}
-                      </h5>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
           </div>
         </div>
       </section>

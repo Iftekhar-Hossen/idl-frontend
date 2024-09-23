@@ -10,6 +10,95 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { label } from "yet-another-react-lightbox/*";
+
+const MenuButton = ({
+  isOpen = false,
+  width = 24,
+  height = 24,
+  strokeWidth = 1,
+  color = "#000",
+  transition = null,
+  lineProps = null,
+  ...props
+}) => {
+  const variant = isOpen ? "opened" : "closed";
+  const top = {
+    closed: {
+      rotate: 0,
+      translateY: 0,
+    },
+    opened: {
+      rotate: 45,
+      translateY: 2,
+    },
+  };
+  const center = {
+    closed: {
+      opacity: 1,
+    },
+    opened: {
+      opacity: 0,
+    },
+  };
+  const bottom = {
+    closed: {
+      rotate: 0,
+      translateY: 0,
+    },
+    opened: {
+      rotate: -45,
+      translateY: -2,
+    },
+  };
+  lineProps = {
+    stroke: color,
+    strokeWidth: strokeWidth,
+    vectorEffect: "non-scaling-stroke",
+    initial: "closed",
+    animate: variant,
+    transition,
+    ...lineProps,
+  };
+  const unitHeight = 4;
+  const unitWidth = (unitHeight * width) / height;
+
+  return (
+    <motion.svg
+      viewBox={`0 0 ${unitWidth} ${unitHeight}`}
+      overflow="visible"
+      preserveAspectRatio="none"
+      width={width}
+      height={height}
+      {...props}
+    >
+      <motion.line
+        x1="0"
+        x2={unitWidth}
+        y1="0"
+        y2="0"
+        variants={top}
+        {...lineProps}
+      />
+      <motion.line
+        x1="0"
+        x2={unitWidth}
+        y1="2"
+        y2="2"
+        variants={center}
+        {...lineProps}
+      />
+      <motion.line
+        x1="0"
+        x2={unitWidth}
+        y1="4"
+        y2="4"
+        variants={bottom}
+        {...lineProps}
+      />
+    </motion.svg>
+  );
+};
 
 let navigations = [
   {
@@ -44,6 +133,8 @@ let navigations = [
   },
 ];
 
+
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -52,14 +143,14 @@ export default function Navbar() {
 
   const menuVariants = {
     open: {
-      clipPath: "circle(50% at 80% 50%)",
+      clipPath: "circle(100% at 80% 50%)",
       transition: {
         duration: 0.5,
         ease: [0.6, -0.05, 0.01, 0.99],
       },
     },
     closed: {
-      clipPath: "circle(0px at 89% 5%)",
+      clipPath: "circle(0px at 95% 3%)",
       transition: {
         duration: 0.5,
         ease: [0.6, -0.05, 0.01, 0.99],
@@ -68,9 +159,10 @@ export default function Navbar() {
   };
 
   const overlayVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, filter: "blur(30px)" },
     visible: {
       opacity: 1,
+      filter: "blur(0)",
       transition: { duration: 0.5 },
     },
     exit: { opacity: 0, transition: { duration: 0.5 } },
@@ -151,37 +243,14 @@ export default function Navbar() {
               Schedule a Meeting <Icons.TopRight />
             </Link>
           </div>
-          <div className="lg:hidden md:flex">
+          <div className="hidden md:flex">
             <AnimatePresence>
-              {!isOpen && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 1 }}
-                  animate={{ opacity: 1, scale: 0.8 }}
-                  exit={{ opacity: 0, scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.5 }}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => toggleMenu()}
-                >
-                  <svg
-                    className="md:h-8"
-                    width="32"
-                    height="33"
-                    viewBox="0 0 32 33"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M4 4.5H28M4 16.5H28M4 28.5H28"
-                      stroke="#1D1D1D"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </motion.button>
-              )}
+              <MenuButton
+                className="relative z-[300] cursor-pointer"
+                isOpen={isOpen}
+                style={{ marginLeft: "2rem" }}
+                onClick={toggleMenu}
+              />
             </AnimatePresence>
           </div>
         </nav>
@@ -202,7 +271,6 @@ export default function Navbar() {
                   left: 0,
                   width: "100vw",
                   height: "200px",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
                   zIndex: 99,
                 }}
                 onClick={toggleMenu} // Close the menu when overlay is clicked
@@ -210,7 +278,7 @@ export default function Navbar() {
 
               {/* Animated Circle to Full-Screen */}
               <motion.div
-                className="mobile-menu"
+                className="mobile-menu bg-primary container"
                 initial="closed"
                 animate="open"
                 exit="closed"
@@ -221,29 +289,45 @@ export default function Navbar() {
                   left: 0,
                   height: "100vh",
                   width: "100vw",
-                  backgroundColor: "#fff",
                   zIndex: 100,
                 }}
               >
-                <nav style={{ paddingTop: "3rem", textAlign: "center" }}>
-                  <ul>
-                    <li>
-                      <a href="#home">Home</a>
+                <div className="sm:pt-4 border-b border-b-secondary-300 pb-3">
+                  <Link href={"/"}>
+                    <svg
+                      width="60"
+                      height="25"
+                      viewBox="0 0 60 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M4.81209 0.5L0 8.19802V0.5H4.81209Z"
+                        fill="#F6F3EC"
+                      />
+                      <path
+                        d="M6.60643 0.5V24.4949H0V11.0474L6.59204 0.5H6.60643Z"
+                        fill="#F6F3EC"
+                      />
+                      <path
+                        d="M45.3191 19.535V0.5H38.7126V24.5H45.3191H59.2036L60 19.535H45.3191Z"
+                        fill="#F6F3EC"
+                      />
+                      <path
+                        d="M35.5221 7.38317C34.0684 3.21278 30.2255 0.5 26.0083 0.5H13.5055L9.28833 7.46921H24.3243C26.9535 7.46921 29.1796 9.66575 29.1988 12.4393V12.5607C29.1748 15.3342 26.9582 17.5358 24.3243 17.5358H15.89V10.5008H9.28833V24.5H26.0083C30.1919 24.5 34.0061 21.8277 35.4886 17.713C35.5077 17.6523 35.5317 17.5915 35.5509 17.5308C36.0883 15.9568 36.3809 14.2663 36.3809 12.4949C36.3809 10.7286 36.0883 9.03817 35.5509 7.46415C35.5413 7.43884 35.5317 7.41354 35.5221 7.38317Z"
+                        fill="#F6F3EC"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+                <ul className="flex flex-col items-start ustify-center gap-y-4 mt-8">
+                  {navigations.map((item) => (
+                    <li className="text-secondary-300">
+                     
+                      {item.label}
                     </li>
-                    <li>
-                      <a href="#about">About</a>
-                    </li>
-                    <li>
-                      <a href="#services">Services</a>
-                    </li>
-                    <li>
-                      <a href="#contact">Contact</a>
-                    </li>
-                    <li>
-                      <Button onClick={() => toggleMenu()}>Close</Button>
-                    </li>
-                  </ul>
-                </nav>
+                  ))}
+                </ul>
               </motion.div>
             </>
           )}

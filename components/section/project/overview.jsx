@@ -20,7 +20,7 @@ const FormInput = ({ placeholder }) => (
 // Reusable Modal or Drawer Component
 const ModalOrDrawer = ({ isDesktop, open, setOpen, triggerText, children }) => {
   const TriggerButton = (
-    <button className="inline-block w-full border-2 border-primary px-4 py-3 text-xl text-background duration-300 hover:bg-primary sm:px-2 sm:py-2 sm:text-sm">
+    <button className="inline-block sm:block  w-full border-2 border-primary px-4 py-3 text-xl text-background duration-300 hover:bg-primary sm:px-2 sm:py-2 sm:text-sm">
       {triggerText}
     </button>
   );
@@ -141,12 +141,13 @@ export const Overview = ({
               {name}
             </h4>
             <div className="mt-6 grid grid-cols-2 gap-5 sm:grid sm:grid-cols-12 sm:gap-2">
-              <div>
+              <div className="sm:col-span-6">
                 {" "}
                 <RegisterIntrest />
               </div>
 
-              <div>
+              <div className="sm:col-span-6">
+              
                 <DownloadBrochure />
               </div>
             </div>

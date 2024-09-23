@@ -9,7 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import db from "@/lib/db";
-import Newsletter from "@/components/ui/newsletter";
+import {Newsletter} from "@/components/ui/newsletter";
 
 const Hidden = (props) => {
   return <div className="hidden">{props.children}</div>;

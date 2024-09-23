@@ -9,8 +9,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { label } from "yet-another-react-lightbox/*";
+import { useRouter } from "next/router";
 
 const MenuButton = ({
   isOpen = false,
@@ -133,9 +137,12 @@ let navigations = [
   },
 ];
 
-
-
 export default function Navbar() {
+  const router = useRouter();
+
+  let press_media = router.pathname === "/press-media";
+  console.log({ press_media });
+
   const [isOpen, setIsOpen] = useState(false);
 
   // Toggle the menu
@@ -204,11 +211,11 @@ export default function Navbar() {
                 <li>
                   {item.submenu ? (
                     <>
-                      <DropdownMenu className="group p-0">
+                      <DropdownMenu className="group z-50 p-0">
                         <DropdownMenuTrigger className="px-2 py-0 font-roboto text-lg text-neutral-300 hover:text-primary-300 group-hover:text-primary-300 lg:text-base">
                           {item.label}
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="bg-secondary-300 p-0">
+                        <DropdownMenuContent className="z-50 bg-secondary-300 p-0">
                           {item.submenu.map((item) => (
                             <DropdownMenuItem className="p-0">
                               {" "}
@@ -278,7 +285,7 @@ export default function Navbar() {
 
               {/* Animated Circle to Full-Screen */}
               <motion.div
-                className="mobile-menu bg-primary container"
+                className="mobile-menu container bg-primary"
                 initial="closed"
                 animate="open"
                 exit="closed"
@@ -292,7 +299,7 @@ export default function Navbar() {
                   zIndex: 100,
                 }}
               >
-                <div className="sm:pt-4 border-b border-b-secondary-300 pb-3">
+                <div className="border-b border-b-secondary-300 pb-3 sm:pt-4">
                   <Link href={"/"}>
                     <svg
                       width="60"
@@ -320,11 +327,40 @@ export default function Navbar() {
                     </svg>
                   </Link>
                 </div>
-                <ul className="flex flex-col items-start ustify-center gap-y-4 mt-8">
+                <ul className="ustify-center mt-8 flex flex-col items-start gap-y-4">
                   {navigations.map((item) => (
                     <li className="text-secondary-300">
-                     
-                      {item.label}
+                      {item.submenu ? (
+                        <>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button className="h-auto px-2 py-0 font-roboto text-lg font-normal text-secondary-300 ">
+                                {item.label}
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="relative z-[999999999] w-56 border border-primary-400 bg-primary sm:ml-6">
+                              {item.submenu.map((item) => (
+                                <DropdownMenuItem>
+                                  <Link
+                                  onClick={()=> toggleMenu()}
+                                    className="font-roboto  py-1 text-sm font-normal text-secondary-300 "
+                                    href={item.url}
+                                  >
+                                    {item.label}
+                                  </Link>
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </>
+                      ) : (
+                        <Link
+                          className="px-2 font-roboto text-lg text-secondary-300"
+                          href={item.url}
+                        >
+                          {item.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

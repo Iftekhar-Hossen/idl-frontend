@@ -2,7 +2,7 @@ import React from "react";
 import { MapPinned, Mail, Phone } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Newsletter from "@/components/ui/newsletter";
+import {Newsletter} from "@/components/ui/newsletter";
 
 const Hidden = (props) => {
   return <div className="hidden">{props.children}</div>;

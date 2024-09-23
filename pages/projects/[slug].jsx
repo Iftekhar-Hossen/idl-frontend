@@ -32,7 +32,19 @@ export default function Index({ project }) {
 
   return (
     <>
-    CarouselContent
+      <Overview
+        project={project}
+        address={{
+          
+          address_line_1: project.address_line_1,
+          address_line_2: project.address_line_2,
+        }}
+        appartement_size={project.appartement_size}
+        completion_date={project.completion_date}
+        bedrooms={project.bedrooms}
+        name={project.name}
+        current_status={project.current_status}
+      />
 
       <Cover coverImage={project.cover.id} />
 
@@ -54,7 +66,7 @@ export default function Index({ project }) {
         name={project.name}
       />
 
-      <section className="relative z-10 sm:-mt-36  bg-white pb-28 pt-20">
+      <section className="relative z-10 bg-white pb-28 pt-20 sm:-mt-36">
         <div className="container relative mt-8 grid grid-cols-12 gap-9 sm:gap-4">
           <div className="col-span-12 flex items-center justify-between text-end sm:col-span-12 sm:flex sm:items-center sm:justify-between">
             <div>

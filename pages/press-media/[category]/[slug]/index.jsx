@@ -1,7 +1,7 @@
 import { directusClient } from "@/lib/directus";
-import { readItems } from "@directus/sdk";
+import { readItems, updateItem } from "@directus/sdk";
 
-import {Newsletter} from "@/components/ui/newsletter";
+import { Newsletter } from "@/components/ui/newsletter";
 import Link from "next/link";
 import Head from "next/head";
 
@@ -47,7 +47,7 @@ function BlockRenderer(block) {
       );
     case "image":
       return (
-        <div className="col-span-1">
+        <div className="col-span-1 sm:col-span-2">
           <img
             className="w-full"
             src={
@@ -62,7 +62,7 @@ function BlockRenderer(block) {
     case "paragraph":
       return (
         <p
-          className="col-span-2 text-base"
+          className="col-span-2 text-base sm:text-sm"
           dangerouslySetInnerHTML={{
             __html: block.data.text,
           }}
@@ -73,50 +73,61 @@ function BlockRenderer(block) {
   }
 }
 
-
-
 export default function Page({ post }) {
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem("viewed-post", post.id);
+  }
+
   const sequences = imageSequences(post.content.blocks);
 
-  const processedBlockes = []
+  const processedBlockes = [];
 
   let count = 0;
-  while(count < post.content.blocks){
-    console.log(count)
+  while (count < post.content.blocks) {
+    console.log(count);
   }
-  
-
 
   return (
     <>
-       <Head>
+      <Head>
         {/* SEO Meta Tags */}
         <title>{post.title} | Your Blog Name</title>
         <meta name="description" content={post.description} />
         <meta name="author" content={"Inheritanc BD LTD"} />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href={"https://inheritancebd.com/press-media/"+post.slug} />
- 
+        <link
+          rel="canonical"
+          href={"https://inheritancebd.com/press-media/" + post.slug}
+        />
+
         {/* Open Graph Tags for Social Sharing */}
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.description} />
-        <meta property="og:image" content={  process.env.NEXT_PUBLIC_API_URL +
-              "/assets/" +
-              post.cover} />
-        <meta property="og:url" content={"https://inheritancebd.com/press-media/"+post.slug} />
+        <meta
+          property="og:image"
+          content={process.env.NEXT_PUBLIC_API_URL + "/assets/" + post.cover}
+        />
+        <meta
+          property="og:url"
+          content={"https://inheritancebd.com/press-media/" + post.slug}
+        />
         <meta property="og:type" content="article" />
-        <meta property="og:article:published_time" content={post.date_created} />
+        <meta
+          property="og:article:published_time"
+          content={post.date_created}
+        />
         <meta property="og:article:author" content={"Inheritanc BD LTD"} />
         <meta property="og:site_name" content="Inheritanc BD LTD" />
-        
+
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.description} />
-        <meta name="twitter:image" content={  process.env.NEXT_PUBLIC_API_URL +
-              "/assets/" +
-              post.cover} />
-        
+        <meta
+          name="twitter:image"
+          content={process.env.NEXT_PUBLIC_API_URL + "/assets/" + post.cover}
+        />
+
         {/* Structured Data (JSON-LD) */}
         <script
           type="application/ld+json"
@@ -124,32 +135,35 @@ export default function Page({ post }) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "BlogPosting",
-              "headline": post.title,
-              "image": [  process.env.NEXT_PUBLIC_API_URL +
-                "/assets/" +
-                post.cover],
-              "author": {
+              headline: post.title,
+              image: [
+                process.env.NEXT_PUBLIC_API_URL + "/assets/" + post.cover,
+              ],
+              author: {
                 "@type": "Organization",
-                "name": "Inheritanc BD LTD",
+                name: "Inheritanc BD LTD",
               },
-              "datePublished": post.date_created,
-              "description": post.description,
-              "mainEntityOfPage": {
+              datePublished: post.date_created,
+              description: post.description,
+              mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": "https://inheritancebd.com/press-media/"+post.slug,
+                "@id": "https://inheritancebd.com/press-media/" + post.slug,
               },
             }),
           }}
         />
       </Head>
-      <section className="mb-[120px] mt-40">
-        <div className="container flex">
-          <div className="w-1/12">
-            <div className="flex items-start gap-y-4">
-              <Link href={"/press-media"}>
+      <section className="mb-[120px] mt-40 sm:mt-16">
+        <div className="container flex flex-wrap">
+          <div className="w-1/12 sm:absolute sm:w-1/12">
+            <div className="flex items-start gap-y-4 sm:gap-0">
+              <Link
+                href={"/press-media"}
+                className="flex h-6 w-6 items-center sm:h-5 sm:w-5"
+              >
                 <svg
-                  width={25}
-                  height={24}
+                  width={"100%"}
+                  height={"100%"}
                   viewBox="0 0 25 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -172,26 +186,37 @@ export default function Page({ post }) {
               </Link>
             </div>
           </div>
-          <div className="w-9/12">
-            <h1 className="mb-0 text-[15px] font-normal text-secondary-500">
-              <Link href={`/press-media/${post.category.slug}`}>{post.category.name}</Link> | {new Date(post.date_created).toDateString({})}
+          <div className="w-9/12 sm:w-full">
+            <h1 className="mb-0 text-[15px] font-normal text-secondary-500 sm:ml-8">
+              <Link href={`/press-media/${post.category.slug}`}>
+                {post.category.name}
+              </Link>{" "}
+              | {new Date(post.date_created).toDateString({})}
             </h1>
-            <h1 className="mb-4 text-[46px] font-bold leading-tight text-primary">
+            <h1 className="mb-4 text-[46px] font-bold leading-tight text-primary sm:mb-2 sm:text-3xl">
               {post.title}
             </h1>
-            <main className="grid gap-x-5 gap-y-4 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2">
+            <main className="grid gap-x-5 gap-y-4 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 sm:gap-x-1 sm:gap-y-2">
               {post.content.blocks.map((block) => BlockRenderer(block))}
             </main>
           </div>
-          <div className="relative w-2/12">
-            <div className="sticky top-1/2 flex -translate-y-1/2 items-center justify-center">
+          <div className="relative w-2/12 sm:mt-4 sm:w-full">
+            <div className="sticky top-1/2 flex -translate-y-1/2 items-center justify-center sm:relative sm:justify-start">
               <div>
-                <h6 className="mb-2 w-full text-center text-[19px] text-secondary-500">
+                <h6 className="s mb-2 w-full text-center text-[19px] text-secondary-500 sm:text-left">
                   Share
                 </h6>
-                <ul className="flex flex-col items-center gap-8">
+                <ul className="flex flex-col items-center gap-8 sm:flex-row">
                   <li>
                     <svg
+                    className="cursor-pointer"
+                    onClick={() => {
+                      window.open(
+                        `https://www.facebook.com/sharer/sharer.php?u=https://inheritancebd.com/press-media/${post.slug}`,
+                        "popup",
+                        "width=600,height=600"
+                      );
+                    }}
                       width={33}
                       height={32}
                       viewBox="0 0 33 32"
@@ -218,10 +243,17 @@ export default function Page({ post }) {
                   </li>
                   <li>
                     <svg
+                    className="cursor-pointer"
+                    onClick={() => {
+                      window.open(
+                        `https://www.linkedin.com/sharing/share-offsite/?url=https://inheritancebd.com/press-media/${post.slug}`,
+                        "popup",
+                        "width=600,height=600"
+                      );
+                    }}
                       width={33}
                       height={32}
                       viewBox="0 0 33 32"
-                      fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <g clipPath="url(#clip0_136_5263)">
@@ -254,6 +286,8 @@ export default function Page({ post }) {
                   </li>
                   <li>
                     <svg
+                    className="cursor-pointer hover:fill-primary"
+                
                       width={33}
                       height={32}
                       viewBox="0 0 33 32"
@@ -304,7 +338,7 @@ export async function getServerSideProps({ params }) {
     readItems("posts", {
       filter: {
         slug: params.slug,
-        status: "published"
+        status: "published",
       },
       fields: ["*", "category.*", "content.*"],
     }),
@@ -315,6 +349,12 @@ export async function getServerSideProps({ params }) {
       notFound: true,
     };
   }
+
+  directusClient.request(
+    updateItem("posts", posts[0].id, {
+      views: posts[0].views + 1,
+    }),
+  );
 
   return {
     props: {

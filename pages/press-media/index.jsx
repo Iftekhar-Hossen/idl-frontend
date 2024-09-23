@@ -40,7 +40,6 @@ export default function PressMedia({ categories, posts, featuredPost }) {
     [api],
   );
 
-Carousel
   let socialMedia = [
     {
       name: "Facebook",
@@ -175,30 +174,28 @@ Carousel
 
   return (
     <>
-      <section className="mt-20 bg-neutral-300 py-8 text-secondary-300">
-        <div className="container flex items-center justify-between">
-          <div className="w-4/12">
-            <h3 className="text-[46px]">
+      <section className="mt-20 bg-neutral-300 py-8 text-secondary-300 sm:mt-9">
+        <div className="container flex flex-wrap items-center justify-between">
+          <div className="w-4/12 sm:w-full">
+            <h3 className="text-[46px] sm:text-3xl">
               Press <span className="font-saol italic text-primary">And</span>{" "}
               Media
             </h3>
           </div>
-          <div className="w-8/12">
-            <ul className="flex flex-wrap items-center justify-end gap-10">
+          <div className="w-8/12 sm:w-full">
+            <ul className="flex flex-wrap items-center justify-end gap-10 sm:mt-2 sm:justify-start">
               {categories.map((item, index) => (
                 <li key={index} className="">
-                  <Link href={`/press-media/${item.slug}`}>
-                  {item.name}
-                  </Link>
+                  <Link href={`/press-media/${item.slug}`}>{item.name}</Link>
                 </li>
               ))}
             </ul>
           </div>
         </div>
       </section>
-      <section className="bg-neutral-400 pb-[200px] pt-[120px]">
-        <div className="container flex">
-          <div className="relative w-9/12 pr-5">
+      <section className="bg-neutral-400 pb-[200px] pt-[120px] sm:pt-10">
+        <div className="container flex flex-wrap">
+          <div className="relative w-9/12 pr-5 sm:w-full sm:pr-0">
             <div className="absolute left-0 top-0 z-10 flex justify-center space-x-2 pb-4">
               {Array.from({ length: count }).map((_, index) => (
                 <Button
@@ -217,7 +214,7 @@ Carousel
                   .fill(...featuredPost)
                   .map((post, index) => (
                     <CarouselItem key={index}>
-                      <div className="flex h-[431px] w-full items-center overflow-hidden">
+                      <div className="flex h-[431px] w-full items-center overflow-hidden sm:h-56">
                         <img
                           className="h-full w-full object-cover object-center"
                           src={
@@ -227,44 +224,46 @@ Carousel
                           }
                         />
                       </div>
-                      <div className="bg-neutral-300 p-10">
-                        <h5 className="mb-1 text-[15px] leading-none text-secondary-500">
+                      <div className="bg-neutral-300 p-10 sm:p-5">
+                        <h5 className="mb-1 text-[15px] leading-none text-secondary-500 sm:text-xs">
                           {post.category?.name + " | "}{" "}
                           {new Date(post.date_created).toDateString()}
                         </h5>
-                        <h4 className="mb-2 text-[29px] leading-none text-secondary-300">
+                        <h4 className="mb-2 text-[29px] leading-none text-secondary-300 sm:mb-1 sm:text-2xl">
                           {post.title}
                         </h4>
-                        <p className="text-[15px] text-secondary-400">
+                        <p className="text-[15px] text-secondary-400 sm:text-xs">
                           {post.description}
                         </p>
                         <Link
                           href="/press-media/view "
-                          className="mt-3 flex items-center gap-2 text-base leading-none text-primary"
+                          className="mt-3 flex items-center gap-2 text-base leading-none text-primary sm:mt-2 sm:text-sm"
                         >
                           <span>Read More</span>{" "}
-                          <svg
-                            width={24}
-                            height={24}
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M5 12H19"
-                              stroke="#A07758"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M12 5L19 12L12 19"
-                              stroke="#A07758"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
+                          <div className="sm:h-4 sm:w-4">
+                            <svg
+                              width={"100%"}
+                              height={"100%"}
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M5 12H19"
+                                stroke="#A07758"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M12 5L19 12L12 19"
+                                stroke="#A07758"
+                                strokeWidth="1.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </div>
                         </Link>
                       </div>
                     </CarouselItem>
@@ -272,7 +271,7 @@ Carousel
               </CarouselContent>
             </Carousel>
           </div>
-          <div className="w-3/12 pl-5">
+          <div className="w-3/12 pl-5 sm:w-full sm:pl-0">
             <div>
               <h3 className="text-[23px] leading-none text-secondary-300">
                 Newsletter
@@ -310,7 +309,7 @@ Carousel
         </div>
       </section>
       <section className="-mt-32 pb-20">
-        <div className="container grid grid-cols-3 gap-10">
+        <div className="container grid grid-cols-3 gap-10 sm:grid-cols-2">
           {posts.map((item, index) => (
             <div className="">
               <div>
@@ -322,43 +321,45 @@ Carousel
                     }
                   />
                 </div>
-                <div className="bg-secondary-300 px-8 py-6">
-                  <h6 className="text-[12px] text-secondary-500">
+                <div className="bg-secondary-300 px-8 py-6 sm:px-2 sm:py-1">
+                  <h6 className="text-[12px] text-secondary-500 sm:text-[10px]">
                     {item.category?.name && item.category.name + " | "}{" "}
                     {item.date_created
                       ? new Date(item.date_created).toDateString()
                       : "No date available"}
                   </h6>
-                  <h4 className="mb-3 text-[23px] leading-[27.6px] text-neutral-300">
+                  <h4 className="mb-3 text-[23px] leading-[27.6px] text-neutral-300 sm:mb-1 sm:text-base sm:leading-none">
                     {item.title}
                   </h4>
                   <Link
-                    className="flex items-center gap-2 text-base text-secondary-400"
+                    className="flex items-center gap-2 text-base text-secondary-400 sm:text-xs"
                     href={`/press-media/${item.category.slug}/${item.slug}`}
                   >
                     See More{" "}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M5 12H19"
-                        stroke="#ACAAA5"
-                        strokeWidth="1.25"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M12 5L19 12L12 19"
-                        stroke="#ACAAA5"
-                        strokeWidth="1.25"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <div className="h-6 w-6 sm:h-4 sm:w-4">
+                      <svg
+                        width={"100%"}
+                        height={"100%"}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M5 12H19"
+                          stroke="#A07758"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M12 5L19 12L12 19"
+                          stroke="#A07758"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
                   </Link>
                 </div>
               </div>

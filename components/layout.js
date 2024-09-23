@@ -1,5 +1,5 @@
 import Navbar from "./navbar";
-import Footer from "./footer";
+import {Footer} from "./footer";
 import { Cormorant_Garamond } from "next/font/google";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
@@ -11,6 +11,7 @@ const cormorantGaramond = Cormorant_Garamond({
 
 export default function Layout({ children }) {
   const router = useRouter();
+
 
   return (
     <>

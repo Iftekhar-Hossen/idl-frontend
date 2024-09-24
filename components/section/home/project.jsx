@@ -285,7 +285,7 @@ export const Project = ({ properties }) => {
                               <div>
                                 <div className="absolute bottom-0 left-0 z-50 h-1/2 w-full bg-gradient-to-t from-neutral-300/95 to-neutral-50/5 duration-200 group-hover:h-full group-hover:to-neutral-300/50"></div>
                                 <img
-                                  className="absolute left-0 top-0 h-fit w-full object-center duration-200 ease-in group-hover:object-scale-down"
+                                  className="absolute group-hover:scale-110 left-0 top-0 h-fit w-full object-center duration-200 ease-in group-hover:object-scale-down"
                                   src={
                                     process.env.NEXT_PUBLIC_API_URL +
                                     "/assets/" +
@@ -362,7 +362,7 @@ export const Project = ({ properties }) => {
                               <div>
                                 <div className="absolute bottom-0 left-0 z-50 h-1/2 w-full bg-gradient-to-t from-neutral-300/95 to-neutral-50/5 duration-200 ease-in group-hover:h-full group-hover:to-neutral-300/50"></div>
                                 <img
-                                  className="absolute left-0 top-0 h-fit w-full object-center duration-200 group-hover:object-scale-down"
+                                  className="absolute group-hover:scale-110 left-0 top-0 h-fit w-full object-center duration-200 group-hover:object-scale-down"
                                   src={
                                     process.env.NEXT_PUBLIC_API_URL +
                                     "/assets/" +

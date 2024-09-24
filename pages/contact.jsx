@@ -2,7 +2,7 @@ import React from "react";
 import { MapPinned, Mail, Phone } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {Newsletter} from "@/components/ui/newsletter";
+import { Newsletter } from "@/components/ui/newsletter";
 
 const Hidden = (props) => {
   return <div className="hidden">{props.children}</div>;
@@ -43,7 +43,7 @@ export default function Contact() {
 
   return (
     <>
-      <div className="bg-foreground relative z-40 bg-[url(/images/mask_bg.png)] bg-cover bg-no-repeat">
+      <div className="relative z-40 bg-foreground bg-[url(/images/mask_bg.png)] bg-cover bg-no-repeat">
         <div className="container flex flex-wrap items-end py-40 font-roboto">
           <div className="w-7/12 sm:w-full">
             <h5 className="text-lg font-normal text-secondary-500 sm:text-xs">
@@ -61,16 +61,17 @@ export default function Contact() {
           <div className="w-5/12 sm:mt-5 sm:w-full">
             <ul className="text-[#1D1D1D]">
               {heroContact.map((item, index) => (
-                <li key={index} className="mb-9 sm:mb-5 last:mb-0">
+                <li key={index} className="mb-9 last:mb-0 sm:mb-5">
                   <div className="flex items-center gap-x-4 sm:gap-x-2">
-                    <div className="filter-primary relative h-5 w-5 sm:h-4 sm:w-4"   dangerouslySetInnerHTML={{ __html: item.icon }}>
-                  
-                    </div>
+                    <div
+                      className="filter-primary relative h-5 w-5 sm:h-4 sm:w-4"
+                      dangerouslySetInnerHTML={{ __html: item.icon }}
+                    ></div>
                     <span className="text-lg font-semibold leading-none text-primary sm:text-xs">
                       {item.name}
                     </span>
                   </div>
-                  <p className="mt-3 sm:mt-1 text-2xl font-normal text-secondary-100 sm:max-w-[265px] sm:text-base">
+                  <p className="mt-3 text-2xl font-normal text-secondary-100 sm:mt-1 sm:max-w-[265px] sm:text-base">
                     {item.value}
                   </p>
                 </li>
@@ -80,12 +81,12 @@ export default function Contact() {
         </div>
       </div>
 
-      <div className="container sm:-mt-16 relative  bg-secondary-100">
+      <div className="container relative bg-secondary-100 sm:-mt-16">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3649.141289314469!2d90.37416030000001!3d23.8491161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c14993b93009%3A0xabd5a0b3c481a02f!2sInheritance%20Development%20Ltd.!5e0!3m2!1sen!2sbd!4v1719579997362!5m2!1sen!2sbd"
           width={600}
           height={580}
-          className="-mt-14 w-full relative z-50"
+          className="relative z-50 -mt-14 w-full"
           style={{ border: 0 }}
           allowFullScreen=""
           loading="lazy"
@@ -93,7 +94,7 @@ export default function Contact() {
         />
       </div>
 
-      <div className=" font-roboto">
+      <div className="font-roboto">
         <div className="container py-40 md:py-6 sm:py-14">
           <div className="flex flex-wrap">
             <div className="w-4/12 md:flex md:flex-col md:justify-center sm:w-full">
@@ -101,7 +102,7 @@ export default function Contact() {
                 Stay In Touch
               </h6>
               <p className="font-roboto text-6xl font-normal capitalize leading-tight text-foreground md:text-3xl md:font-semibold sm:text-center sm:text-3xl">
-                <span className="font-saol md:not-italic md:font-roboto md:text-neutral-300 font-semibold italic text-primary-300 sm:not-italic">
+                <span className="font-saol font-semibold italic text-primary-300 md:font-roboto md:not-italic md:text-neutral-300 sm:not-italic">
                   {" "}
                   Email us
                 </span>{" "}
@@ -138,7 +139,7 @@ export default function Contact() {
                 </div>
                 <div className="col-span-2">
                   <textarea
-                    className="w-full resize-none rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none  placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
+                    className="w-full resize-none rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                     placeholder="Subject"
                     rows={3}
                   ></textarea>

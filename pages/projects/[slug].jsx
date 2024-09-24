@@ -23,6 +23,7 @@ import { Location } from "@/components/section/project/location";
 import { FloorPlan } from "@/components/section/project/floor-plan";
 import { ApartmentFeatures } from "@/components/section/project/apartment-features";
 import Link from "next/link";
+import { ScheduleMeeting } from "@/components/section/project/schedule-meeting";
 
 export default function Index({ project }) {
   console.log(project);
@@ -66,7 +67,7 @@ export default function Index({ project }) {
         name={project.name}
       />
 
-      <section className="relative z-10 bg-white pb-28 pt-20 sm:-mt-36">
+      <section className="relative z-10  pb-24 pt-20 sm:-mt-36">
         <div className="container relative mt-8 grid grid-cols-12 gap-9 sm:gap-4">
           <div className="col-span-12 flex items-center justify-between text-end sm:col-span-12 sm:flex sm:items-center sm:justify-between">
             <div>
@@ -132,6 +133,10 @@ export default function Index({ project }) {
           </div>
         </div>
       </section>
+
+
+      <ScheduleMeeting />
+
 
       <Newsletter />
     </>

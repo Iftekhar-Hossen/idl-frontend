@@ -192,11 +192,11 @@ export const Hero = ({ locationsData }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isOpen, setOpen] = useState(false);
 
-  const [counts, setCounts] = useState([
-    { count: 10, label: "Handover Projects" },
-    { count: 15, label: "Ongoing Projects" },
-    { count: 12, label: "Upcoming Projects" },
-  ]);
+  const counts = [
+    { count: 5, label: "Handover Projects" },
+    { count: 5, label: "Ongoing Projects" },
+    { count: 9, label: "Upcoming Projects" },
+  ];
 
   return (
     <>
@@ -235,7 +235,7 @@ export const Hero = ({ locationsData }) => {
                 </span>
               </button>
             </DialogTrigger>
-            <DialogContent className="h-96 w-full max-w-xl px-1 py-1 bg-primary-200 border-primary border-2"> 
+            <DialogContent className="h-96 w-full max-w-xl border-2 border-primary bg-primary-200 px-1 py-1">
               <iframe
                 src="https://www.youtube.com/embed/h2_CcNuNgXw"
                 className="h-full w-full"
@@ -314,13 +314,12 @@ export const Hero = ({ locationsData }) => {
               <div className="flex justify-start gap-x-8 xl:mt-1 md:-mt-2 md:gap-x-4 sm:gap-4">
                 {counts.map((item, index) => (
                   <div key={index} className="counter-item">
-                    <motion.h4
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.09 * index }}
-                      className="text-center font-saol text-5xl font-normal text-primary xl:text-4xl md:text-2xl sm:text-3xl"
-                    >
-                      <CounterAnimation value={item.count} direction="up" />
+                    <motion.h4 className="text-center font-saol text-5xl font-normal text-primary xl:text-4xl md:text-2xl sm:text-3xl">
+                      <CounterAnimation
+                        value={item.count}
+                        direction="up"
+                        index={index}
+                      />
                     </motion.h4>
                     <p className="max-w-20 text-center font-saol text-lg font-normal text-foreground xl:text-sm md:w-12 md:text-xs sm:max-w-[50px] sm:text-background">
                       {item.label}

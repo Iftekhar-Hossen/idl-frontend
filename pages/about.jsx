@@ -206,11 +206,15 @@ export default function about() {
               </p>
             </div>
             <ul className="mt-12 flex justify-start gap-8 xl:mt-8 md:mt-4 md:gap-0 sm:gap-3">
-              {projects.map((project) => (
+              {projects.map((project, index) => (
                 <li className="max-w-[85px]">
                   <div>
                     <h6 className="text-center font-saol text-5xl text-primary xl:text-4xl md:text-4xl sm:text-4xl">
-                      <CounterAnimation value={project.count} direction="up" />
+                    <CounterAnimation
+                        value={project.count}
+                        direction="up"
+                        index={index}
+                      />
                     </h6>
                     <h6 className="text-center font-saol text-xl xl:text-lg md:text-sm sm:text-sm">
                       {project.name}

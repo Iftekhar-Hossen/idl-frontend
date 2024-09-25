@@ -211,11 +211,11 @@ export default function Navbar() {
                 <li>
                   {item.submenu ? (
                     <>
-                      <DropdownMenu className="group z-50 p-0">
-                        <DropdownMenuTrigger className="px-2 py-0 font-roboto text-lg text-neutral-300 hover:text-primary-300 group-hover:text-primary-300 lg:text-base">
+                      <DropdownMenu className="group relative z-[99999999] p-0">
+                        <DropdownMenuTrigger className="px-2 relative z-[99999999] py-0 font-roboto text-lg text-neutral-300 hover:text-primary-300 group-hover:text-primary-300 lg:text-base">
                           {item.label}
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="z-50 bg-secondary-300 p-0">
+                        <DropdownMenuContent className="relative z-[99999999] bg-secondary-300 p-0">
                           {item.submenu.map((item) => (
                             <DropdownMenuItem className="p-0">
                               {" "}

@@ -6,7 +6,7 @@ import { useInView, useMotionValue, useSpring } from "framer-motion";
  * @param root0
  * @param root0.value
  */
-export function CounterAnimation({ value, direction = "up", className }) {
+export function CounterAnimation({ value, direction = "up", className, index }) {
   const ref = useRef(null);
   const motionValue = useMotionValue(direction === "down" ? value : 0);
   const springValue = useSpring(motionValue, {
@@ -16,10 +16,11 @@ export function CounterAnimation({ value, direction = "up", className }) {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
-    if (isInView) {
+    if (index === 0 || isInView) {  // Manually trigger for the first item
       motionValue.set(direction === "down" ? 0 : value);
     }
-  }, [motionValue, isInView]);
+  }, [motionValue, isInView, index]);
+  
 
   useEffect(
     () =>

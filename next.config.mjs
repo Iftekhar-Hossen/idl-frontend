@@ -3,10 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
-      "temp.codethousand.net",
-      "assets.inheritancebd.com",
-      "assets-idl.imgix.net",
-      "server.inheritancebd.com",
+      "api.inheritancebd.com",
       "192.168.0.200",
       "localhost",
       "192.168.0.161",

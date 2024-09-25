@@ -2,13 +2,17 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      "api.inheritancebd.com",
-      "192.168.0.200",
-      "localhost",
-      "192.168.0.161",
-      "192.46.214.228"
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
     ],
+
     dangerouslyAllowSVG: true,
   },
 };

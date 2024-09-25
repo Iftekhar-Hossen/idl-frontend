@@ -5,12 +5,26 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import { useRef } from "react";
 import db from "@/lib/db";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 export const Review = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const fadeInVariants = {
+    hidden: { filter: "blur(10px)",   },
+    visible: { filter: "blur(0px)", },
+  };
   return (
     <>
-      <section className="relative z-0 bg-cover bg-no-repeat py-11 pb-[80px] pt-[80px] after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:bg-[#a07758f7] sm:py-8">
+      <motion.section ref={ref}
+
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={fadeInVariants}
+        transition={{ duration: 0.9, ease: "circIn" }}
+
+      className="relative z-0 bg-cover bg-no-repeat py-11 pb-[80px] pt-[80px] after:absolute after:left-0 after:top-0 after:z-10 after:h-full after:w-full after:bg-[#a07758f7] sm:py-8">
         <div className="container relative z-20">
           <div className="absolute w-full md:relative sm:relative">
             <h3 className="mb-8 text-center text-2xl font-normal text-background text-secondary-300 md:mb-0 md:text-sm sm:mb-1 sm:text-sm">
@@ -49,7 +63,7 @@ export const Review = () => {
             <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 scale-125 border-none bg-transparent text-slate-300 sm:hidden" />
           </Carousel>
         </div>
-      </section>
+      </motion.section>
     </>
   );
 };

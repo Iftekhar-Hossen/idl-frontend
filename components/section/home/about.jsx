@@ -5,16 +5,28 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-import { motion } from "framer-motion";
-
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import db from "@/lib/db";
 import Link from "next/link";
 
 export const About = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const fadeInVariants = {
+    hidden: { opacity: 0, y: 200, scale: 0.9 },
+    visible: { opacity: 1, y: 0, scale: 1 },
+  };
   return (
     <>
-      <section className="bg-foreground">
-        <div className="container m-auto flex flex-wrap items-end pb-28 pt-44 lg:items-stretch lg:pt-28 md:pb-12 md:pt-[70px] sm:pb-14 sm:pt-10">
+      <section ref={ref} className="bg-foreground">
+        <motion.div
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={fadeInVariants}
+          transition={{ duration: 1.5, ease: "anticipate" }}
+          className="container m-auto flex flex-wrap items-end pb-28 pt-24 lg:items-stretch lg:pt-28 md:pb-12 md:pt-[70px] sm:pb-14 sm:pt-10"
+        >
           <div className="w-6/12 lg:-mt-3 md:mt-0 md:w-5/12 sm:w-full">
             <h5 className="font-roboto text-[#808080] md:text-sm sm:text-center sm:text-base">
               About us
@@ -67,7 +79,7 @@ export const About = () => {
               <CarouselPrevious className="absolute -top-6 left-[calc(100%-80px)] border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselContent className="relative flex md:ml-0 sm:ml-0 sm:w-full sm:flex-nowrap">
                 {db.about_us.map((data) => (
-                  <CarouselItem className="w-4/12 flex-none group  md:mx-1 md:w-6/12 md:pl-0 sm:mx-2 sm:pl-0">
+                  <CarouselItem className="group w-4/12 flex-none md:mx-1 md:w-6/12 md:pl-0 sm:mx-2 sm:pl-0">
                     <motion.div
                       tabIndex="0"
                       whileHover={"hover"}
@@ -109,7 +121,7 @@ export const About = () => {
               </CarouselContent>
             </Carousel>
           </div>
-        </div>
+        </motion.div>
       </section>
     </>
   );

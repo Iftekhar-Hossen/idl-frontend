@@ -5,36 +5,36 @@ import { Newsletter } from "@/components/ui/newsletter";
 import Link from "next/link";
 import Head from "next/head";
 
-function imageSequences(blocks) {
-  const result = [];
-  let current_images = [];
-  let in_sequence = false;
+function getImageSequences(blocks) {
+  const imageSequences = [];
+  let currentSequence = [];
+  let inSequence = false;
 
   for (let i = 0; i < blocks.length; i++) {
     if (blocks[i].type === "image") {
-      if (!in_sequence) {
-        in_sequence = true;
-        current_images = [i];
+      if (!inSequence) {
+        inSequence = true;
+        currentSequence = [i];
       } else {
-        current_images.push(i);
+        currentSequence.push(i);
       }
     } else {
-      if (in_sequence) {
-        result.push(current_images);
-        current_images = [];
-        in_sequence = false;
+      if (inSequence) {
+        imageSequences.push(currentSequence);
+        currentSequence = [];
+        inSequence = false;
       }
     }
   }
 
-  if (in_sequence) {
-    result.push(current_images);
+  if (inSequence) {
+    imageSequences.push(currentSequence);
   }
 
-  return result;
+  return imageSequences;
 }
 
-function BlockRenderer(block) {
+function renderBlockContent(block, isLastOdd, index, totalImages) {
   switch (block.type) {
     case "header":
       return (
@@ -46,8 +46,15 @@ function BlockRenderer(block) {
         ></h2>
       );
     case "image":
+      let columnSpanClass = "col-span-1";
+
+      // If it's a single image or the last image in an odd sequence, set col-span-2
+      if (totalImages === 1 || (isLastOdd && index === totalImages)) {
+        columnSpanClass = "col-span-2";
+      }
+
       return (
-        <div className="col-span-1 sm:col-span-2">
+        <div className={`${columnSpanClass} sm:col-span-2`}>
           <img
             className="w-full"
             src={
@@ -73,18 +80,45 @@ function BlockRenderer(block) {
   }
 }
 
+function RenderAllBlocks(blocks) {
+  const imageSequences = getImageSequences(blocks);
+  const renderedContent = [];
+  let imageIndex = 0;
+
+  blocks.forEach((block, i) => {
+    if (block.type === "image") {
+      // Find the current image sequence
+      const currentSequence = imageSequences.find((seq) => seq.includes(i));
+      const totalImagesInSequence = currentSequence.length;
+      const isOddSequence = totalImagesInSequence % 2 !== 0;
+
+      // Render the image with proper col-span
+      renderedContent.push(
+        renderBlockContent(
+          block,
+          isOddSequence,
+          imageIndex,
+          totalImagesInSequence,
+        ),
+      );
+      imageIndex++;
+    } else {
+      // Render non-image blocks
+      renderedContent.push(renderBlockContent(block));
+    }
+  });
+
+  return renderedContent;
+}
+
 export default function Page({ post }) {
   if (typeof window !== "undefined") {
     sessionStorage.setItem("viewed-post", post.id);
   }
 
-  const sequences = imageSequences(post.content.blocks);
-
-  const processedBlockes = [];
-
-  let count = 0;
-  while (count < post.content.blocks) {
-    console.log(count);
+  let i = 0;
+  while (i < post.content.blocks) {
+    i++;
   }
 
   return (
@@ -197,7 +231,7 @@ export default function Page({ post }) {
               {post.title}
             </h1>
             <main className="grid gap-x-5 gap-y-4 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 sm:gap-x-1 sm:gap-y-2">
-              {post.content.blocks.map((block) => BlockRenderer(block))}
+              {RenderAllBlocks(post.content.blocks)}
             </main>
           </div>
           <div className="relative w-2/12 sm:mt-4 sm:w-full">
@@ -209,14 +243,14 @@ export default function Page({ post }) {
                 <ul className="flex flex-col items-center gap-8 sm:flex-row">
                   <li>
                     <svg
-                    className="cursor-pointer"
-                    onClick={() => {
-                      window.open(
-                        `https://www.facebook.com/sharer/sharer.php?u=https://inheritancebd.com/press-media/${post.slug}`,
-                        "popup",
-                        "width=600,height=600"
-                      );
-                    }}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        window.open(
+                          `https://www.facebook.com/sharer/sharer.php?u=https://inheritancebd.com/press-media/${post.slug}`,
+                          "popup",
+                          "width=600,height=600",
+                        );
+                      }}
                       width={33}
                       height={32}
                       viewBox="0 0 33 32"
@@ -243,14 +277,14 @@ export default function Page({ post }) {
                   </li>
                   <li>
                     <svg
-                    className="cursor-pointer"
-                    onClick={() => {
-                      window.open(
-                        `https://www.linkedin.com/sharing/share-offsite/?url=https://inheritancebd.com/press-media/${post.slug}`,
-                        "popup",
-                        "width=600,height=600"
-                      );
-                    }}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        window.open(
+                          `https://www.linkedin.com/sharing/share-offsite/?url=https://inheritancebd.com/press-media/${post.slug}`,
+                          "popup",
+                          "width=600,height=600",
+                        );
+                      }}
                       width={33}
                       height={32}
                       viewBox="0 0 33 32"
@@ -286,8 +320,7 @@ export default function Page({ post }) {
                   </li>
                   <li>
                     <svg
-                    className="cursor-pointer hover:fill-primary"
-                
+                      className="cursor-pointer hover:fill-primary"
                       width={33}
                       height={32}
                       viewBox="0 0 33 32"

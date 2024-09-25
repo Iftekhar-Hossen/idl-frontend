@@ -5,17 +5,24 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+
+
 export const Project = ({ properties }) => {
   let [isActive, setActive] = useState("ongoing");
   let router = useRouter();
-  console.log(properties);
+
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const fadeInVariants = {
+    hidden: { filter: "blur(10px)",  scale: 0.9 },
+    visible: { filter: "blur(0px)",   scale: 1 },
+  };
 
   properties = [
     {
@@ -186,7 +193,15 @@ export const Project = ({ properties }) => {
 
   return (
     <>
-      <section className="bg-accent py-24 sm:py-10">
+      <motion.section ref={ref} 
+
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={fadeInVariants}
+        transition={{ duration: 1.5, ease: "anticipate" }}
+        
+      
+      className="bg-accent py-24 sm:py-10">
         <div className="container m-auto flex flex-wrap pb-24 lg:pb-0 md:pb-0 sm:flex-nowrap sm:pb-0 sm:pt-0">
           <div className="m-auto flex flex-wrap items-end">
             <div className="w-3/12 self-baseline lg:mb-0 lg:w-full md:mb-0 md:w-full sm:w-full">
@@ -494,7 +509,7 @@ export const Project = ({ properties }) => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
     </>
   );
 };

@@ -1,3 +1,6 @@
+html {
+  scroll-behavior: smooth;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -67,6 +70,7 @@
     --ring: 47 36% 60%;
   }
 }
+
 
 .pc-bg {
   background: linear-gradient(

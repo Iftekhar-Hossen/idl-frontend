@@ -10,10 +10,9 @@ import {
 } from "@/components/ui/carousel";
 import db from "@/lib/db";
 import {Newsletter} from "@/components/ui/newsletter";
+import { CounterAnimation } from "@/components/animation/counter";
 
-const Hidden = (props) => {
-  return <div className="hidden">{props.children}</div>;
-};
+
 
 export default function about() {
   let visions = [
@@ -211,7 +210,7 @@ export default function about() {
                 <li className="max-w-[85px]">
                   <div>
                     <h6 className="text-center font-saol text-5xl text-primary xl:text-4xl md:text-4xl sm:text-4xl">
-                      {project.count}
+                      <CounterAnimation value={project.count} direction="up" />
                     </h6>
                     <h6 className="text-center font-saol text-xl xl:text-lg md:text-sm sm:text-sm">
                       {project.name}

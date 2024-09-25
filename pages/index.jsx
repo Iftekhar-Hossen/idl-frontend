@@ -19,12 +19,12 @@ export default function Home({ locationsData, latestPosts, properties }) {
       <Review />
       <PressMedia latestPosts={latestPosts} />
       <Newsletter />
-      <Footer />
     </>
   );
 }
 
 export async function getServerSideProps({ params }) {
+
   let latestPosts = await directusClient.request(
     readItems("posts", {
       fields: ["id", "title", "slug", "cover", "date_created", "category.*"],

@@ -15,7 +15,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
-export default function PressMedia({ categories, posts, featuredPost, topPosts }) {
+export default function PressMedia({
+  categories,
+  posts,
+  featuredPost,
+  topPosts,
+}) {
   const [api, setApi] = useState();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -196,13 +201,13 @@ export default function PressMedia({ categories, posts, featuredPost, topPosts }
       <section className="bg-neutral-400 pb-[200px] pt-[120px] sm:pt-10">
         <div className="container flex flex-wrap">
           <div className="relative w-9/12 pr-5 sm:w-full sm:pr-0">
-          <div className="absolute left-3 top-[410px] sm:top-[205px] z-10 flex justify-center space-x-2 pb-4">
+            <div className="absolute left-3 top-[410px] z-10 flex justify-center space-x-2 pb-4 sm:top-[205px]">
               {featuredPost.map((_, index) => (
                 <Button
                   key={index}
                   variant="outline"
                   size="icon"
-                  className={`${current == index && "border-primary bg-transparent" } border-2 h-2 w-2 rounded`}
+                  className={`${current == index && "border-primary bg-transparent"} h-2 w-2 rounded border-2`}
                   onClick={() => current !== index && onDotClick(index)}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -210,67 +215,65 @@ export default function PressMedia({ categories, posts, featuredPost, topPosts }
             </div>
             <Carousel setApi={setApi} className="relative w-full">
               <CarouselContent>
-                {featuredPost
-                  .map((post, index) => (
-                    <CarouselItem key={index}>
-                      <div className="flex h-[431px] w-full items-center overflow-hidden sm:h-56">
-                        
-                        <img
-                          className="h-full w-full object-cover object-center"
-                          src={
-                            process.env.NEXT_PUBLIC_API_URL +
-                            "/assets/" +
-                            post.cover
-                          }
-                        />
-                      </div>
-                      <div className="bg-neutral-300 p-10 sm:p-5">
-                        <h5 className="mb-1 text-[15px] leading-none text-secondary-500 sm:text-xs">
-                          {post.category?.name + " | "}{" "}
-                          {new Date(post.date_created).toDateString()}
-                        </h5>
-                        <h4 className="mb-2 text-[29px] leading-none text-secondary-300 sm:mb-1 sm:text-2xl">
-                          {post.title}
-                        </h4>
-                        <p className="text-[15px] text-secondary-400 sm:text-xs">
-                          {post.description}
-                        </p>
-                        <Link
-                          href="/press-media/view "
-                          className="mt-3 flex items-center gap-2 text-base leading-none text-primary sm:mt-2 sm:text-sm"
-                        >
-                          <span>Read More</span>{" "}
-                          <div className="sm:h-4 sm:w-4">
-                            <svg
-                            className="w-4 h-4"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M5 12H19"
-                                stroke="#A07758"
-                                strokeWidth="1.25"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M12 5L19 12L12 19"
-                                stroke="#A07758"
-                                strokeWidth="1.25"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </div>
-                        </Link>
-                      </div>
-                    </CarouselItem>
-                  ))}
+                {featuredPost.map((post, index) => (
+                  <CarouselItem key={index}>
+                    <div className="flex h-[431px] w-full items-center overflow-hidden sm:h-56">
+                      <img
+                        className="h-full w-full object-cover object-center"
+                        src={
+                          process.env.NEXT_PUBLIC_API_URL +
+                          "/assets/" +
+                          post.cover
+                        }
+                      />
+                    </div>
+                    <div className="bg-neutral-300 p-10 sm:p-5">
+                      <h5 className="mb-1 text-[15px] leading-none text-secondary-500 sm:text-xs">
+                        {post.category?.name + " | "}{" "}
+                        {new Date(post.date_created).toDateString()}
+                      </h5>
+                      <h4 className="mb-2 text-[29px] leading-none text-secondary-300 sm:mb-1 sm:text-2xl">
+                        {post.title}
+                      </h4>
+                      <p className="text-[15px] text-secondary-400 sm:text-xs">
+                        {post.description}
+                      </p>
+                      <Link
+                        href={`/press-media/${post.category.slug}/${post.slug}`}
+                        className="mt-3 flex items-center gap-2 text-base leading-none text-primary sm:mt-2 sm:text-sm"
+                      >
+                        <span>Read More</span>{" "}
+                        <div className="sm:h-4 sm:w-4">
+                          <svg
+                            className="h-4 w-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M5 12H19"
+                              stroke="#A07758"
+                              strokeWidth="1.25"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M12 5L19 12L12 19"
+                              stroke="#A07758"
+                              strokeWidth="1.25"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+                      </Link>
+                    </div>
+                  </CarouselItem>
+                ))}
               </CarouselContent>
             </Carousel>
           </div>
-          <div className="w-3/12 pl-5 sm:w-full sm:pl-0 ">
+          <div className="w-3/12 pl-5 sm:w-full sm:pl-0">
             <div className="sm:hidden">
               <h3 className="text-[23px] leading-none text-secondary-300">
                 Newsletter
@@ -301,31 +304,56 @@ export default function PressMedia({ categories, posts, featuredPost, topPosts }
                 ))}
               </ul>
             </div>
-            <div className="mt-auto sm:mt-5">
+            <div className="mt-2 sm:mt-5">
               <h3 className="text-[23px] text-secondary-300">Top Post</h3>
               <ul>
                 <li className="mt-2 grid grid-cols-12 gap-3">
-                <div className="col-span-4">
-                  <img className="h-full aspect-square object-cover object-center" src={process.env.NEXT_PUBLIC_API_URL + "/assets/" + topPosts[0].cover} />
-                </div>
-                  <div className="col-span-7 py-1 flex flex-col justify-between">
-                  <div>
-                  <h5 className="text-2xl leading-none text-secondary-300">
-                      {topPosts[0].title}
-                    </h5>
-                    <h6 className="text-[10px] text-secondary-500">
-                      {new Date(topPosts[0].date_created).toDateString()}
-                    </h6>
+                  <div className="col-span-4">
+                    <img
+                      className="aspect-square h-full object-cover object-center"
+                      src={
+                        process.env.NEXT_PUBLIC_API_URL +
+                        "/assets/" +
+                        topPosts[0].cover
+                      }
+                    />
                   </div>
-                    <Link href={`/press-media/${topPosts[0].category.slug}/${topPosts[0].slug}`} className="flex items-center gap-2 text-xs text-primary">
-                    See Post
-                    <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.3335 6H10.6668" stroke="#A07758" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6 1.33337L10.6667 6.00004L6 10.6667" stroke="#A07758" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
+                  <div className="col-span-7 flex flex-col justify-between py-1">
+                    <div>
+                      <h5 className="text-2xl leading-none text-secondary-300">
+                        {topPosts[0].title}
+                      </h5>
+                      <h6 className="text-[10px] text-secondary-500">
+                        {new Date(topPosts[0].date_created).toDateString()}
+                      </h6>
+                    </div>
+                    <Link
+                      href={`/press-media/${topPosts[0].category.slug}/${topPosts[0].slug}`}
+                      className="flex items-center gap-2 text-xs text-primary"
+                    >
+                      See Post
+                      <svg
+                        className="h-3 w-3"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M1.3335 6H10.6668"
+                          stroke="#A07758"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M6 1.33337L10.6667 6.00004L6 10.6667"
+                          stroke="#A07758"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
                     </Link>
-                    
                   </div>
                 </li>
               </ul>
@@ -333,7 +361,7 @@ export default function PressMedia({ categories, posts, featuredPost, topPosts }
           </div>
         </div>
       </section>
-      <section className="-mt-32 pb-20 ">
+      <section className="-mt-32 pb-20">
         <div className="container grid grid-cols-3 gap-10 sm:grid-cols-2">
           {posts.map((item, index) => (
             <div className="bg-secondary-400">
@@ -401,23 +429,15 @@ export async function getServerSideProps({ params }) {
   let categories = await directusClient.request(readItems("categories"));
   let topPosts = await directusClient.request(
     readItems("posts", {
-      sort:"-views",
-      fields: [
-        "id",
-        "title",
-        "slug",
-        "cover",
-        "date_created",
-        "category.*",
-      ],
+      sort: "-views",
+      fields: ["id", "title", "slug", "cover", "date_created", "category.*"],
       limit: 3,
     }),
   );
   let posts = await directusClient.request(
     readItems("posts", {
-      filter:{
-        
-        "status": "published",
+      filter: {
+        status: "published",
       },
       fields: ["id", "title", "slug", "cover", "date_created", "category.*"],
     }),

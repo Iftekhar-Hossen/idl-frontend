@@ -6,12 +6,28 @@ import ViewProperties from "@/components/ViewProperties";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Listbox } from "@headlessui/react";
 import { Icons } from "@/components/icon";
-import { AnimatePresence, motion,useScroll, useTransform } from "framer-motion";
-
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { CounterAnimation } from "@/components/animation/counter";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 function SearchProperty({ locationsData }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState();
   const [properties, setProperties] = useState([]);
+
   return (
     <div className="flex gap-2">
       <div className="w-72">
@@ -174,25 +190,58 @@ function SearchProperty({ locationsData }) {
 }
 export const Hero = ({ locationsData }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isOpen, setOpen] = useState(false);
 
+  const [counts, setCounts] = useState([
+    { count: 10, label: "Handover Projects" },
+    { count: 15, label: "Ongoing Projects" },
+    { count: 12, label: "Upcoming Projects" },
+  ]);
 
   return (
     <>
       <section className="align-between flex flex-wrap justify-center overflow-hidden bg-primary-50 sm:h-auto">
         <div className="relative z-50 h-[521px] pt-48 text-center md:h-[465px] md:pt-32 sm:h-auto sm:pt-24">
-          <h3 className="font-roboto text-base font-medium uppercase lg:text-[10px] sm:text-xs">
+          <motion.h3
+            initial={{ y: -100, opacity: 0, filter: "blur(10px)" }}
+            animate={{ y: 0, opacity: 1, filter: "blur(0)" }}
+            transition={{
+              duration: 0.5,
+            }}
+            className="font-roboto text-base font-medium uppercase lg:text-[10px] sm:text-xs"
+          >
             THE PERFECT PLAN FOR BUILD
-          </h3>
-          <h4 className="font-roboto text-6xl font-light leading-tight xl:text-5xl lg:text-[40px] md:text-4xl sm:text-[28px]">
+          </motion.h3>
+          <motion.h4
+            initial={{ y: -100, opacity: 0, filter: "blur(10px)" }}
+            animate={{ y: 0, opacity: 1, filter: "blur(0)" }}
+            transition={{
+              duration: 0.5,
+            }}
+            className="font-roboto text-6xl font-light leading-tight xl:text-5xl lg:text-[40px] md:text-4xl sm:text-[28px]"
+          >
             <span className="font-saol italic text-primary">Smart </span> living
             starts with <br /> smart
             <span className="font-saol italic text-primary"> buildings</span>
-          </h4>
-          <button className="z-50 mt-6 border-2 border-primary px-5 py-3 font-roboto text-base text-primary md:px-4 md:py-3 md:text-base sm:mt-3 sm:px-3 sm:py-2 sm:text-base">
-            <span className="flex items-center gap-2 sm:gap-1">
-              <Icons.Play className="sm:h-4" /> Watch Video
-            </span>
-          </button>
+          </motion.h4>
+          <Dialog className="aspect-video">
+            <DialogTrigger asChild>
+              <button
+                onClick={() => setOpen(true)}
+                className="z-50 mt-6 border-2 border-primary px-5 py-3 font-roboto text-base text-primary md:px-4 md:py-3 md:text-base sm:mt-3 sm:px-3 sm:py-2 sm:text-base"
+              >
+                <span className="flex items-center gap-2 sm:gap-1">
+                  <Icons.Play className="sm:h-4" /> Watch Video
+                </span>
+              </button>
+            </DialogTrigger>
+            <DialogContent className="h-96 w-full max-w-xl px-1 py-1 bg-primary-200 border-primary border-2"> 
+              <iframe
+                src="https://www.youtube.com/embed/h2_CcNuNgXw"
+                className="h-full w-full"
+              ></iframe>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="relative h-[660px] w-screen bg-[url('/images/home_bg.png')] bg-top bg-no-repeat text-center md:h-[379.8px] md:bg-cover md:bg-center sm:mt-6 sm:h-[297.69px] sm:bg-cover sm:bg-center">
           <div className="absolute bottom-48 left-1/2 -translate-x-1/2">
@@ -263,24 +312,16 @@ export const Hero = ({ locationsData }) => {
                 </div>
               </div>
               <div className="flex justify-start gap-x-8 xl:mt-1 md:-mt-2 md:gap-x-4 sm:gap-4">
-                {[
-                  {
-                    count: 5,
-                    label: "Handover Projects",
-                  },
-                  {
-                    count: 7,
-                    label: "Ongoing Projects",
-                  },
-                  {
-                    count: 10,
-                    label: "Upcoming Projects",
-                  },
-                ].map((item) => (
-                  <div>
-                    <h4 className="text-center font-saol text-5xl font-normal text-primary xl:text-4xl md:text-2xl sm:text-3xl">
-                      {item.count}
-                    </h4>
+                {counts.map((item, index) => (
+                  <div key={index} className="counter-item">
+                    <motion.h4
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.09 * index }}
+                      className="text-center font-saol text-5xl font-normal text-primary xl:text-4xl md:text-2xl sm:text-3xl"
+                    >
+                      <CounterAnimation value={item.count} direction="up" />
+                    </motion.h4>
                     <p className="max-w-20 text-center font-saol text-lg font-normal text-foreground xl:text-sm md:w-12 md:text-xs sm:max-w-[50px] sm:text-background">
                       {item.label}
                     </p>

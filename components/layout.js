@@ -1,8 +1,10 @@
 import Navbar from "./navbar";
-import {Footer} from "./footer";
+import { Footer } from "./footer";
 import { Cormorant_Garamond } from "next/font/google";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
+import { useWindowSize } from "@/hooks/useWindowSize";
 const cormorantGaramond = Cormorant_Garamond({
   weight: ["400", "700"],
   style: ["normal", "italic"],
@@ -10,25 +12,38 @@ const cormorantGaramond = Cormorant_Garamond({
 });
 
 export default function Layout({ children }) {
+ 
   const router = useRouter();
-
+  const pageVariants = {
+    initial: {
+      scale: 0.9,
+      opacity: 0,
+    },
+    in: {
+      scale: 1,
+      opacity: 1,
+    },
+    out: {
+      scale: 0.9,
+      opacity: 0,
+    },
+  };
 
   return (
     <>
-      <Navbar />
+       <Navbar />
 
-      <AnimatePresence mode="wait">
         <motion.div
+          initial="initial"
+          animate="in"
+          exit="out"
+          variants={pageVariants}
+          transition={{ duration: 0.5 }}
           key={router.route}
-          initial={{ y: -100, filter: "blur(50px)" }}
-          animate={{ filter: "blur(0px)", y: 0 }}
-          exit={{ filter: "blur(50px)", y: 100 }}
-          transition={{ duration: 0.3 }}
         >
           <main>{children}</main>
         </motion.div>
-      </AnimatePresence>
-      {/* <Footer /> */}
+        <Footer />
     </>
   );
 }

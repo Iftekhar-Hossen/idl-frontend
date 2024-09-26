@@ -12,9 +12,16 @@ import db from "@/lib/db";
 import {Newsletter} from "@/components/ui/newsletter";
 import { CounterAnimation } from "@/components/animation/counter";
 
+import { Reveal } from "@/components/animation/reveal";
 
 
 export default function about() {
+
+  const revealVariants = {
+    hidden: { clipPath: 'inset(0 100% 0 0)', x: '100%' },
+    visible: { clipPath: 'inset(0 0 0 0)', x: '0%', transition: { duration: 1.2 } },
+  };
+
   let visions = [
     {
       icon: (
@@ -137,44 +144,32 @@ export default function about() {
 
   return (
     <>
-      <section className="flex h-[724px] items-center bg-foreground sm:h-full sm:py-20 sm:pt-32">
-        <div className="container">
-          <div className="text-center">
-            <h3 className="font-roboto text-7xl font-normal text-slate-300 sm:text-2xl sm:font-normal">
-              We{" "}
-              <span className="font-saol font-semibold italic text-primary">
-                Work
-              </span>{" "}
-              for your <br />
-              better{" "}
-              <span className="font-saol font-semibold italic text-primary">
-                Future
-              </span>
-            </h3>
-            <button className="z-50 mt-6 border-2 border-primary px-4 py-3 font-roboto text-base text-primary sm:mt-3 sm:px-3 sm:py-2 sm:text-base">
-              <span className="flex items-center gap-2 sm:gap-1">
-                {" "}
-                <svg
-                  width={25}
-                  height={25}
-                  viewBox="0 0 25 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.5 3.5L19.5 12.5L5.5 21.5V3.5Z"
-                    stroke="#A07758"
-                    strokeWidth="1.25"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                Watch Video
-              </span>
-            </button>
-          </div>
+  <section className="flex h-[724px] items-center bg-foreground sm:h-full sm:py-20 sm:pt-32">
+      <div className="container">
+        <div className="text-center">
+          <Reveal>
+
+        
+          <motion.h3
+            className="font-roboto text-7xl font-normal text-slate-300 sm:text-2xl sm:font-normal"
+          >
+            We{' '}
+            <span className="font-saol font-semibold italic text-primary">Work</span> for your <br />
+            better{' '}
+            <span className="font-saol font-semibold italic text-primary">Future</span>
+          </motion.h3>
+          </Reveal>
+          <button className="z-50 mt-6 border-2 border-primary px-4 py-3 font-roboto text-base text-primary sm:mt-3 sm:px-3 sm:py-2 sm:text-base">
+            <span className="flex items-center gap-2 sm:gap-1">
+              <svg width={25} height={25} viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.5 3.5L19.5 12.5L5.5 21.5V3.5Z" stroke="#A07758" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Watch Video
+            </span>
+          </button>
         </div>
-      </section>
+      </div>
+    </section>
 
       <section className="bg-background py-28 pb-24 md:py-14 sm:pb-0 sm:pt-0">
         <div className="container sm:flex-wrap flex justify-between gap-x-4 sm:p-0">
@@ -189,8 +184,10 @@ export default function about() {
               the real estate industries of the country{" "}
               <span className="text-primary">since 2019.</span>
             </h3>
+          
             <div className="mt-5 grid gap-y-3">
-              <p className="text-xl leading-tight  tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm">
+        
+             <p className="text-xl leading-tight  tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm">
                 Inheritance Development Ltd. (IDL) is a distinguished private
                 limited company in Bangladesh, recognized for its rapid growth
                 in the real estate development sector. IDL is committed to
@@ -198,7 +195,7 @@ export default function about() {
                 a deep passion for real estate and an unwavering commitment to
                 excellence, we guide you towards finding your ideal property.
               </p>
-              <p className="text-xl leading-tight tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm">
+            <p className="text-xl leading-tight tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm">
                 Founded in June 2019, IDL specializes in land development,
                 building construction, and real estate consultancy services. Our
                 unwavering dedication lies in providing exceptional service to
@@ -237,12 +234,14 @@ export default function about() {
             </div>
             <div className="relative sm:absolute sm:-bottom-8 z-10 -ml-[47px] -mt-[120px] w-[510px] xl:-ml-[30px] xl:-mt-[150px] xl:w-[480px] md:-mt-16 md:ml-0 md:w-full md:pr-6 sm:pr-0 sm:pl-6 sm:mt-0 sm:mr-0">
               <div className="bg-primary px-[56px] py-10 xl:py-8 md:px-6 md:py-4">
+                <Reveal>
                 <p className="border-l-4 pl-6 text-xl text-secondary-300 xl:pl-4 xl:text-lg md:border-l-2 md:pl-3 md:text-xs">
                   “Real estate development is not just about building buildings.
                   It is about creating communities where people can live, work,
                   and thrive. It is about building a better future for
                   everyone.”
                 </p>
+                </Reveal>
                 <div className="mt-4 flex items-center gap-[20px] md:gap-3">
                   <Avatar className="md:h-8 md:w-8">
                     <AvatarImage src="/images/ceo.png" />

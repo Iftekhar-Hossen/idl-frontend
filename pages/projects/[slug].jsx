@@ -1,20 +1,10 @@
 // import { Windows } from "lucide-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { motion, useInView } from 'framer-motion';
-import React, { useRef } from 'react';
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import React, { useRef, useEffect } from "react";
 
 import Image from "next/image";
 import { directusClient } from "@/lib/directus";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Newsletter } from "@/components/ui/newsletter";
 import { readItem } from "@directus/sdk";
 import { Overview } from "@/components/section/project/overview";
@@ -24,13 +14,83 @@ import { Location } from "@/components/section/project/location";
 import { FloorPlan } from "@/components/section/project/floor-plan";
 import { ApartmentFeatures } from "@/components/section/project/apartment-features";
 import Link from "next/link";
-import { ScheduleMeeting } from "@/components/section/project/schedule-meeting";
+
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
+
+const FullScreenGallery = ({ images, initialIndex, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowLeft") navigateImage(-1);
+      if (e.key === "ArrowRight") navigateImage(1);
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentIndex]);
+
+  const navigateImage = (direction) => {
+    setCurrentIndex((prevIndex) => {
+      const newIndex = prevIndex + direction;
+      if (newIndex < 0) return images.length - 1;
+      if (newIndex >= images.length) return 0;
+      return newIndex;
+    });
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
+    >
+      <button
+        onClick={onClose}
+        className="absolute right-4 top-4 text-white hover:text-gray-300"
+      >
+        <X size={24} />
+      </button>
+      <button
+        onClick={() => navigateImage(-1)}
+        className="absolute left-4 text-white hover:text-gray-300"
+      >
+        <ChevronLeft size={36} />
+      </button>
+      <button
+        onClick={() => navigateImage(1)}
+        className="absolute right-4 text-white hover:text-gray-300"
+      >
+        <ChevronRight size={36} />
+      </button>
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex]}
+          alt={`Gallery image ${currentIndex + 1}`}
+          className="max-h-[90vh] max-w-[90vw] object-contain"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.3 }}
+        />
+      </AnimatePresence>
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 transform text-white">
+        {currentIndex + 1} / {images.length}
+      </div>
+    </motion.div>
+  );
+};
 
 export default function Index({ project }) {
-  console.log(project);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [galleryOpen, setGalleryOpen] = useState(false);
+  const galleryImages = project.gallery.map(
+    (image) =>
+      `${process.env.NEXT_PUBLIC_API_URL}/assets/${image.directus_files_id.id}`,
+  );
 
   return (
     <>
@@ -112,60 +172,67 @@ export default function Index({ project }) {
           </div>
 
           <div className="col-span-12 mt-0 grid grid-cols-12 gap-6 sm:col-span-12 sm:gap-4">
-      {project.gallery.map((image, index) => (
-        <div key={index} className="col-span-4 sm:col-span-6">
-          <RevealImage
-            src={
-              process.env.NEXT_PUBLIC_API_URL +
-              "/assets/" +
-              image.directus_files_id.id
-            }
-            alt="gallery1"
-            width={400}
-            height={400}
-            onClick={() => {
-              setSelectedImage(index);
-              setGalleryOpen(true);
-            }}
-          />
+            {project.gallery.map((image, index) => (
+              <div key={index} className="col-span-4 sm:col-span-6">
+                <RevealImage
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/assets/${image.directus_files_id.id}`}
+                  alt={`gallery-image-${index + 1}`}
+                  width={400}
+                  height={400}
+                  onClick={() => {
+                    setSelectedImageIndex(index);
+                    setIsGalleryOpen(true);
+                  }}
+                  index={index}
+                />
+              </div>
+            ))}
+          </div>
+          <AnimatePresence>
+            {isGalleryOpen && (
+              <FullScreenGallery
+                images={galleryImages}
+                initialIndex={selectedImageIndex}
+                onClose={() => setIsGalleryOpen(false)}
+              />
+            )}
+          </AnimatePresence>
         </div>
-      ))}
-
-    </div>
-  </div>
-  </section>
-
- 
+      </section>
 
       <Newsletter />
     </>
   );
 }
 
-
-const RevealImage = ({ src, alt, width, height, onClick }) => {
+const RevealImage = ({ src, alt, width, height, onClick, index }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, {
+    once: true,
+    triggerOnce: true,
+    margin: "-100px",
+    amount: 0.3,
+  });
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 1 }}
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      style={{ position: 'relative', overflow: 'hidden' }}
+      transition={{ duration: 0.9 }}
+      style={{ position: "relative", overflow: "hidden" }}
     >
       <motion.div
         initial={{ top: 0 }}
-        animate={isInView ? { top: '100%' } : { top: 0 }}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        animate={isInView ? { top: "100%" } : { top: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut", delay: index * 0.2 }} // Add delay based on index
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'gray',
+          background: "#a07758",
           zIndex: 1,
         }}
       />
@@ -181,12 +248,12 @@ const RevealImage = ({ src, alt, width, height, onClick }) => {
   );
 };
 
-
 export async function getServerSideProps({ params }) {
   let data = await directusClient.request(
     readItem("properties", params.slug, {
       fields: [
         "*.*",
+        "apartment_features.*",
         "floor_plans.highlights.*",
         "gallery.directus_files_id.id",
         "gallery.directus_files_id.width",

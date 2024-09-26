@@ -1,6 +1,6 @@
 import { directusClient } from "@/lib/directus";
 import { readItems, updateItem } from "@directus/sdk";
-
+import { motion } from "framer-motion";
 import { Newsletter } from "@/components/ui/newsletter";
 import Link from "next/link";
 import Head from "next/head";
@@ -221,15 +221,28 @@ export default function Page({ post }) {
             </div>
           </div>
           <div className="w-9/12 sm:w-full">
-            <h1 className="mb-0 text-[15px] font-normal text-secondary-500 sm:ml-8">
+            <h6 className="mb-0 text-[15px] font-normal text-secondary-500 sm:ml-8">
               <Link href={`/press-media/${post.category.slug}`}>
                 {post.category.name}
               </Link>{" "}
               | {new Date(post.date_created).toDateString({})}
-            </h1>
-            <h1 className="mb-4 text-[46px] font-bold leading-tight text-primary sm:mb-2 sm:text-3xl">
+            </h6>
+            <motion.h1
+              initial={{
+                opacity: 0,
+                y: 40,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.5,
+              }}
+              className="mb-4 text-[46px] font-bold leading-tight text-primary sm:mb-2 sm:text-3xl"
+            >
               {post.title}
-            </h1>
+            </motion.h1>
             <main className="grid gap-x-5 gap-y-4 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 sm:gap-x-1 sm:gap-y-2">
               {RenderAllBlocks(post.content.blocks)}
             </main>

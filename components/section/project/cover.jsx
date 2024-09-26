@@ -1,17 +1,30 @@
 import Image from "next/image";
+import { motion } from "framer-motion";
 export function Cover({ coverImage }) {
   return (
     <>
       <section className="relative -mt-72 after:absolute after:top-0 after:-z-10 after:h-full after:w-full after:bg-[#F6F3EC] sm:-mt-16">
         <div className="container relative">
-          <Image
-            src={process.env.NEXT_PUBLIC_API_URL + "/assets/" + coverImage}
-            alt="project1"
-            width={1200}
-            height={800}
-            className="h-fit max-h-[800px] w-full object-cover object-top sm:max-h-56"
-          />
-          <div className="absolute right-0 top-0 flex items-center gap-6 bg-primary md:py-6 p-10 md:max-w-[300px] md:gap-x-4 md:px-8">
+          <motion.div
+            initial={{ opacity: 0, filter: "blur(30px)", y: 20 }}
+            whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+            viewport={{ margin: "-150px", threshold: 0.5, once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <Image
+              src={
+                process.env.NEXT_PUBLIC_API_URL +
+                "/assets/" +
+                coverImage +
+                "?quality=80&format=auto"
+              }
+              alt="project1"
+              width={1200}
+              height={800}
+              className="h-fit max-h-[800px] w-full object-cover object-top sm:max-h-56"
+            />
+          </motion.div>
+          <div className="absolute right-0 top-0 flex items-center gap-6 bg-primary p-10 md:max-w-[300px] md:gap-x-4 md:px-8 md:py-6">
             <p className="w-[255px] text-[23px] leading-[120%] text-secondary-300 md:text-sm">
               It's a 3 Bed Flat for sale in Uttara, Play the Video to See it For
               Yourself!

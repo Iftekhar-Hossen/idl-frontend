@@ -6,8 +6,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { motion, AnimatePresence } from "framer-motion";
-import React from "react";
+import { motion, useInView } from 'framer-motion';
+import React, { useRef } from 'react';
+
 import Image from "next/image";
 import { directusClient } from "@/lib/directus";
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,6 @@ export default function Index({ project }) {
       <Overview
         project={project}
         address={{
-          
           address_line_1: project.address_line_1,
           address_line_2: project.address_line_2,
         }}
@@ -67,7 +67,7 @@ export default function Index({ project }) {
         name={project.name}
       />
 
-      <section className="relative z-10  pb-24 pt-20 sm:-mt-36">
+      <section className="relative z-10 pb-24 pt-20 sm:-mt-36">
         <div className="container relative mt-8 grid grid-cols-12 gap-9 sm:gap-4">
           <div className="col-span-12 flex items-center justify-between text-end sm:col-span-12 sm:flex sm:items-center sm:justify-between">
             <div>
@@ -112,36 +112,75 @@ export default function Index({ project }) {
           </div>
 
           <div className="col-span-12 mt-0 grid grid-cols-12 gap-6 sm:col-span-12 sm:gap-4">
-            {project.gallery.map((image, index) => (
-              <div key={index} className="col-span-4 sm:col-span-6">
-                <Image
-                  src={
-                    process.env.NEXT_PUBLIC_API_URL +
-                    "/assets/" +
-                    image.directus_files_id.id
-                  }
-                  alt="gallery1"
-                  width={400}
-                  height={400}
-                  className="h-fit w-full"
-                  onClick={() => {
-                    setSelectedImage(index), setGalleryOpen(true);
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+      {project.gallery.map((image, index) => (
+        <div key={index} className="col-span-4 sm:col-span-6">
+          <RevealImage
+            src={
+              process.env.NEXT_PUBLIC_API_URL +
+              "/assets/" +
+              image.directus_files_id.id
+            }
+            alt="gallery1"
+            width={400}
+            height={400}
+            onClick={() => {
+              setSelectedImage(index);
+              setGalleryOpen(true);
+            }}
+          />
         </div>
-      </section>
+      ))}
 
+    </div>
+  </div>
+  </section>
 
-      <ScheduleMeeting />
-
+ 
 
       <Newsletter />
     </>
   );
 }
+
+
+const RevealImage = ({ src, alt, width, height, onClick }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 1 }}
+      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      style={{ position: 'relative', overflow: 'hidden' }}
+    >
+      <motion.div
+        initial={{ top: 0 }}
+        animate={isInView ? { top: '100%' } : { top: 0 }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'gray',
+          zIndex: 1,
+        }}
+      />
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="h-fit w-full"
+        onClick={onClick}
+      />
+    </motion.div>
+  );
+};
+
 
 export async function getServerSideProps({ params }) {
   let data = await directusClient.request(

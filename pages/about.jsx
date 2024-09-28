@@ -9,17 +9,33 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import db from "@/lib/db";
-import {Newsletter} from "@/components/ui/newsletter";
+import { Newsletter } from "@/components/ui/newsletter";
 import { CounterAnimation } from "@/components/animation/counter";
+
+import { readItem, readItems } from "@directus/sdk";
+import { directusClient } from "@/lib/directus";
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { Reveal } from "@/components/animation/reveal";
 
-
-export default function about() {
-
+export default function about({ statics, testimonials }) {
   const revealVariants = {
-    hidden: { clipPath: 'inset(0 100% 0 0)', x: '100%' },
-    visible: { clipPath: 'inset(0 0 0 0)', x: '0%', transition: { duration: 1.2 } },
+    hidden: { clipPath: "inset(0 100% 0 0)", x: "100%" },
+    visible: {
+      clipPath: "inset(0 0 0 0)",
+      x: "0%",
+      transition: { duration: 1.2 },
+    },
   };
 
   let visions = [
@@ -144,70 +160,82 @@ export default function about() {
 
   return (
     <>
-  <section className="flex h-[724px] items-center bg-foreground sm:h-full sm:py-20 sm:pt-32">
-      <div className="container">
-        <div className="text-center">
-          <Reveal>
+      <section className="flex h-[724px] items-center bg-foreground sm:h-full sm:py-20 sm:pt-32">
+        <div className="container">
+          <div className="text-center">
+            <Reveal>
+              <motion.h3 className="font-roboto text-7xl font-normal text-secondary-300 sm:text-2xl sm:font-normal">
+                We{" "}
+                <span className="font-saol font-semibold italic text-primary">
+                  Work
+                </span>{" "}
+                for your <br />
+                better{" "}
+                <span className="font-saol font-semibold italic text-primary">
+                  Future
+                </span>
+              </motion.h3>
+            </Reveal>
 
-        
-          <motion.h3
-            className="font-roboto text-7xl font-normal text-slate-300 sm:text-2xl sm:font-normal"
-          >
-            We{' '}
-            <span className="font-saol font-semibold italic text-primary">Work</span> for your <br />
-            better{' '}
-            <span className="font-saol font-semibold italic text-primary">Future</span>
-          </motion.h3>
-          </Reveal>
-          <button className="z-50 mt-6 border-2 border-primary px-4 py-3 font-roboto text-base text-primary sm:mt-3 sm:px-3 sm:py-2 sm:text-base">
-            <span className="flex items-center gap-2 sm:gap-1">
-              <svg width={25} height={25} viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5.5 3.5L19.5 12.5L5.5 21.5V3.5Z" stroke="#A07758" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Watch Video
-            </span>
-          </button>
+            <Dialog className="aspect-video">
+              <DialogTrigger asChild>
+                <button className="z-50 mt-6 border-2 border-primary px-4 py-3 font-roboto text-base text-primary sm:mt-3 sm:px-3 sm:py-2 sm:text-base">
+                  <span className="flex items-center gap-2 sm:gap-1">
+                    <svg
+                      width={25}
+                      height={25}
+                      viewBox="0 0 25 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.5 3.5L19.5 12.5L5.5 21.5V3.5Z"
+                        stroke="#A07758"
+                        strokeWidth="1.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    Watch Video
+                  </span>
+                </button>
+              </DialogTrigger>
+              <DialogContent className="h-96 w-full max-w-xl border-2 border-primary bg-primary-200 px-1 py-1">
+                <iframe
+                  src={statics.about_banner_video}
+                  className="h-full w-full"
+                ></iframe>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
       <section className="bg-background py-28 pb-24 md:py-14 sm:pb-0 sm:pt-0">
-        <div className="container sm:flex-wrap flex justify-between gap-x-4 sm:p-0">
+        <div className="container flex justify-between gap-x-4 sm:flex-wrap sm:p-0">
           <div className="w-5/12 md:w-6/12 sm:w-full sm:p-6">
-            <h5 className="font-roboto text-xl text-secondary-400 xl:text-base md:text-xs md:text-neutral-300  sm:text-base">
+            <h5 className="font-roboto text-xl text-secondary-400 xl:text-base md:text-xs md:text-neutral-300 sm:text-base">
               <span className="mr-1 hidden w-7 border-b-2 border-primary md:inline-block sm:inline-block"></span>{" "}
               Our Story
             </h5>
-            <h3 className="font-roboto text-3xl font-normal tracking-tight text-neutral-300 xl:text-2xl xl:leading-tight md:text-xl sm:text-xl">
-              Inheritance Development Limited has{" "}
-              <span className="text-primary">successfully contributed</span> to
-              the real estate industries of the country{" "}
-              <span className="text-primary">since 2019.</span>
-            </h3>
-          
+            <h3
+              className="font-roboto text-3xl font-normal tracking-tight text-neutral-300 xl:text-2xl xl:leading-tight md:text-xl sm:text-xl"
+              dangerouslySetInnerHTML={{ __html: statics.story_heading }}
+            ></h3>
+
             <div className="mt-5 grid gap-y-3">
-        
-             <p className="text-xl leading-tight  tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm">
-                Inheritance Development Ltd. (IDL) is a distinguished private
-                limited company in Bangladesh, recognized for its rapid growth
-                in the real estate development sector. IDL is committed to
-                transforming your aspirations for a home into reality. Driven by
-                a deep passion for real estate and an unwavering commitment to
-                excellence, we guide you towards finding your ideal property.
-              </p>
-            <p className="text-xl leading-tight tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm">
-                Founded in June 2019, IDL specializes in land development,
-                building construction, and real estate consultancy services. Our
-                unwavering dedication lies in providing exceptional service to
-                individuals seeking their dream homes.
-              </p>
+              {statics.story_description.blocks.map(({ data }) => (
+                <p className="text-xl leading-tight tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm">
+                  {data.text}
+                </p>
+              ))}
             </div>
             <ul className="mt-12 flex justify-start gap-8 xl:mt-8 md:mt-4 md:gap-0 sm:gap-3">
               {projects.map((project, index) => (
                 <li className="max-w-[85px]">
                   <div>
                     <h6 className="text-center font-saol text-5xl text-primary xl:text-4xl md:text-4xl sm:text-4xl">
-                    <CounterAnimation
+                      <CounterAnimation
                         value={project.count}
                         direction="up"
                         index={index}
@@ -227,20 +255,20 @@ export default function about() {
               <img
                 src="/images/about.png"
                 layout="fill"
-                className="h-fit w-[580px] md:w-full sm:w-full sm:h-full"
+                className="h-fit w-[580px] md:w-full sm:h-full sm:w-full"
                 alt="hi"
                 objectFit="contain"
               />
             </div>
-            <div className="relative sm:absolute sm:-bottom-8 z-10 -ml-[47px] -mt-[120px] w-[510px] xl:-ml-[30px] xl:-mt-[150px] xl:w-[480px] md:-mt-16 md:ml-0 md:w-full md:pr-6 sm:pr-0 sm:pl-6 sm:mt-0 sm:mr-0">
+            <div className="relative z-10 -ml-[47px] -mt-[120px] w-[510px] xl:-ml-[30px] xl:-mt-[150px] xl:w-[480px] md:-mt-16 md:ml-0 md:w-full md:pr-6 sm:absolute sm:-bottom-8 sm:mr-0 sm:mt-0 sm:pl-6 sm:pr-0">
               <div className="bg-primary px-[56px] py-10 xl:py-8 md:px-6 md:py-4">
                 <Reveal>
-                <p className="border-l-4 pl-6 text-xl text-secondary-300 xl:pl-4 xl:text-lg md:border-l-2 md:pl-3 md:text-xs">
-                  “Real estate development is not just about building buildings.
-                  It is about creating communities where people can live, work,
-                  and thrive. It is about building a better future for
-                  everyone.”
-                </p>
+                  <p className="border-l-4 pl-6 text-xl text-secondary-300 xl:pl-4 xl:text-lg md:border-l-2 md:pl-3 md:text-xs">
+                    “Real estate development is not just about building
+                    buildings. It is about creating communities where people can
+                    live, work, and thrive. It is about building a better future
+                    for everyone.”
+                  </p>
                 </Reveal>
                 <div className="mt-4 flex items-center gap-[20px] md:gap-3">
                   <Avatar className="md:h-8 md:w-8">
@@ -265,10 +293,10 @@ export default function about() {
       <section className="bg-foreground">
         <div className="container m-auto flex flex-wrap items-end pb-28 pt-24 md:pb-14 md:pt-9 sm:pb-14 sm:pt-20">
           <div className="w-6/12 md:w-5/12 sm:w-full">
-            <h5 className="font-roboto md:text-sm text-[#808080] sm:text-center sm:text-xs">
+            <h5 className="font-roboto text-[#808080] md:text-sm sm:text-center sm:text-xs">
               Our Services
             </h5>
-            <h3 className="font-roboto sm:leading-none md:text-3xl text-6xl font-normal leading-tight text-secondary-50 xl:text-5xl sm:text-center sm:text-2xl sm:font-normal">
+            <h3 className="font-roboto text-6xl font-normal leading-tight text-secondary-50 xl:text-5xl md:text-3xl sm:text-center sm:text-2xl sm:font-normal sm:leading-none">
               What{" "}
               <span className="font-saol font-semibold italic text-primary">
                 We Provide
@@ -278,7 +306,7 @@ export default function about() {
             </h3>
           </div>
           <div className="w-6/12 md:w-7/12 sm:w-full">
-            <p className="max-w-[745px] md:text-sm md:font-normal pt-8 font-roboto text-2xl font-normal text-white xl:mt-3 xl:text-xl sm:pt-0 sm:text-center sm:text-sm">
+            <p className="max-w-[745px] pt-8 font-roboto text-2xl font-normal text-white xl:mt-3 xl:text-xl md:text-sm md:font-normal sm:pt-0 sm:text-center sm:text-sm">
               At Inheritance Development LTD, we're not just selling properties,
               we're{" "}
               <span className="text-primary-300">
@@ -287,7 +315,7 @@ export default function about() {
               . With dedication and expertise, we work for your better future.
             </p>
           </div>
-          <div className="mt-20 md:mt-2 w-full xl:mt-16 sm:mt-10">
+          <div className="mt-20 w-full xl:mt-16 md:mt-2 sm:mt-10">
             <Carousel
               className="relative mt-4 pt-5 sm:mt-0 sm:pt-0"
               opts={{
@@ -298,18 +326,18 @@ export default function about() {
               <CarouselNext className="absolute -top-6 right-0 border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselPrevious className="absolute -top-6 left-[calc(100%-80px)] border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselContent className="relative flex md:ml-0 sm:ml-0 sm:w-full sm:flex-nowrap">
-                {db.about_us.map((data) => (
-                  <CarouselItem className="w-4/12 flex-none md:mx-1 md:w-4/12 sm:w-6/12 md:pl-0 sm:mx-2 sm:pl-0">
+                {statics.services.map(({name, description}, index) => (
+                  <CarouselItem className="w-4/12 flex-none md:mx-1 md:w-4/12 md:pl-0 sm:mx-2 sm:w-6/12 sm:pl-0">
                     <motion.div
                       tabIndex="0"
                       whileHover={"hover"}
                       whileFocus={"hover"}
                       whileTap={"hover"}
-                      className="group relative flex aspect-[414/400] sm:aspect-square flex-col justify-end bg-primary-300 bg-[url('/images/mask_bg.png')] bg-cover px-12 pb-12 bg-blend-screen duration-300 hover:cursor-pointer hover:bg-secondary-300 md:aspect-[5/4] md:px-6 md:pb-6 md:pt-5  sm:px-3 sm:pb-3"
+                      className="group relative flex aspect-[414/400] flex-col justify-end bg-primary-300 bg-[url('/images/mask_bg.png')] bg-cover px-12 pb-12 bg-blend-screen duration-300 hover:cursor-pointer hover:bg-secondary-300 md:aspect-[5/4] md:px-6 md:pb-6 md:pt-5 sm:aspect-square sm:px-3 sm:pb-3"
                     >
                       <div className="">
                         <h4 className="font-saol text-[46px] group-hover:text-primary-300 md:text-4xl">
-                          {data.no}
+                          {index + 1}
                         </h4>
                         <motion.p
                           variants={{
@@ -318,7 +346,7 @@ export default function about() {
                             },
                           }}
                           className="1 mb-2 text-2xl duration-300 group-hover:text-3xl md:text-sm group-hover:md:text-base"
-                          dangerouslySetInnerHTML={{ __html: data.title }}
+                          dangerouslySetInnerHTML={{ __html: name }}
                         />
                         <motion.p
                           initial={{
@@ -332,7 +360,7 @@ export default function about() {
                           }}
                           className="overflow-hidden text-base leading-5 text-neutral-100 md:text-sm sm:text-xs"
                         >
-                          {data.description}
+                          {description}
                         </motion.p>
                       </div>
                     </motion.div>
@@ -367,7 +395,7 @@ export default function about() {
       <section className="relative z-0 bg-secondary-300 bg-no-repeat py-11 pb-[80px] pt-[80px] sm:py-8">
         <div className="container relative z-20">
           <div className="absolute w-full sm:relative">
-            <h3 className="mb-8 text-center text-2xl  font-normal text-background text-primary-300 sm:mb-4 sm:text-sm">
+            <h3 className="mb-8 text-center text-2xl font-normal text-background text-primary-300 sm:mb-4 sm:text-sm">
               Our Clients Lovely Words.
             </h3>
           </div>
@@ -379,18 +407,18 @@ export default function about() {
             }}
           >
             <CarouselContent>
-              {db.reviews.map((data) => (
+              {testimonials.map(({name, description, owner}) => (
                 <CarouselItem>
                   <div className="m-auto flex h-full max-w-[1080px] flex-col justify-center px-10 text-center sm:px-5">
                     <p className="font-roboto text-3xl font-normal text-neutral-300 md:text-lg sm:text-xl sm:font-normal">
-                      {data.description}
+                      {description}
                     </p>
-                    <div className="mt-6 sm:mt-3 flex items-center justify-center sm:flex-col">
+                    <div className="mt-6 flex items-center justify-center sm:mt-3 sm:flex-col">
                       <h3 className="pr-5 font-saol text-xl font-normal text-primary-300 sm:p-0 sm:text-base sm:font-normal">
-                        {data.name}
+                        {name}
                       </h3>
                       <h3 className="relative pl-5 text-xl font-normal text-primary-300 after:absolute after:left-0 after:top-0 after:h-full after:w-[2px] after:bg-primary sm:p-0 sm:text-sm sm:font-light sm:text-foreground sm:after:hidden">
-                        {data.designation}
+                        {owner}
                       </h3>
                     </div>
                   </div>
@@ -406,4 +434,28 @@ export default function about() {
       <Newsletter />
     </>
   );
+}
+
+export async function getServerSideProps({ params }) {
+  let statics = await directusClient.request(
+    readItem("static", 1, {
+      fields: [
+        "banner_heading",
+        "story_heading",
+        "about_banner_video",
+        "story_description",
+        "services",
+        "lifecycle",
+      ],
+    }),
+  );
+
+  let testimonials = await directusClient.request(readItems("testimonials"));
+
+  return {
+    props: {
+      statics: statics,
+      testimonials: testimonials,
+    },
+  };
 }

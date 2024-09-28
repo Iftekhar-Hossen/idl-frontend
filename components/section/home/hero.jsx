@@ -188,15 +188,10 @@ function SearchProperty({ locationsData }) {
     </div>
   );
 }
-export const Hero = ({ locationsData }) => {
+
+export const Hero = ({ locationsData, statics, testimonials }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isOpen, setOpen] = useState(false);
-
-  const counts = [
-    { count: 5, label: "Handover Projects" },
-    { count: 5, label: "Ongoing Projects" },
-    { count: 9, label: "Upcoming Projects" },
-  ];
 
   return (
     <>
@@ -209,9 +204,8 @@ export const Hero = ({ locationsData }) => {
               duration: 0.5,
             }}
             className="font-roboto text-base font-medium uppercase lg:text-[10px] sm:text-xs"
-          >
-            THE PERFECT PLAN FOR BUILD
-          </motion.h3>
+            dangerouslySetInnerHTML={{ __html: statics.sub_heading }}
+          ></motion.h3>
           <motion.h4
             initial={{ y: -100, opacity: 0, filter: "blur(10px)" }}
             animate={{ y: 0, opacity: 1, filter: "blur(0)" }}
@@ -219,11 +213,8 @@ export const Hero = ({ locationsData }) => {
               duration: 0.5,
             }}
             className="font-roboto text-6xl font-light leading-tight xl:text-5xl lg:text-[40px] md:text-4xl sm:text-[28px]"
-          >
-            <span className="font-saol italic text-primary">Smart </span> living
-            starts with <br /> smart
-            <span className="font-saol italic text-primary"> buildings</span>
-          </motion.h4>
+            dangerouslySetInnerHTML={{ __html: statics.heading }}
+          ></motion.h4>
           <Dialog className="aspect-video">
             <DialogTrigger asChild>
               <button
@@ -236,10 +227,7 @@ export const Hero = ({ locationsData }) => {
               </button>
             </DialogTrigger>
             <DialogContent className="h-96 w-full max-w-xl border-2 border-primary bg-primary-200 px-1 py-1">
-              <iframe
-                src="https://www.youtube.com/embed/h2_CcNuNgXw"
-                className="h-full w-full"
-              ></iframe>
+              <iframe src={statics.video} className="h-full w-full"></iframe>
             </DialogContent>
           </Dialog>
         </div>
@@ -312,17 +300,17 @@ export const Hero = ({ locationsData }) => {
                 </div>
               </div>
               <div className="flex justify-start gap-x-8 xl:mt-1 md:-mt-2 md:gap-x-4 sm:gap-4">
-                {counts.map((item, index) => (
+                {statics.lifecycle.map((item, index) => (
                   <div key={index} className="counter-item">
                     <motion.h4 className="text-center font-saol text-5xl font-normal text-primary xl:text-4xl md:text-2xl sm:text-3xl">
                       <CounterAnimation
-                        value={item.count}
+                        value={+item.number}
                         direction="up"
                         index={index}
                       />
                     </motion.h4>
                     <p className="max-w-20 text-center font-saol text-lg font-normal text-foreground xl:text-sm md:w-12 md:text-xs sm:max-w-[50px] sm:text-background">
-                      {item.label}
+                      {item.name}
                     </p>
                   </div>
                 ))}

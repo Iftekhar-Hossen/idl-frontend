@@ -8,7 +8,7 @@ import {
 import { useRef } from "react";
 import db from "@/lib/db";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-export const Review = () => {
+export const Review = ({testimonials}) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const fadeInVariants = {
@@ -40,18 +40,18 @@ export const Review = () => {
           >
             <CarouselContent>
               <AnimatePresence>
-                {db.reviews.map((data) => (
+                {testimonials.map(({name, description, owner}) => (
                   <CarouselItem>
                     <div className="m-auto flex h-full max-w-[1080px] flex-col justify-center px-10 text-center sm:px-5">
                       <p className="font-roboto text-3xl font-normal text-secondary md:text-xl sm:text-xl sm:font-normal">
-                        {data.description}
+                        {description}
                       </p>
                       <div className="mt-6 md:mt-4 flex items-center justify-center sm:mt-4 sm:flex-col">
                         <h3 className="pr-5 font-saol md:text-base text-xl font-normal text-secondary-300 sm:p-0 sm:text-base sm:font-normal">
-                          {data.name}
+                          {name}
                         </h3>
                         <h3 className="relative pl-5 text-xl md:text-base font-normal text-secondary-300 after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-background sm:p-0 sm:text-sm sm:font-light sm:text-foreground sm:after:hidden">
-                          {data.designation}
+                          {owner}
                         </h3>
                       </div>
                     </div>

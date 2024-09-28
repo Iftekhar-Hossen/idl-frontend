@@ -11,19 +11,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-
-
 export const Project = ({ properties }) => {
   let [isActive, setActive] = useState("ongoing");
   let router = useRouter();
-
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-  const fadeInVariants = {
-    hidden: { filter: "blur(10px)",  scale: 0.9 },
-    visible: { filter: "blur(0px)",   scale: 1 },
-  };
-
 
   let filteredItems = properties.filter(
     (property) => property.current_status === isActive,
@@ -31,15 +21,7 @@ export const Project = ({ properties }) => {
 
   return (
     <>
-      <motion.section ref={ref} 
-
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        variants={fadeInVariants}
-        transition={{ duration: 1.5, ease: "anticipate" }}
-        
-      
-      className="bg-accent py-24 sm:py-10">
+      <motion.section className="bg-accent py-24 sm:py-10">
         <div className="container m-auto flex flex-wrap pb-24 lg:pb-0 md:pb-0 sm:flex-nowrap sm:pb-0 sm:pt-0">
           <div className="m-auto flex flex-wrap items-end">
             <div className="w-3/12 self-baseline lg:mb-0 lg:w-full md:mb-0 md:w-full sm:w-full">
@@ -128,9 +110,6 @@ export const Project = ({ properties }) => {
                           >
                             <motion.div
                               key={property.slug}
-                              initial={{ scale: 0.98, filter: "blur(10px)" }}
-                              animate={{ scale: 1, filter: "blur(0px)" }}
-                              exit={{ scale: 0.98, filter: "blur(10px)" }}
                               transition={{ duration: 0.4 }}
                               whileHover={"hover"}
                               className={`group relative h-full overflow-hidden`}
@@ -138,7 +117,7 @@ export const Project = ({ properties }) => {
                               <div>
                                 <div className="absolute bottom-0 left-0 z-50 h-1/2 w-full bg-gradient-to-t from-neutral-300/95 to-neutral-50/5 duration-200 group-hover:h-full group-hover:to-neutral-300/50"></div>
                                 <img
-                                  className="absolute group-hover:scale-110 left-0 top-0 h-fit w-full object-center duration-200 ease-in group-hover:object-scale-down"
+                                  className="absolute left-0 top-0 h-fit w-full object-center duration-200 ease-in group-hover:scale-110 group-hover:object-scale-down"
                                   src={
                                     process.env.NEXT_PUBLIC_API_URL +
                                     "/assets/" +
@@ -198,122 +177,52 @@ export const Project = ({ properties }) => {
                         ) : (
                           <CarouselItem
                             key={property.slug}
-                            className={`basis-1/4 px-1 md:basis-1/3 sm:basis-1/2`}
+                            className={`mx-2 h-full w-full basis-1/4 overflow-hidden px-0 md:basis-1/3 sm:basis-1/2`}
                           >
                             <motion.div
                               key={property.slug}
                               onClick={() =>
                                 router.push(`/projects/${property.slug}`)
                               }
-                              initial={{ scale: 0.98, filter: "blur(10px)" }}
-                              animate={{ scale: 1, filter: "blur(0px)" }}
-                              exit={{ scale: 0.98, filter: "blur(10px)" }}
                               transition={{ duration: 0.4 }}
                               whileHover={"hover"}
-                              className={`group relative h-full cursor-pointer overflow-hidden`}
+                              className={`relative h-full w-full cursor-pointer overflow-hidden`}
                             >
-                              <div>
-                                <div className="absolute bottom-0 left-0 z-50 h-1/2 w-full bg-gradient-to-t from-neutral-300/95 to-neutral-50/5 duration-200 ease-in group-hover:h-full group-hover:to-neutral-300/50"></div>
-                                <img
-                                  className="absolute group-hover:scale-110 left-0 top-0 h-fit w-full object-center duration-200 group-hover:object-scale-down"
-                                  src={
-                                    process.env.NEXT_PUBLIC_API_URL +
-                                    "/assets/" +
-                                    property.thumbnail
-                                  }
-                                />
-                              </div>
-                              <div className="absolute bottom-5 left-6 z-50 w-full sm:left-5">
-                                <h4 className="text-2xl text-secondary-300 sm:text-base">
-                                  {property.name}
-                                </h4>
-                                <div>
-                                  <motion.h6
-                                    className="flex items-center gap-1 text-xs text-primary-300 sm:text-[10px]"
-                                    initial={{ opacity: 0, height: 0 }}
-                                    variants={{
-                                      hover: {
-                                        opacity: 1,
-                                        height: "auto",
-                                      },
-                                    }}
-                                  >
-                                    Show Project{" "}
-                                    <div className="h-3 w-3">
-                                      <svg
-                                        width="100%"
-                                        height="100%"
-                                        viewBox="0 0 16 17"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          d="M3.33301 8.16016H12.6663"
-                                          stroke="#A07758"
-                                          stroke-width="1.25"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                        />
-                                        <path
-                                          d="M8 3.49349L12.6667 8.16016L8 12.8268"
-                                          stroke="#A07758"
-                                          stroke-width="1.25"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                        />
-                                      </svg>
-                                    </div>
-                                  </motion.h6>
-                                  <motion.h6
-                                    variants={{
-                                      // hide this when hover
-                                      hover: {
-                                        opacity: 0,
-                                        height: 0,
-                                      },
-                                    }}
-                                    className="flex items-center gap-1 text-xs text-secondary-300 sm:text-[10px]"
-                                  >
-                                    <div className="h-3 w-3">
-                                      <svg
-                                        width="100%"
-                                        height="100%"
-                                        viewBox="0 0 12 13"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <g clip-path="url(#clip0_2138_3983)">
-                                          <path
-                                            d="M7.25 4.52393C7.25 5.21428 6.69036 5.77393 6 5.77393C5.30964 5.77393 4.75 5.21428 4.75 4.52393C4.75 3.83357 5.30964 3.27393 6 3.27393C6.69036 3.27393 7.25 3.83357 7.25 4.52393Z"
-                                            stroke="#F6F3EC"
-                                          />
-                                          <path
-                                            d="M9.11111 8.52393C9.80837 9.51816 10.1419 10.0477 9.94323 10.4739C9.9233 10.5166 9.89997 10.5579 9.87344 10.5973C9.58618 11.0239 8.84375 11.0239 7.35889 11.0239H4.64111C3.15625 11.0239 2.41382 11.0239 2.12656 10.5973C2.10003 10.5579 2.0767 10.5166 2.05677 10.4739C1.8581 10.0477 2.19163 9.51816 2.88889 8.52393"
-                                            stroke="#F6F3EC"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                          />
-                                          <path
-                                            d="M6.6287 8.77071C6.46006 8.93313 6.23466 9.02393 6.00008 9.02393C5.7655 9.02393 5.54009 8.93313 5.37145 8.77071C3.82715 7.27432 1.75759 5.60269 2.76685 3.17579C3.31255 1.86359 4.62247 1.02393 6.00008 1.02393C7.37768 1.02393 8.6876 1.86359 9.2333 3.17579C10.2413 5.59963 8.17681 7.27947 6.6287 8.77071Z"
-                                            stroke="#F6F3EC"
-                                          />
-                                        </g>
-                                        <defs>
-                                          <clipPath id="clip0_2138_3983">
-                                            <rect
-                                              width="12"
-                                              height="12"
-                                              fill="white"
-                                              transform="translate(0 0.0239258)"
-                                            />
-                                          </clipPath>
-                                        </defs>
-                                      </svg>
-                                    </div>{" "}
-                                    {property.address_line_2}
-                                  </motion.h6>
-                                </div>
-                              </div>
+                              <motion.div style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                backgroundColor: "rgba(0,0,0,0.2)"
+                              }}  variants={{
+                                
+                                hover: {
+                                  opacity: 1,
+                                },
+                                
+                              }}/>
+                           
+                              <motion.img
+                                style={{
+                                  position: "absolute",
+                                  top: 0,
+                                  left: 0,
+                                  width: "100%",
+                                  height: "100%",
+                                }}
+                                initial={{ transform: "scale(1)" }}
+                                variants={{
+                                  hover: {
+                                    transform: "scale(1.1)",
+                                  },
+                                }}
+                                src={
+                                  process.env.NEXT_PUBLIC_API_URL +
+                                  "/assets/" +
+                                  property.thumbnail
+                                }
+                              />
                             </motion.div>
                           </CarouselItem>
                         ),

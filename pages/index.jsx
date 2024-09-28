@@ -1,22 +1,33 @@
 import db from "@/lib/db";
-import {Newsletter} from "@/components/ui/newsletter";
+import { Newsletter } from "@/components/ui/newsletter";
 import { Hero } from "@/components/section/home/hero";
 import { About } from "@/components/section/home/about";
 import { Project } from "@/components/section/home/project";
 import { Review } from "@/components/section/home/review";
 import { PressMedia } from "@/components/section/home/press-media";
 import { check } from "prettier";
-import { readItems } from "@directus/sdk";
+import { readItem, readItems } from "@directus/sdk";
 import { directusClient } from "@/lib/directus";
-import {Footer} from "@/components/footer";
+import { Footer } from "@/components/footer";
 
-export default function Home({ locationsData, latestPosts, properties }) {
+export default function Home({
+  locationsData,
+  latestPosts,
+  properties,
+  statics,
+  testimonials
+}) {
   return (
     <>
-      <Hero locationsData={locationsData} properties={properties} />
-      <About />
+      <Hero
+        locationsData={locationsData}
+        properties={properties}
+        statics={statics}
+        testimonials={testimonials}
+      />
+      <About  services={statics.services}  />
       <Project properties={properties} />
-      <Review />
+      <Review  testimonials={testimonials}/>
       <PressMedia latestPosts={latestPosts} />
       <Newsletter />
     </>
@@ -24,6 +35,14 @@ export default function Home({ locationsData, latestPosts, properties }) {
 }
 
 export async function getServerSideProps({ params }) {
+  let statics = await directusClient.request(
+    readItem("static", 1, {
+      fields: ["heading", "sub_heading", "video", "lifecycle", "services"],
+    }),
+  );
+
+  let testimonials = await directusClient.request(
+    readItems("testimonials"))
 
   let latestPosts = await directusClient.request(
     readItems("posts", {
@@ -56,6 +75,8 @@ export async function getServerSideProps({ params }) {
       locationsData: locations,
       latestPosts: latestPosts,
       properties: properties,
+      statics: statics,
+      testimonials: testimonials
     },
   };
 }

@@ -10,7 +10,7 @@ import { useRef } from "react";
 import db from "@/lib/db";
 import Link from "next/link";
 
-export const About = () => {
+export const About = ({services}) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const fadeInVariants = {
@@ -34,7 +34,7 @@ export const About = () => {
             <h3 className="font-roboto text-6xl font-bold text-white lg:text-5xl md:text-3xl sm:text-center sm:text-2xl sm:font-normal">
               We <span className="font-saol italic text-primary">Work</span> for
               your <br />
-              better{" "}
+              better
               <span className="font-saol italic text-primary">Future</span>
             </h3>
           </div>
@@ -78,7 +78,7 @@ export const About = () => {
               <CarouselNext className="absolute -top-6 right-0 border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselPrevious className="absolute -top-6 left-[calc(100%-80px)] border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselContent className="relative flex md:ml-0 sm:ml-0 sm:w-full sm:flex-nowrap">
-                {db.about_us.map((data) => (
+                {services.map(({name, description}, index) => (
                   <CarouselItem className="group w-4/12 flex-none md:mx-1 md:w-6/12 md:pl-0 sm:mx-2 sm:pl-0">
                     <motion.div
                       tabIndex="0"
@@ -89,7 +89,7 @@ export const About = () => {
                     >
                       <div className="">
                         <h4 className="font-saol text-[46px] group-hover:text-primary-300 md:text-4xl">
-                          {data.no}
+                          {index + 1}
                         </h4>
                         <motion.p
                           variants={{
@@ -98,7 +98,7 @@ export const About = () => {
                             },
                           }}
                           className="1 mb-2 text-2xl duration-300 group-hover:text-3xl md:text-sm group-hover:md:text-base"
-                          dangerouslySetInnerHTML={{ __html: data.title }}
+                          dangerouslySetInnerHTML={{ __html: name }}
                         />
                         <motion.p
                           initial={{
@@ -112,7 +112,7 @@ export const About = () => {
                           }}
                           className="overflow-hidden text-base leading-5 text-neutral-100 md:text-sm sm:text-xs"
                         >
-                          {data.description}
+                          {description}
                         </motion.p>
                       </div>
                     </motion.div>

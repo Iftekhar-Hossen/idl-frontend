@@ -107,7 +107,7 @@ export default function Index({ project }) {
         current_status={project.current_status}
       />
 
-      <Cover coverImage={project.cover.id} />
+      <Cover coverImage={project.cover.id} video={project.promo_video} text={project.promo_video_text} />
 
       <MostFeatures features={project.features} />
       <Location

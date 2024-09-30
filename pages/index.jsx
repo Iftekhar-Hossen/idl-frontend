@@ -1,33 +1,38 @@
-import db from "@/lib/db";
 import { Newsletter } from "@/components/ui/newsletter";
 import { Hero } from "@/components/section/home/hero";
 import { About } from "@/components/section/home/about";
 import { Project } from "@/components/section/home/project";
 import { Review } from "@/components/section/home/review";
 import { PressMedia } from "@/components/section/home/press-media";
-import { check } from "prettier";
 import { readItem, readItems } from "@directus/sdk";
 import { directusClient } from "@/lib/directus";
-import { Footer } from "@/components/footer";
+import Meta from "@/components/meta";
 
 export default function Home({
   locationsData,
   latestPosts,
   properties,
   statics,
-  testimonials
+  testimonials,
+  pageContent,
 }) {
   return (
     <>
+      <Meta
+        title={pageContent.meta_title}
+        description={pageContent.meta_description}
+        image={process.env.NEXT_PUBLIC_API_URL+ "/assets/" + pageContent.meta_image}
+      />
       <Hero
         locationsData={locationsData}
         properties={properties}
         statics={statics}
         testimonials={testimonials}
+        pageContent={pageContent}
       />
-      <About  services={statics.services}  />
-      <Project properties={properties} />
-      <Review  testimonials={testimonials}/>
+      <About services={statics.services} pageContent={pageContent}/>
+      <Project properties={properties} pageContent={pageContent}/>
+      <Review testimonials={testimonials} />
       <PressMedia latestPosts={latestPosts} />
       <Newsletter />
     </>
@@ -35,14 +40,15 @@ export default function Home({
 }
 
 export async function getServerSideProps({ params }) {
+  let pageContent = await directusClient.request(readItem("homepage", 1));
+
   let statics = await directusClient.request(
     readItem("static", 1, {
       fields: ["heading", "sub_heading", "video", "lifecycle", "services"],
     }),
   );
 
-  let testimonials = await directusClient.request(
-    readItems("testimonials"))
+  let testimonials = await directusClient.request(readItems("testimonials"));
 
   let latestPosts = await directusClient.request(
     readItems("posts", {
@@ -76,7 +82,8 @@ export async function getServerSideProps({ params }) {
       latestPosts: latestPosts,
       properties: properties,
       statics: statics,
-      testimonials: testimonials
+      testimonials: testimonials,
+      pageContent: pageContent,
     },
   };
 }

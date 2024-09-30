@@ -3,18 +3,18 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Icons } from "../icon";
-
+import { Menu } from "@headlessui/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/router";
+
+import ScheduleFormModal, {
+  useModal,
+} from "@/components/form/schedule-form-modal";
 
 const MenuButton = ({
   isOpen = false,
@@ -148,6 +148,13 @@ export default function Navbar() {
   // Toggle the menu
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const { isOpenFormModal, open, close } = useModal();
+
+  const handleSubmit = (data) => {
+    console.log("Form submitted:", data);
+    // Handle the form submission
+  };
+
   const menuVariants = {
     open: {
       clipPath: "circle(100% at 80% 50%)",
@@ -208,27 +215,40 @@ export default function Navbar() {
           <div className="md:hidden">
             <ul className="flex items-center gap-x-2">
               {navigations.map((item) => (
-                <li>
+                <li className="relative">
                   {item.submenu ? (
                     <>
-                      <DropdownMenu className="group relative z-[99999999] p-0">
-                        <DropdownMenuTrigger className="px-2 relative z-[99999999] py-0 font-roboto text-lg text-neutral-300 hover:text-primary-300 group-hover:text-primary-300 lg:text-base">
-                          {item.label}
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="relative z-[99999999] bg-secondary-300 p-0">
-                          {item.submenu.map((item) => (
-                            <DropdownMenuItem className="p-0">
-                              {" "}
-                              <Link
-                                className="hover:text-secondar-300 block w-full px-4 py-3 font-roboto text-lg text-primary-300 hover:bg-primary-300 hover:text-secondary-300 lg:text-base"
-                                href={item.url}
-                              >
-                                {item.label}
-                              </Link>
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <Menu className="group relative">
+                        {({ open }) => (
+                          <>
+                            <Menu.Button
+                              className={`px-2 font-roboto text-lg text-neutral-300 hover:text-primary-300 group-hover:text-primary lg:text-base ${open ? "text-primary" : ""} `}
+                            >
+                              {item.label}
+                            </Menu.Button>
+                            <Menu.Items
+                              className={`absolute left-0 mt-2 w-48 rounded-md bg-secondary-300 shadow-lg ${
+                                open ? "" : "hidden"
+                              }`}
+                            >
+                              {item.submenu.map((submenu, subIndex) => (
+                                <Menu.Item key={subIndex}>
+                                  {({ active }) => (
+                                    <Link
+                                      href={submenu.url}
+                                      className={`block px-4 py-2 text-[16px] hover:bg-primary-300 hover:text-secondary-300 ${
+                                        active ? "bg-gray-100" : ""
+                                      }`}
+                                    >
+                                      {submenu.label}
+                                    </Link>
+                                  )}
+                                </Menu.Item>
+                              ))}
+                            </Menu.Items>
+                          </>
+                        )}
+                      </Menu>
                     </>
                   ) : (
                     <Link
@@ -243,12 +263,12 @@ export default function Navbar() {
             </ul>
           </div>
           <div className="md:hidden">
-            <Link
-              href={"/contact"}
+            <button
+              onClick={open}
               className="flex items-center gap-x-2 bg-primary-300 px-5 py-3 text-lg text-secondary-300 lg:text-base"
             >
               Schedule a Meeting <Icons.TopRight />
-            </Link>
+            </button>
           </div>
           <div className="hidden md:flex">
             <AnimatePresence>
@@ -329,34 +349,47 @@ export default function Navbar() {
                 </div>
                 <ul className="ustify-center mt-8 flex flex-col items-start gap-y-4">
                   {navigations.map((item) => (
-                    <li className="text-secondary-300">
+                    <li className="relative text-secondary-300">
                       {item.submenu ? (
                         <>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button className="h-auto px-2 py-0 font-roboto text-lg font-normal text-secondary-300 ">
-                                {item.label}
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="relative z-[999999999] w-56 border border-primary-400 bg-primary sm:ml-6">
-                              {item.submenu.map((item) => (
-                                <DropdownMenuItem>
-                                  <Link
-                                  onClick={()=> toggleMenu()}
-                                    className="font-roboto  py-1 text-sm font-normal text-secondary-300 "
-                                    href={item.url}
-                                  >
-                                    {item.label}
-                                  </Link>
-                                </DropdownMenuItem>
-                              ))}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <Menu className="group relative">
+                            {({ open }) => (
+                              <>
+                                <Menu.Button
+                                  className={`px-2 font-roboto text-lg text-secondary-300`}
+                                >
+                                  {item.label}
+                                </Menu.Button>
+                                <Menu.Items
+                                  className={`absolute left-0 z-50 mt-2 w-48 rounded-md border bg-primary-300 shadow-lg ${
+                                    open ? "" : "hidden"
+                                  }`}
+                                >
+                                  {item.submenu.map((submenu, subIndex) => (
+                                    <Menu.Item key={subIndex}>
+                                      {({ active }) => (
+                                        <Link
+                                          href={"/" + submenu.url}
+                                          onClick={toggleMenu}
+                                          className={`block px-4 py-2 text-[16px] hover:bg-primary-300 hover:text-secondary-300 ${
+                                            active ? "bg-gray-100" : ""
+                                          }`}
+                                        >
+                                          {submenu.label}
+                                        </Link>
+                                      )}
+                                    </Menu.Item>
+                                  ))}
+                                </Menu.Items>
+                              </>
+                            )}
+                          </Menu>
                         </>
                       ) : (
                         <Link
                           className="px-2 font-roboto text-lg text-secondary-300"
                           href={item.url}
+                          onClick={toggleMenu}
                         >
                           {item.label}
                         </Link>
@@ -369,6 +402,13 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </header>
+
+      <ScheduleFormModal
+        isOpen={isOpenFormModal}
+        onClose={close}
+        onSubmit={handleSubmit}
+        title="User Information"
+      />
     </>
   );
 }

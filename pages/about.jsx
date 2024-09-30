@@ -8,34 +8,43 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import db from "@/lib/db";
 import { Newsletter } from "@/components/ui/newsletter";
 import { CounterAnimation } from "@/components/animation/counter";
 
 import { readItem, readItems } from "@directus/sdk";
 import { directusClient } from "@/lib/directus";
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 import { Reveal } from "@/components/animation/reveal";
 
-export default function about({ statics, testimonials }) {
-  const revealVariants = {
-    hidden: { clipPath: "inset(0 100% 0 0)", x: "100%" },
+export default function about({ statics, testimonials, pageContent }) {
+  const containerVariants = {
+    hidden: { opacity: 0 },
     visible: {
-      clipPath: "inset(0 0 0 0)",
-      x: "0%",
-      transition: { duration: 1.2 },
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.03,
+        delayChildren: 0.3,
+      },
     },
+  };
+
+  const letterVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  };
+
+  const animateText = (text, className = "") => {
+    return text.split("").map((char, index) => (
+      <motion.span key={index} variants={letterVariants} className={className}>
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
   };
 
   let visions = [
@@ -163,19 +172,22 @@ export default function about({ statics, testimonials }) {
       <section className="flex h-[724px] items-center bg-foreground sm:h-full sm:py-20 sm:pt-32">
         <div className="container">
           <div className="text-center">
-            <Reveal>
-              <motion.h3 className="font-roboto text-7xl font-normal text-secondary-300 sm:text-2xl sm:font-normal">
-                We{" "}
-                <span className="font-saol font-semibold italic text-primary">
-                  Work
-                </span>{" "}
-                for your <br />
-                better{" "}
-                <span className="font-saol font-semibold italic text-primary">
-                  Future
-                </span>
-              </motion.h3>
-            </Reveal>
+            <motion.h3
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="font-roboto text-7xl font-normal text-secondary-300 sm:text-2xl sm:font-normal"
+            >
+              {animateText("We ")}
+              <span className="font-saol font-semibold italic text-primary">
+                {animateText("Work ")}
+              </span>
+              {animateText("for your")} <br />
+              {animateText("better ")}
+              <span className="font-saol font-semibold italic text-primary">
+                {animateText("Future")}
+              </span>
+            </motion.h3>
 
             <Dialog className="aspect-video">
               <DialogTrigger asChild>
@@ -202,7 +214,7 @@ export default function about({ statics, testimonials }) {
               </DialogTrigger>
               <DialogContent className="h-96 w-full max-w-xl border-2 border-primary bg-primary-200 px-1 py-1">
                 <iframe
-                  src={statics.about_banner_video}
+                  src={pageContent.banner_video}
                   className="h-full w-full"
                 ></iframe>
               </DialogContent>
@@ -218,25 +230,58 @@ export default function about({ statics, testimonials }) {
               <span className="mr-1 hidden w-7 border-b-2 border-primary md:inline-block sm:inline-block"></span>{" "}
               Our Story
             </h5>
-            <h3
+            <motion.h3
+              whileInView={"visible"}
+              initial="initial"
+              variants={{
+                initial: {
+                  height: 0,
+                  overflow: "hidden",
+                },
+                visible: {
+                  height: "auto",
+                  transition: {
+                    duration: 0.9,
+                  },
+                },
+              }}
+              viewport={{ once: true, amount: 0.9 }}
               className="font-roboto text-3xl font-normal tracking-tight text-neutral-300 xl:text-2xl xl:leading-tight md:text-xl sm:text-xl"
-              dangerouslySetInnerHTML={{ __html: statics.story_heading }}
-            ></h3>
+              dangerouslySetInnerHTML={{ __html: pageContent.story_heading }}
+            ></motion.h3>
 
             <div className="mt-5 grid gap-y-3">
-              {statics.story_description.blocks.map(({ data }) => (
-                <p className="text-xl leading-tight tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm">
+              {pageContent.story_description.blocks.map(({ data, i }) => (
+                <motion.p
+                  whileInView={"visible"}
+                  initial="initial"
+                  variants={{
+                    initial: {
+                      height: 0,
+                      overflow: "hidden",
+                    },
+                    visible: {
+                      height: "auto",
+                      transition: {
+                        duration: 0.9,
+                        delay: i * 0.9,
+                      },
+                    },
+                  }}
+                  viewport={{ once: true, amount: "all" }}
+                  className="text-xl leading-tight tracking-tight text-foreground xl:text-lg md:text-sm sm:text-sm"
+                >
                   {data.text}
-                </p>
+                </motion.p>
               ))}
             </div>
             <ul className="mt-12 flex justify-start gap-8 xl:mt-8 md:mt-4 md:gap-0 sm:gap-3">
-              {projects.map((project, index) => (
+              {pageContent.lifecycle.map((project, index) => (
                 <li className="max-w-[85px]">
                   <div>
                     <h6 className="text-center font-saol text-5xl text-primary xl:text-4xl md:text-4xl sm:text-4xl">
                       <CounterAnimation
-                        value={project.count}
+                        value={+project.number}
                         direction="up"
                         index={index}
                       />
@@ -252,7 +297,22 @@ export default function about({ statics, testimonials }) {
 
           <div className="relative w-5/12 md:w-6/12 sm:w-full">
             <div className="relative w-full md:pl-5 sm:p-0">
-              <img
+              <motion.img
+                whileInView={"visible"}
+                initial="initial"
+                variants={{
+                  initial: {
+                    height: 0,
+                    overflow: "hidden",
+                  },
+                  visible: {
+                    height: "auto",
+                    transition: {
+                      duration: 0.9,
+                    },
+                  },
+                }}
+                viewport={{ once: true, amount: 0.9 }}
                 src="/images/about.png"
                 layout="fill"
                 className="h-fit w-[580px] md:w-full sm:h-full sm:w-full"
@@ -296,24 +356,50 @@ export default function about({ statics, testimonials }) {
             <h5 className="font-roboto text-[#808080] md:text-sm sm:text-center sm:text-xs">
               Our Services
             </h5>
-            <h3 className="font-roboto text-6xl font-normal leading-tight text-secondary-50 xl:text-5xl md:text-3xl sm:text-center sm:text-2xl sm:font-normal sm:leading-none">
-              What{" "}
+            <motion.h3
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              className="font-roboto text-6xl font-normal leading-tight text-secondary-50 xl:text-5xl md:text-3xl sm:text-center sm:text-2xl sm:font-normal sm:leading-none"
+            >
+              {animateText("What ")}
               <span className="font-saol font-semibold italic text-primary">
-                We Provide
+                {animateText("We Provide ")}
               </span>{" "}
               <br />
-              To Our Clients
-            </h3>
+              {animateText("To Our Clients")}
+            </motion.h3>
           </div>
           <div className="w-6/12 md:w-7/12 sm:w-full">
-            <p className="max-w-[745px] pt-8 font-roboto text-2xl font-normal text-white xl:mt-3 xl:text-xl md:text-sm md:font-normal sm:pt-0 sm:text-center sm:text-sm">
+            <motion.p
+              whileInView={"visible"}
+              initial="initial"
+              variants={{
+                initial: {
+                  height: 0,
+                  overflow: "hidden",
+                  opacity: 0,
+                },
+                visible: {
+                  height: "auto",
+                  opacity: 1,
+                  overflow: "visible",
+                  transition: {
+                    bounce: 0.25,
+
+                    duration: 0.9,
+                  },
+                },
+              }}
+              className="max-w-[745px] pt-8 font-roboto text-2xl font-normal text-white xl:mt-3 xl:text-xl md:text-sm md:font-normal sm:pt-0 sm:text-center sm:text-sm"
+            >
               At Inheritance Development LTD, we're not just selling properties,
               we're{" "}
               <span className="text-primary-300">
                 building the foundation for your brighter tomorrow
               </span>
               . With dedication and expertise, we work for your better future.
-            </p>
+            </motion.p>
           </div>
           <div className="mt-20 w-full xl:mt-16 md:mt-2 sm:mt-10">
             <Carousel
@@ -326,7 +412,7 @@ export default function about({ statics, testimonials }) {
               <CarouselNext className="absolute -top-6 right-0 border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselPrevious className="absolute -top-6 left-[calc(100%-80px)] border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselContent className="relative flex md:ml-0 sm:ml-0 sm:w-full sm:flex-nowrap">
-                {statics.services.map(({name, description}, index) => (
+                {pageContent.services.map(({ name, description }, index) => (
                   <CarouselItem className="w-4/12 flex-none md:mx-1 md:w-4/12 md:pl-0 sm:mx-2 sm:w-6/12 sm:pl-0">
                     <motion.div
                       tabIndex="0"
@@ -407,7 +493,7 @@ export default function about({ statics, testimonials }) {
             }}
           >
             <CarouselContent>
-              {testimonials.map(({name, description, owner}) => (
+              {testimonials.map(({ name, description, owner }) => (
                 <CarouselItem>
                   <div className="m-auto flex h-full max-w-[1080px] flex-col justify-center px-10 text-center sm:px-5">
                     <p className="font-roboto text-3xl font-normal text-neutral-300 md:text-lg sm:text-xl sm:font-normal">
@@ -450,12 +536,18 @@ export async function getServerSideProps({ params }) {
     }),
   );
 
+  let pageContent = await directusClient.request(readItem("about_page", 1, {
+    fields: ["*", "beliefs.*.*"],
+  }));
+  console.log(pageContent);
+
   let testimonials = await directusClient.request(readItems("testimonials"));
 
   return {
     props: {
       statics: statics,
       testimonials: testimonials,
+      pageContent,
     },
   };
 }

@@ -10,39 +10,95 @@ import { useRef } from "react";
 import db from "@/lib/db";
 import Link from "next/link";
 
-export const About = ({services}) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-  const fadeInVariants = {
-    hidden: { opacity: 0, y: 200, scale: 0.9 },
-    visible: { opacity: 1, y: 0, scale: 1 },
+export const About = ({ services, pageContent }) => {
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.03,
+        delayChildren: 0.3,
+      },
+    },
   };
+
+  const letterVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  };
+
+  const animateText = (text, className = "") => {
+    return text.split("").map((char, index) => (
+      <motion.span key={index} variants={letterVariants} className={className}>
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
+  };
+
   return (
     <>
-      <section ref={ref} className="bg-foreground">
-        <motion.div
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={fadeInVariants}
-          transition={{ duration: 1.5, ease: "anticipate" }}
-          className="container m-auto flex flex-wrap items-end pb-28 pt-24 lg:items-stretch lg:pt-28 md:pb-12 md:pt-[70px] sm:pb-14 sm:pt-10"
-        >
+      <section  className="bg-foreground">
+        <motion.div className="container m-auto flex flex-wrap items-end pb-28 pt-24 lg:items-stretch lg:pt-28 md:pb-12 md:pt-[70px] sm:pb-14 sm:pt-10">
           <div className="w-6/12 lg:-mt-3 md:mt-0 md:w-5/12 sm:w-full">
             <h5 className="font-roboto text-[#808080] md:text-sm sm:text-center sm:text-base">
               About us
             </h5>
-            <h3 className="font-roboto text-6xl font-bold text-white lg:text-5xl md:text-3xl sm:text-center sm:text-2xl sm:font-normal">
-              We <span className="font-saol italic text-primary">Work</span> for
-              your <br />
-              better
-              <span className="font-saol italic text-primary">Future</span>
-            </h3>
+            <motion.h3
+              variants={containerVariants}
+              initial="hidden"
+              whileInView={"visible"}
+              viewport={{ once: true }}
+              className="font-roboto text-6xl font-bold text-white lg:text-5xl md:text-3xl sm:text-center sm:text-2xl sm:font-normal"
+            >
+              {animateText("We ")}
+
+              {animateText("Work ", "font-saol italic text-primary")}
+              {animateText("for your ")}
+              <br />
+              {animateText("your better ")}
+
+              {animateText("Future", "font-saol italic text-primary")}
+            </motion.h3>
           </div>
           <div className="w-6/12 md:w-7/12 sm:w-full">
-            <p className="max-w-[630px] pt-8 font-roboto text-xl text-white lg:pt-0 lg:text-lg md:text-sm sm:pt-4 sm:text-center sm:text-sm">
-              At Inheritance Development LTD, we're not just selling properties,
-              we're building the foundation for your brighter tomorrow. With
-              dedication and expertise, we work for your better future.
+            <motion.p
+              className="max-w-[630px] pt-8 font-roboto text-xl text-white lg:pt-0 lg:text-lg md:text-sm sm:pt-4 sm:text-center sm:text-sm"
+              whileInView={"visible"}
+              initial="hidden"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.03,
+                    delayChildren: 0.3,
+                  },
+                },
+              }}
+              transition={{
+                staggerChildren: 0.03,
+                delayChildren: 0.3,
+              }}
+              viewport={{ once: true }}
+            >
+              {pageContent.about_us_description
+                .split(" ")
+                .map((word, index) => (
+                  <motion.span
+                    key={index}
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    className="inline-block"
+                  >
+                    {word}&nbsp;
+                  </motion.span>
+                ))}
               <br />
               <Link
                 href="/about"
@@ -65,7 +121,7 @@ export const About = ({services}) => {
                   />
                 </svg>
               </Link>
-            </p>
+            </motion.p>
           </div>
           <div className="mt-20 w-full md:mt-1 sm:mt-7">
             <Carousel
@@ -78,7 +134,7 @@ export const About = ({services}) => {
               <CarouselNext className="absolute -top-6 right-0 border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselPrevious className="absolute -top-6 left-[calc(100%-80px)] border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
               <CarouselContent className="relative flex md:ml-0 sm:ml-0 sm:w-full sm:flex-nowrap">
-                {services.map(({name, description}, index) => (
+                {services.map(({ name, description }, index) => (
                   <CarouselItem className="group w-4/12 flex-none md:mx-1 md:w-6/12 md:pl-0 sm:mx-2 sm:pl-0">
                     <motion.div
                       tabIndex="0"

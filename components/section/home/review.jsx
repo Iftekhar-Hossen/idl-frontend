@@ -12,8 +12,8 @@ export const Review = ({testimonials}) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const fadeInVariants = {
-    hidden: { filter: "blur(10px)",   },
-    visible: { filter: "blur(0px)", },
+    hidden: { filter: "blur(5px)", opacity: 0 },
+    visible: { filter: "blur(0px)", opacity: 1 },
   };
   return (
     <>

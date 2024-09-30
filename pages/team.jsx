@@ -1,6 +1,5 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import React, { useEffect, useRef, useState } from "react";
-import db from "@/lib/db";
 import { motion } from "framer-motion";
 
 export default function team({ team }) {

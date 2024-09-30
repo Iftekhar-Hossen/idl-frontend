@@ -9,22 +9,21 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import Link from "next/link";
-import { motion } from 'framer-motion';
-
+import { motion } from "framer-motion";
 
 const fadeIn = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.6 } }
+  visible: { opacity: 1, transition: { duration: 0.6 } },
 };
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 const scaleIn = {
   hidden: { opacity: 0, scale: 0.9 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
 };
 
 const container = {
@@ -34,8 +33,8 @@ const container = {
     transition: {
       staggerChildren: 0.1,
       delayChildren: 0.3,
-    }
-  }
+    },
+  },
 };
 
 // Reusable Input Component
@@ -49,7 +48,7 @@ const FormInput = ({ placeholder }) => (
 // Reusable Modal or Drawer Component
 const ModalOrDrawer = ({ isDesktop, open, setOpen, triggerText, children }) => {
   const TriggerButton = (
-    <button className="inline-block  border-2 border-primary px-4 py-3 text-xl text-background duration-300 hover:bg-primary sm:block sm:px-2 sm:py-2 sm:text-sm">
+    <button className="inline-block border-2 border-primary px-4 py-3 text-xl text-background duration-300 hover:bg-primary sm:block sm:px-2 sm:py-2 sm:text-sm">
       {triggerText}
     </button>
   );
@@ -160,88 +159,91 @@ export const Overview = ({
 }) => {
   return (
     <motion.section
-    initial="hidden"
-    animate="visible"
-    variants={fadeIn}
-    className="bg-foreground py-48 pb-96 font-roboto sm:py-32"
-  >
-    <div className="container flex flex-wrap items-end">
-      <motion.div variants={fadeInUp} className="w-8/12 sm:w-full">
-        <div>
-          <motion.h5 variants={fadeIn} className="text-base font-normal text-background md:text-xs sm:text-xs">
-            Elevate your lifestyle with
-          </motion.h5>
-          <motion.h4 
-            variants={scaleIn} 
-            className="font-saol text-5xl font-semibold italic text-primary-300 md:text-4xl sm:text-3xl sm:font-medium"
-          >
-            {name}
-          </motion.h4>
-          <motion.div 
-            variants={fadeInUp} 
-            className="mt-6 flex gap-x-10"
-            transition={{ delay: 0.2 }}
-          >
-            <Link
-              href={"#meeting"}
-              className="inline-block border-2 border-primary px-4 py-3 text-center text-xl text-background duration-300 hover:bg-primary sm:block sm:px-2 sm:py-2 sm:text-sm"
+      initial="hidden"
+      animate="visible"
+      variants={fadeIn}
+      className="bg-foreground py-48 pb-96 font-roboto sm:py-32"
+    >
+      <div className="container flex flex-wrap items-end">
+        <motion.div variants={fadeInUp} className="w-8/12 sm:w-full">
+          <div>
+            <motion.h5
+              variants={fadeIn}
+              className="text-base font-normal text-background md:text-xs sm:text-xs"
             >
-              Schedule a meeting
-            </Link>
-            <div className="sm:col-span-6">
-              <DownloadBrochure />
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
-      <motion.div 
-        variants={container} 
-        className="w-4/12 font-roboto sm:mt-10 sm:w-full"
-      >
-        <div className="grid grid-cols-2 gap-8 sm:gap-4">
-          <motion.div variants={fadeInUp} className="col-span-2">
-            <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
-              Project Location
-            </h5>
-            <h4 className="text-[23px] font-normal leading-9 text-background md:text-xl sm:text-base sm:font-normal">
-              {address.address_line_1}, {address.address_line_2}
-            </h4>
-          </motion.div>
-          <motion.div variants={scaleIn}>
-            <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
-              Apartment Size
-            </h5>
-            <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
-              {appartement_size}
-            </h4>
-          </motion.div>
-          <motion.div variants={scaleIn}>
-            <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
-              Bedroom
-            </h5>
-            <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
-              {bedrooms} {bedrooms > 1 ? "Bedrooms" : "Bedroom"}
-            </h4>
-          </motion.div>
-          <motion.div variants={scaleIn}>
-            <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
-              Completion Date
-            </h5>
-            <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
-              {completion_date}
-            </h4>
-          </motion.div>
-          <motion.div variants={scaleIn}>
-            <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
-              Status
-            </h5>
-            <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
-              {current_status}
-            </h4>
-          </motion.div>
-        </div>
-      </motion.div>
-    </div>
-  </motion.section>
+              Elevate your lifestyle with
+            </motion.h5>
+            <motion.h4
+              variants={scaleIn}
+              className="font-saol text-5xl font-semibold italic text-primary-300 md:text-4xl sm:text-3xl sm:font-medium"
+            >
+              {name}
+            </motion.h4>
+            <motion.div
+              variants={fadeInUp}
+              className="mt-6 flex gap-x-10"
+              transition={{ delay: 0.2 }}
+            >
+              <Link
+                href={"#meeting"}
+                className="inline-block border-2 border-primary px-4 py-3 text-center text-xl text-background duration-300 hover:bg-primary sm:block sm:px-2 sm:py-2 sm:text-sm"
+              >
+                Schedule a meeting
+              </Link>
+              <div className="sm:col-span-6">
+                <DownloadBrochure />
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+        <motion.div
+          variants={container}
+          className="w-4/12 font-roboto sm:mt-10 sm:w-full"
+        >
+          <div className="grid grid-cols-2 gap-8 sm:gap-4">
+            <motion.div variants={fadeInUp} className="col-span-2">
+              <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
+                Project Location
+              </h5>
+              <h4 className="text-[23px] font-normal leading-9 text-background md:text-xl sm:text-base sm:font-normal">
+                {address.address_line_1}, {address.address_line_2}
+              </h4>
+            </motion.div>
+            <motion.div variants={scaleIn}>
+              <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
+                Apartment Size
+              </h5>
+              <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
+                {appartement_size}
+              </h4>
+            </motion.div>
+            <motion.div variants={scaleIn}>
+              <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
+                Bedroom
+              </h5>
+              <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
+                {bedrooms} {bedrooms > 1 ? "Bedrooms" : "Bedroom"}
+              </h4>
+            </motion.div>
+            <motion.div variants={scaleIn}>
+              <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
+                Completion Date
+              </h5>
+              <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
+                {completion_date}
+              </h4>
+            </motion.div>
+            <motion.div variants={scaleIn}>
+              <h5 className="text-base font-normal text-primary md:text-xs sm:text-xs sm:font-medium">
+                Status
+              </h5>
+              <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
+                {current_status}
+              </h4>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </motion.section>
   );
 };

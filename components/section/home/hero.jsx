@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
@@ -6,27 +6,27 @@ import ViewProperties from "@/components/ViewProperties";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Listbox } from "@headlessui/react";
 import { Icons } from "@/components/icon";
-import {
-  AnimatePresence,
-  motion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { CounterAnimation } from "@/components/animation/counter";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-function SearchProperty({ locationsData }) {
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useRouter } from "next/router";
+function SearchProperty({ locationsData, properties }) {
+  const router = useRouter();
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState();
-  const [properties, setProperties] = useState([]);
+
+  console.log(selectedLocation);
+
+  const filteredProperties = properties.filter((project) => {
+    const matchesLocation = selectedLocation
+      ? project.location === selectedLocation.value
+      : true;
+    return matchesLocation;
+  });
+
+  const ViewProperty = () => {
+    selectedProperty && router.push(`/projects/${selectedProperty.slug}`);
+  };
 
   return (
     <div className="flex gap-2">
@@ -135,7 +135,14 @@ function SearchProperty({ locationsData }) {
               </span>
             </Listbox.Button>
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-neutral-300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {properties.map((property) => (
+              {filteredProperties.length === 0 && (
+                <>
+                  <span className="inline-block py-2 text-base text-secondary-300">
+                    No Properties
+                  </span>
+                </>
+              )}
+              {filteredProperties.map((property) => (
                 <Listbox.Option
                   key={property.id}
                   className={({ active }) =>
@@ -159,7 +166,10 @@ function SearchProperty({ locationsData }) {
         </Listbox>
       </div>
       <div>
-        <Button className="h-full gap-2 self-stretch bg-primary text-base font-normal text-secondary-50 hover:bg-primary-300">
+        <Button
+          onClick={ViewProperty}
+          className="h-full gap-2 self-stretch bg-primary text-base font-normal text-secondary-50 hover:bg-primary-300"
+        >
           <svg
             width={24}
             height={24}
@@ -189,32 +199,80 @@ function SearchProperty({ locationsData }) {
   );
 }
 
-export const Hero = ({ locationsData, statics, testimonials }) => {
+export const Hero = ({
+  locationsData,
+  properties,
+  testimonials,
+  pageContent,
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isOpen, setOpen] = useState(false);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.03,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+  };
+
+  const animateText = (text, className = "") => {
+    return text.split("").map((char, index) => (
+      <motion.span key={index} variants={letterVariants} className={className}>
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
+  };
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1,
+      );
+    }, 5000); // Change testimonial every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
   return (
     <>
       <section className="align-between flex flex-wrap justify-center overflow-hidden bg-primary-50 sm:h-auto">
         <div className="relative z-50 h-[521px] pt-48 text-center md:h-[465px] md:pt-32 sm:h-auto sm:pt-24">
           <motion.h3
-            initial={{ y: -100, opacity: 0, filter: "blur(10px)" }}
-            animate={{ y: 0, opacity: 1, filter: "blur(0)" }}
-            transition={{
-              duration: 0.5,
-            }}
-            className="font-roboto text-base font-medium uppercase lg:text-[10px] sm:text-xs"
-            dangerouslySetInnerHTML={{ __html: statics.sub_heading }}
-          ></motion.h3>
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="overflow-y-hidden font-roboto text-base font-medium uppercase lg:text-[10px] sm:text-xs"
+          >
+            {animateText("THE PERFECT PLAN FOR BUILD")}
+          </motion.h3>
+
           <motion.h4
-            initial={{ y: -100, opacity: 0, filter: "blur(10px)" }}
-            animate={{ y: 0, opacity: 1, filter: "blur(0)" }}
-            transition={{
-              duration: 0.5,
-            }}
             className="font-roboto text-6xl font-light leading-tight xl:text-5xl lg:text-[40px] md:text-4xl sm:text-[28px]"
-            dangerouslySetInnerHTML={{ __html: statics.heading }}
-          ></motion.h4>
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {animateText("Smart", "font-saol italic text-primary")}
+            {animateText(" living")}
+            {animateText("starts with ")} <br />
+            {animateText("smart")}{" "}
+            {animateText("buildings", "font-saol italic text-primary")}
+          </motion.h4>
+
           <Dialog className="aspect-video">
             <DialogTrigger asChild>
               <button
@@ -227,99 +285,92 @@ export const Hero = ({ locationsData, statics, testimonials }) => {
               </button>
             </DialogTrigger>
             <DialogContent className="h-96 w-full max-w-xl border-2 border-primary bg-primary-200 px-1 py-1">
-              <iframe src={statics.video} className="h-full w-full"></iframe>
+              <iframe
+                src={pageContent.video}
+                className="h-full w-full"
+              ></iframe>
             </DialogContent>
           </Dialog>
         </div>
         <div className="relative h-[660px] w-screen bg-[url('/images/home_bg.png')] bg-top bg-no-repeat text-center md:h-[379.8px] md:bg-cover md:bg-center sm:mt-6 sm:h-[297.69px] sm:bg-cover sm:bg-center">
           <div className="absolute bottom-48 left-1/2 -translate-x-1/2">
             <div className="m-auto w-full md:hidden sm:hidden">
-              <SearchProperty locationsData={locationsData} />
+              <SearchProperty
+                locationsData={locationsData}
+                properties={properties}
+              />
             </div>
           </div>
         </div>
         <div className="absolute left-0 top-0 w-full sm:relative sm:block">
           <div className="container -mt-7 flex justify-between pt-96 md:bg-transparent md:pt-72 sm:mt-0 sm:h-full sm:bg-foreground sm:p-0">
-            <div className="flex w-80 flex-wrap gap-8 xl:gap-3 sm:flex sm:w-7/12 sm:flex-nowrap sm:justify-between sm:gap-4 sm:px-3 sm:py-4">
-              <div className="w-full sm:hidden">
-                <p className="font-roboto text-xs font-normal text-foreground lg:text-[12px] md:hidden md:w-48 md:text-xs">
-                  We are delighted to share our experience working with IDL on
-                  the Parvin Villa project. Their consistent record of on-time
-                  completion, IDL delivered on time and met all expectations.
-                  Throughout the entire process, working with IDL was a
-                  pleasure. Their professionalism and commitment to deadlines
-                  made the experience smooth and stress-free.
-                </p>
-                <motion.div
-                  className="hidden md:block"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <motion.p
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    initial={{
-                      overflow: "hidden",
-                      display: "-webkit-box",
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: "vertical",
-                    }}
-                    animate={{
-                      height: isExpanded ? "auto" : "50px",
-                      WebkitLineClamp: isExpanded ? "none" : 3,
-                    }}
-                    exit={{
-                      height: "50px",
-                      overflow: "hidden",
-                      WebkitLineClamp: 3,
-                    }}
-                    transition={{ duration: 0.5 }}
-                    className="cursor-pointer font-roboto text-xs font-normal text-foreground md:w-48 md:text-xs"
-                  >
-                    We are delighted to share our experience working with IDL on
-                    the Parvin Villa project. Their consistent record of on-time
-                    completion, IDL delivered on time and met all expectations.
-                    Throughout the entire process, working with IDL was a
-                    pleasure. Their professionalism and commitment to deadlines
-                    made the experience smooth and stress-free.
-                  </motion.p>
-                </motion.div>
-                <div className="mt-4 flex items-center gap-x-2 md:mt-2">
-                  <Avatar className="h-10 w-10 md:h-8 md:w-8">
-                    <AvatarImage src="/images/avatar.png" />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h4 className="font-saol text-2xl text-primary lg:text-[16px] md:text-base">
-                      Parvin Hossain
-                    </h4>
-                    <h5 className="font-roboto text-xs font-light lg:text-[10px] md:text-[10px]">
-                      Landowner of IDL Parvin Villa
-                    </h5>
-                  </div>
+            <motion.div
+              layout
+              className="flex w-80 flex-wrap gap-8 xl:gap-3 sm:flex sm:w-7/12 sm:flex-nowrap sm:justify-between sm:gap-4 sm:px-3 sm:py-4"
+            >
+              <LayoutGroup>
+                <div className="relative w-full sm:hidden">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="flex flex-col items-start justify-start p-4"
+                    >
+                      <motion.p className="mb-4 text-left font-roboto text-sm font-normal text-foreground lg:w-1/2 md:w-2/3">
+                        {testimonials[currentIndex].description}
+                      </motion.p>
+                      <div className="flex items-start gap-x-2">
+                        <Avatar className="h-10 w-10 md:h-12 md:w-12">
+                          <AvatarImage
+                            src={
+                              process.env.NEXT_PUBLIC_API_URL +
+                              "/assets/" +
+                              testimonials[currentIndex].avatar
+                            }
+                          />
+                          <AvatarFallback>
+                            {testimonials[currentIndex].name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <h4 className="font-saol text-xl text-primary md:text-2xl">
+                            {testimonials[currentIndex].name}
+                          </h4>
+                          <h5 className="font-roboto text-xs font-light md:text-sm">
+                            {testimonials[currentIndex].owner}
+                          </h5>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
-              </div>
-              <div className="flex justify-start gap-x-8 xl:mt-1 md:-mt-2 md:gap-x-4 sm:gap-4">
-                {statics.lifecycle.map((item, index) => (
-                  <div key={index} className="counter-item">
-                    <motion.h4 className="text-center font-saol text-5xl font-normal text-primary xl:text-4xl md:text-2xl sm:text-3xl">
-                      <CounterAnimation
-                        value={+item.number}
-                        direction="up"
-                        index={index}
-                      />
-                    </motion.h4>
-                    <p className="max-w-20 text-center font-saol text-lg font-normal text-foreground xl:text-sm md:w-12 md:text-xs sm:max-w-[50px] sm:text-background">
-                      {item.name}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+                <div className="flex justify-start gap-x-8 xl:mt-1 md:-mt-2 md:gap-x-4 sm:gap-4">
+                  {pageContent.lifecycle.map((item, index) => (
+                    <div key={index} className="counter-item">
+                      <motion.h4 className="text-center font-saol text-5xl font-normal text-primary xl:text-4xl md:text-2xl sm:text-3xl">
+                        <CounterAnimation
+                          value={+item.number}
+                          direction="up"
+                          index={index}
+                        />
+                      </motion.h4>
+                      <p className="max-w-20 text-center font-saol text-lg font-normal text-foreground xl:text-sm md:w-12 md:text-xs sm:max-w-[50px] sm:text-background">
+                        {item.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </LayoutGroup>
+            </motion.div>
             <div className="mt-20 flex w-56 flex-col items-end text-end xl:mt-4 md:mt-0 sm:-mt-12 sm:flex sm:w-44 sm:flex-col sm:items-end sm:bg-primary sm:p-3">
               <p className="mb-3 text-right font-roboto text-base font-normal text-foreground lg:text-[16px] md:w-36 md:text-sm sm:text-sm sm:text-background">
-                Real estate is property consisting of land and the buildings on
-                it, along with its natural resources.
+                {pageContent.right_side_text}
               </p>
               <Link href={"/projects"}>
                 <ViewProperties className="h-16 w-16 self-end md:h-12 md:w-12 sm:h-10 sm:w-10" />

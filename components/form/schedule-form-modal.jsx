@@ -35,8 +35,8 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="z-[9999999] h-full w-full max-w-full bg-secondary-300">
-        <div className="container grid grid-cols-12 content-center gap-4">
-          <div className="col-span-4 flex h-full items-center justify-center">
+        <div className="container flex items-center justify-between">
+          <div className="w-4/12 lg:w-4/12 flex h-full items-center justify-center">
             <svg
               width="320"
               height="320"
@@ -81,12 +81,12 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
               />
             </svg>
           </div>
-          <div className="col-span-6 col-end-2">
-            <h6 className="text-lg text-secondary-500">Have any Interest</h6>
-            <h3 className="font-saol text-[57px] font-semibold italic leading-[1] text-primary">
+          <div className="w-6/12 lg:w-7/12">
+            <h6 className="text-lg lg:text-base text-secondary-500">Have any Interest</h6>
+            <h3 className="font-saol text-[57px] lg:text-3xl font-semibold italic leading-[1] text-primary">
               Schedule A Meeting
             </h3>
-            <h4 className="text-[57px] leading-[1.5] text-neutral-300">
+            <h4 className="text-[57px] lg:text-3xl  leading-[1.5] text-neutral-300">
               For Enquiry
             </h4>
 
@@ -118,7 +118,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
               <div className="col-span-1">
                 <input
                   {...register("date")}
-                  className="first-letter: h-[72.5px] w-full rounded-none border-b border-r border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 focus:text-2xl md:py-2 md:text-base sm:pt-8 sm:text-base"
+                  className="h-[72.5px] lg:h-[41.6px]  w-full rounded-none border-b border-r border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 focus:text-2xl md:py-2 md:text-base sm:pt-8 sm:text-base"
                   placeholder="Select Date"
                   type="text"
                   min={new Date().toISOString().split("T")[0]}
@@ -128,7 +128,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
               <div className="col-span-1">
                 <select
                   {...register("time")}
-                  className="h-[72.5px] w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
+                  className="h-[72.5px] lg:h-[41.6px] w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                   type="text"
                   placeholder="Select Time"
                 >
@@ -141,7 +141,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
               <div>
                 <button
                   type="submit"
-                  className="m-0 mt-6 inline-block bg-primary px-5 py-3 text-accent sm:mt-4 sm:w-full sm:py-2 sm:text-xs"
+                  className="m-0 lg:text-base mt-6 inline-block bg-primary px-5 py-3 text-accent sm:mt-4 sm:w-full sm:py-2 sm:text-xs"
                 >
                   Send Message
                 </button>

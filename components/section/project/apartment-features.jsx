@@ -13,10 +13,7 @@ export function ApartmentFeatures({
 }) {
   return (
     <>
-       {apartment_features.map((data, index) => (
-           <h1>{data.name}</h1>
-        ))}
-      <section className="bg-primary-300 relative  py-14 sm:pb-0 sm:pt-0">
+      <section className="relative bg-primary-300 py-14 sm:pb-0 sm:pt-0">
         <div className="container m-auto grid grid-cols-12 pb-14 sm:pb-28 sm:pt-10">
           <div className="col-span-6 sm:col-span-12">
             <h5 className="font-roboto text-neutral-200 sm:hidden sm:text-center sm:text-base">
@@ -40,16 +37,15 @@ export function ApartmentFeatures({
             )}
           </div>
         </div>
-        <div className="container z-[999999] bg-transparent relative sm:-mt-20 sm:pt-2">
-     
-          <Carousel className="w-full ">
-            <CarouselContent className="h-[350px] relative z-[99999999]">
+        <div className="container relative z-[999999] bg-transparent sm:-mt-20 sm:pt-2">
+          <Carousel className="w-full">
+            <CarouselContent className="relative z-[99999999] h-[350px]">
               {apartment_features.map((data, index) => (
-                <CarouselItem className="group relative z-[99999999] h-[350px]  aspect-square basis-1/3 overflow-hidden duration-300 ease-in-out md:basis-1/3  sm:basis-1/2 sm:h-[280px]">
+                <CarouselItem className="group relative z-[99999999] aspect-square h-[350px] basis-1/3 overflow-hidden duration-300 ease-in-out md:basis-1/3 sm:h-[280px] sm:basis-1/2">
                   <div className="relative flex h-full w-full items-end overflow-hidden rounded-lg bg-[#262626] bg-[url(/images/mask_bg.png)] bg-cover bg-fixed shadow-lg duration-300 ease-in-out group-hover:bg-secondary-300">
                     <div className="absolute inset-0 z-10" />
                     <div className="">
-                      <div className="absolute left-0 top-2/4 sm:top-[69%] h-full w-full p-14 pt-5 duration-300 ease-in-out group-hover:top-5 sm:pb-4 sm:pl-5">
+                      <div className="absolute left-0 top-2/4 h-full w-full p-14 pt-5 duration-300 ease-in-out group-hover:top-5 sm:top-[65%] sm:pb-4 sm:pl-5">
                         <Image
                           src={
                             process.env.NEXT_PUBLIC_API_URL +

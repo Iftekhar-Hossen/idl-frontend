@@ -10,6 +10,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useMediaQuery } from "@/hooks/use-media-query";
+
+import {
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 // Custom hook to manage modal state
 export const useModal = () => {
@@ -19,7 +27,6 @@ export const useModal = () => {
   return { isOpenFormModal, open, close };
 };
 
-// Modal Form Component
 const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
   const {
     register,
@@ -29,14 +36,28 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
 
   const onSubmitWrapper = (data) => {
     onSubmit(data);
+    alert(process.env.NEXT_PUBLIC_API_URL);
+
+    fetch("/api/contact", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then(() => {
+        alert("Contact details sent successfully");
+      })
+      .catch(() => {
+        alert("Failed to send contact details");
+      });
+
     onClose();
   };
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  return (
+  return isDesktop ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="z-[9999999] h-full w-full max-w-full bg-secondary-300">
         <div className="container flex items-center justify-between">
-          <div className="w-4/12 lg:w-4/12 flex h-full items-center justify-center">
+          <div className="flex h-full w-4/12 items-center justify-center lg:w-4/12 sm:hidden">
             <svg
               width="320"
               height="320"
@@ -82,66 +103,97 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
             </svg>
           </div>
           <div className="w-6/12 lg:w-7/12">
-            <h6 className="text-lg lg:text-base text-secondary-500">Have any Interest</h6>
-            <h3 className="font-saol text-[57px] lg:text-3xl font-semibold italic leading-[1] text-primary">
+            <h6 className="text-lg text-secondary-500 lg:text-base">
+              Have any Interest
+            </h6>
+            <h3 className="font-saol text-[57px] font-semibold italic leading-[1] text-primary lg:text-3xl">
               Schedule A Meeting
             </h3>
-            <h4 className="text-[57px] lg:text-3xl  leading-[1.5] text-neutral-300">
+            <h4 className="text-[57px] leading-[1.5] text-neutral-300 lg:text-3xl">
               For Enquiry
             </h4>
 
             <form
-              onSubmit={onSubmitWrapper}
+              onSubmit={handleSubmit(onSubmitWrapper)}
               className="mt-6 grid grid-cols-2 sm:grid-cols-2"
             >
               <div className="col-span-2">
                 <input
-                  {...register("name")}
+                  {...register("name", { required: "Name is required" })}
                   className="w-full rounded-none border-y border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                   placeholder="Type your name"
                 />
+                {errors.name && (
+                  <span className="text-red-500">{errors.name.message}</span>
+                )}
               </div>
               <div className="col-span-1 sm:col-span-2">
                 <input
-                  {...register("email")}
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value:
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                      message: "Invalid email address",
+                    },
+                  })}
                   className="w-full rounded-none border-b border-r border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:border-r-0 sm:pt-8 sm:text-base"
                   placeholder="Email"
                 />
+                {errors.email && (
+                  <span className="text-red-500">{errors.email.message}</span>
+                )}
               </div>
               <div className="col-span-1 sm:col-span-2">
                 <input
-                  {...register("phone")}
+                  {...register("phone", {
+                    required: "Phone is required",
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message: "Invalid phone number",
+                    },
+                  })}
                   className="w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                   placeholder="Phone"
                 />
+                {errors.phone && (
+                  <span className="text-red-500">{errors.phone.message}</span>
+                )}
               </div>
               <div className="col-span-1">
                 <input
-                  {...register("date")}
-                  className="h-[72.5px] lg:h-[41.6px]  w-full rounded-none border-b border-r border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 focus:text-2xl md:py-2 md:text-base sm:pt-8 sm:text-base"
+                  {...register("date", { required: "Date is required" })}
+                  className="h-[72.5px] w-full rounded-none border-b border-r border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 focus:text-2xl lg:h-[41.6px] md:py-2 md:text-base sm:pt-8 sm:text-base"
                   placeholder="Select Date"
                   type="text"
                   min={new Date().toISOString().split("T")[0]}
                   onFocus={(e) => (e.currentTarget.type = "date")}
                 />
+                {errors.date && (
+                  <span className="text-red-500">{errors.date.message}</span>
+                )}
               </div>
               <div className="col-span-1">
                 <select
-                  {...register("time")}
-                  className="h-[72.5px] lg:h-[41.6px] w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
+                  {...register("time", { required: "Time is required" })}
+                  className="h-[72.5px] w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 lg:h-[41.6px] md:py-2 md:text-base sm:pt-8 sm:text-base"
                   type="text"
                   placeholder="Select Time"
+                  defaultValue={"morning"}
                 >
                   <option value="morning">Morning</option>
                   <option value="afternoon">Afternoon</option>
                   <option value="evening">Evening</option>
                 </select>
+                {errors.time && (
+                  <span className="text-red-500">{errors.time.message}</span>
+                )}
               </div>
 
               <div>
                 <button
                   type="submit"
-                  className="m-0 lg:text-base mt-6 inline-block bg-primary px-5 py-3 text-accent sm:mt-4 sm:w-full sm:py-2 sm:text-xs"
+                  className="m-0 mt-6 inline-block bg-primary px-5 py-3 text-accent lg:text-base sm:mt-4 sm:w-full sm:py-2 sm:text-xs"
                 >
                   Send Message
                 </button>
@@ -151,6 +203,97 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
         </div>
       </DialogContent>
     </Dialog>
+  ) : (
+    <>
+      <Drawer open={isOpen} onOpenChange={onClose}>
+        <DrawerContent className="px-4 pb-5">
+          <h3 className="pt-4 text-xl font-bold text-primary">
+            Schedule A Meeting
+          </h3>
+          <h4 className="text-lg text-neutral-300">For Enquiry</h4>
+
+          <form onSubmit={handleSubmit(onSubmitWrapper)}>
+            <input
+              {...register("name", { required: "Name is required" })}
+              className="col-span-12 w-full border-2 border-x-0 border-t-0 border-[#999793] bg-transparent px-5 py-5 text-2xl outline-none focus:border-primary sm:px-1 sm:py-2 sm:text-base"
+              placeholder="Name"
+            />
+            {errors.name && (
+              <span className="text-xs text-red-500">
+                {errors.name.message}
+              </span>
+            )}
+            <input
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                  message: "Invalid email address",
+                },
+              })}
+              className="col-span-12 w-full border-2 border-x-0 border-t-0 border-[#999793] bg-transparent px-5 py-5 text-2xl outline-none focus:border-primary sm:px-1 sm:py-2 sm:text-base"
+              placeholder="Email"
+            />
+            {errors.email && (
+              <span className="text-xs text-red-500">
+                {errors.email.message}
+              </span>
+            )}
+            <input
+              {...register("phone", {
+                required: "Phone is required",
+                pattern: {
+                  value: /^[0-9]{11}$/,
+                  message: "Invalid phone number",
+                },
+              })}
+              className="col-span-12 w-full border-2 border-x-0 border-t-0 border-[#999793] bg-transparent px-5 py-5 text-2xl outline-none focus:border-primary sm:px-1 sm:py-2 sm:text-base"
+              placeholder="Phone"
+            />
+            {errors.phone && (
+              <span className="text-xs text-red-500">
+                {errors.phone.message}
+              </span>
+            )}
+
+            <input
+              {...register("date", { required: "Date is required" })}
+              className="col-span-12 w-full border-2 border-x-0 border-t-0 border-[#999793] bg-transparent px-5 py-5 text-2xl outline-none focus:border-primary sm:px-1 sm:py-2 sm:text-base"
+              placeholder="Select Date"
+              type="text"
+              min={new Date().toISOString().split("T")[0]}
+              onFocus={(e) => (e.currentTarget.type = "date")}
+            />
+            {errors.date && (
+              <span className="text-xs text-red-500">
+                {errors.date.message}
+              </span>
+            )}
+            <select
+              {...register("time", { required: "Time is required" })}
+              className="w-full border-b-2 border-[#999793] bg-transparent outline-none sm:px-1 sm:py-2 sm:text-base"
+            >
+              <option value="morning">Morning</option>
+              <option value="evening">Evening</option>
+              <option value="afternoon">Afternoon</option>
+              <option value="night">Night</option>
+            </select>
+            {errors.time && (
+              <span className="text-xs text-red-500">
+                {errors.time.message}
+              </span>
+            )}
+            <Button
+              type="submit"
+              className="mt-4 w-full"
+              onClick={handleSubmit(onSubmitWrapper)}
+            >
+              Submit Request
+            </Button>
+          </form>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 };
 

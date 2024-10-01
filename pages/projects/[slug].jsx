@@ -127,7 +127,7 @@ export default function Index({ project }) {
         name={project.name}
       />
 
-      <section className="relative z-10 pb-24 pt-20 sm:-mt-36">
+      <section className="relative z-10 pb-24 pt-20 sm:pt-0">
         <div className="container relative mt-8 grid grid-cols-12 gap-9 sm:gap-4">
           <div className="col-span-12 flex items-center justify-between text-end sm:col-span-12 sm:flex sm:items-center sm:justify-between">
             <div>

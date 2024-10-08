@@ -274,7 +274,7 @@ export async function getServerSideProps({ params }) {
       Authorization: `Bearer ${process.env.DIRECTUS_TOKEN}`,
     };
 
-    let teamRoute = `${process.env.DIRECTUS_URL}/items/team?sort=name`;
+    let teamRoute = `${process.env.DIRECTUS_URL}/items/team`;
 
     const [teamData] = await Promise.all([fetch(teamRoute, { headers })]);
 

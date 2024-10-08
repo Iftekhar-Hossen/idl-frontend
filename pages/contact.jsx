@@ -42,9 +42,11 @@ export default function Contact() {
     },
   ];
 
-
-
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = async (data) => {
     try {
@@ -58,10 +60,10 @@ export default function Contact() {
         .catch(() => {
           alert("Failed to send contact details");
         });
-  
-      alert("Contact form submitted successfully");
     } catch (error) {
-      alert("An error occurred while submitting the form. Please try again later.");
+      alert(
+        "An error occurred while submitting the form. Please try again later.",
+      );
     }
   };
 
@@ -136,22 +138,35 @@ export default function Contact() {
             </div>
             <div className="w-2/12 md:w-0"></div>
             <div className="w-6/12 md:w-8/12 sm:mt-0 sm:w-full">
-              <form className="grid grid-cols-2 sm:grid-cols-1" onSubmit={handleSubmit(onSubmit)}>
+              <form
+                className="grid grid-cols-2 sm:grid-cols-1"
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <div className="col-span-2">
                   <input
                     className="w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                     placeholder="Type your name"
                     {...register("name", { required: "Name is required" })}
                   />
-                  {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+                  {errors.name && (
+                    <p className="text-red-500">{errors.name.message}</p>
+                  )}
                 </div>
                 <div className="col-span-1 sm:col-span-2">
                   <input
                     className="w-full rounded-none border-b border-r border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:border-r-0 sm:pt-8 sm:text-base"
                     placeholder="Email"
-                    {...register("email", { required: "Email is required", pattern: { value: /^\S+@\S+$/i, message: "Invalid email address" } })}
+                    {...register("email", {
+                      required: false,
+                      pattern: {
+                        value: /^\S+@\S+$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
                   />
-                  {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="text-red-500">{errors.email.message}</p>
+                  )}
                 </div>
                 <div className="col-span-1">
                   <input
@@ -159,24 +174,30 @@ export default function Contact() {
                     placeholder="Phone"
                     {...register("phone", { required: "Phone is required" })}
                   />
-                  {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
+                  {errors.phone && (
+                    <p className="text-red-500">{errors.phone.message}</p>
+                  )}
                 </div>
                 <div className="col-span-2">
                   <input
                     className="w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                     placeholder="Subject"
-                    {...register("subject", { required: "Subject is required" })}
+                    {...register("subject", { required: false })}
                   />
-                  {errors.subject && <p className="text-red-500">{errors.subject.message}</p>}
+                  {errors.subject && (
+                    <p className="text-red-500">{errors.subject.message}</p>
+                  )}
                 </div>
                 <div className="col-span-2">
                   <textarea
                     className="w-full resize-none rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                     placeholder="Message"
                     rows={3}
-                    {...register("message", { required: "Message is required" })}
+                    {...register("message", { required: false })}
                   ></textarea>
-                  {errors.message && <p className="text-red-500">{errors.message.message}</p>}
+                  {errors.message && (
+                    <p className="text-red-500">{errors.message.message}</p>
+                  )}
                 </div>
 
                 <div>

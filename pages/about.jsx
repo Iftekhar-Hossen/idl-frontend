@@ -419,6 +419,26 @@ export default function about({ statics, testimonials, pageContent }) {
                       whileHover={"hover"}
                       whileFocus={"hover"}
                       whileTap={"hover"}
+                      whileInView={"reveal"}
+                      initial="initial"
+                      variants={{
+                        initial: {
+                          opacity: 0.7,
+                          y: 50,
+                          scale: 0.9,
+                        },
+                        reveal: {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: {
+                            duration: 0.2,
+                            type: "spring",
+                            stiffness: 100,
+                          },
+                        },
+                      }}
+                      viewport={{ once: true }}
                       className="group relative flex aspect-[414/400] flex-col justify-end bg-primary-300 bg-[url('/images/mask_bg.png')] bg-cover px-12 pb-12 bg-blend-screen duration-300 hover:cursor-pointer hover:bg-secondary-300 md:aspect-[5/4] md:px-6 md:pb-6 md:pt-5 sm:aspect-square sm:px-3 sm:pb-3"
                     >
                       <div className="">
@@ -460,21 +480,28 @@ export default function about({ statics, testimonials, pageContent }) {
 
       <section className="bg-primary py-28 sm:py-10">
         <div className="container grid grid-cols-3 sm:px-3 [&>*:nth-child(2)]:border-x-2 sm:[&>*:nth-child(2)]:border-x-0 sm:[&>*:nth-child(2)]:border-y-2">
-          {visions.map((vision, i) => (
-            <div className="px-11 py-5 text-background md:px-4 sm:col-span-3 sm:px-2 sm:py-4">
-              <div className="flex items-center gap-3 font-roboto">
-                <h6>{vision.icon}</h6>
-                <h6 className="text-xl font-normal text-secondary-300 md:text-base">
-                  {vision.name}
-                </h6>
+          {pageContent.beliefs.map((item, i) => {
+            const { icon, name, description } = item.beliefs_id;
+            return (
+              <div className="px-11 py-5 text-background md:px-4 sm:col-span-3 sm:px-2 sm:py-4">
+                <div className="flex items-center gap-3 font-roboto">
+                  <img
+                  className="filter invert"
+                    src={process.env.NEXT_PUBLIC_API_URL + "/assets/" + icon}
+                  />
+                  {/* <h6>{vision.icon}</h6> */}
+                  <h6 className="text-xl font-normal text-secondary-300 md:text-base">
+                    {name}
+                  </h6>
+                </div>
+                <div>
+                  <p className="mt-6 text-start text-3xl text-secondary-300 md:mt-1 md:text-justify md:text-base sm:mt-1 sm:text-base">
+                    {description}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="mt-6 text-start text-3xl text-secondary-300 md:mt-1 md:text-justify md:text-base sm:mt-1 sm:text-base">
-                  {vision.description}
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -523,29 +550,22 @@ export default function about({ statics, testimonials, pageContent }) {
 }
 
 export async function getServerSideProps({ params }) {
-  let statics = await directusClient.request(
-    readItem("static", 1, {
+  let pageContent = await directusClient.request(
+    readItem("about_page", 1, {
       fields: [
-        "banner_heading",
-        "story_heading",
-        "about_banner_video",
-        "story_description",
-        "services",
-        "lifecycle",
+        "*",
+        "beliefs.beliefs_id.name",
+        "beliefs.beliefs_id.icon",
+        "beliefs.beliefs_id.description",
       ],
     }),
   );
-
-  let pageContent = await directusClient.request(readItem("about_page", 1, {
-    fields: ["*", "beliefs.*.*"],
-  }));
   console.log(pageContent);
 
   let testimonials = await directusClient.request(readItems("testimonials"));
 
   return {
     props: {
-      statics: statics,
       testimonials: testimonials,
       pageContent,
     },

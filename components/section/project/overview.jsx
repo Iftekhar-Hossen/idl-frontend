@@ -65,6 +65,7 @@ const ModalOrDrawer = ({ isDesktop, open, setOpen, triggerText, children }) => {
 
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { Icons } from "@/components/icon";
 
 // Download Brochure Component
 const DownloadBrochure = () => {
@@ -88,13 +89,14 @@ const DownloadBrochure = () => {
         .catch(() => {
           alert("Failed to send contact details");
         });
-  
+
       alert("Contact form submitted successfully");
     } catch (error) {
-      alert("An error occurred while submitting the form. Please try again later.");
+      alert(
+        "An error occurred while submitting the form. Please try again later.",
+      );
     }
   };
-
 
   return (
     <ModalOrDrawer
@@ -224,7 +226,7 @@ export const Overview = ({
       initial="hidden"
       animate="visible"
       variants={fadeIn}
-      className="bg-foreground py-48 pb-96 font-roboto sm:py-32"
+      className="bg-foreground bg-[url(/images/mask_bg.png)] bg-fixed py-48 pb-96 font-roboto sm:py-32"
     >
       <div className="container flex flex-wrap items-end">
         <motion.div variants={fadeInUp} className="w-8/12 sm:w-full">
@@ -292,7 +294,12 @@ export const Overview = ({
                 Completion Date
               </h5>
               <h4 className="text-[23px] font-semibold leading-9 text-background md:text-xl sm:text-base sm:font-normal">
-                {completion_date}
+                {new Date(completion_date)
+                  .toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                  })
+                  .replace(" ", ", ")}
               </h4>
             </motion.div>
             <motion.div variants={scaleIn}>
@@ -303,6 +310,9 @@ export const Overview = ({
                 {current_status}
               </h4>
             </motion.div>
+            <div className="col-span-2 ">
+              <p className="text-secondary-300 text-sm flex items-center gap-2"><Icons.disclaimer className="w-4 h-4"/> Disclaimer: It may vary depending on requirements.</p>
+              </div>
           </div>
         </motion.div>
       </div>

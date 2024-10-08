@@ -130,7 +130,8 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
               <div className="col-span-1 sm:col-span-2">
                 <input
                   {...register("email", {
-                    required: "Email is required",
+
+                    required: false,
                     pattern: {
                       value:
                         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -162,7 +163,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
               </div>
               <div className="col-span-1">
                 <input
-                  {...register("date", { required: "Date is required" })}
+                  {...register("date", { required: false })}
                   className="h-[72.5px] w-full rounded-none border-b border-r border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 focus:text-2xl lg:h-[41.6px] md:py-2 md:text-base sm:pt-8 sm:text-base"
                   placeholder="Select Date"
                   type="text"
@@ -175,7 +176,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
               </div>
               <div className="col-span-1">
                 <select
-                  {...register("time", { required: "Time is required" })}
+                  {...register("time", { required: false })}
                   className="h-[72.5px] w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 lg:h-[41.6px] md:py-2 md:text-base sm:pt-8 sm:text-base"
                   type="text"
                   placeholder="Select Time"

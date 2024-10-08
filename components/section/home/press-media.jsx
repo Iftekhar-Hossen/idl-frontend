@@ -56,18 +56,17 @@ export const PressMedia = ({ latestPosts }) => {
               className="w-full"
             >
               <CarouselContent className="w-full">
-                {Array(5)
-                  .fill(...latestPosts)
+                {latestPosts
                   .map((post, index) => (
                     <CarouselItem
                       key={index}
                       className="group basis-1/3 transition-all ease-in md:basis-1/3 sm:basis-5/6"
                     >
-                      <div className="dur bg-secondary-75 px-10 py-12 duration-300 group-hover:bg-neutral-300 md:p-6 sm:p-6">
+                      <div className="dur bg-secondary-75  px-10 py-12 hover:bg-neutral-300 duration-700 ease-in-out  md:p-6 sm:p-6">
                         <h6 className="mb-1 text-base text-neutral-100 md:text-xs sm:text-xs">
                           {new Date(post.date_created).toDateString()}
                         </h6>
-                        <h3 className="mb:mb-1 mb-3 text-3xl font-medium duration-300 group-hover:text-secondary-300 md:text-xl sm:mb-1 sm:text-xl">
+                        <h3 className="mb:mb-1 mb-3 text-3xl font-medium duration-300 group-hover:duration-300 group-hover:text-secondary-300 md:text-xl sm:mb-1 sm:text-xl">
                           {post.title}
                         </h3>
                         <Link

@@ -11,20 +11,37 @@ import { motion } from "framer-motion";
 
 export default function Projects({ projects, locations }) {
   const router = useRouter();
-  const [selectedValue, setSelectedValue] = useState(null); // Optional initial value
-
   const [type, setType] = useState("");
   const [location, setLocation] = useState("");
   const [status, setStatus] = useState("");
 
-  console.log(type, location, status);
+  // Read initial values from URL on component mount
+  useEffect(() => {
+    const { type: urlType, location: urlLocation, status: urlStatus } = router.query;
+    if (urlType) setType(urlType);
+    if (urlLocation) setLocation(urlLocation);
+    if (urlStatus) setStatus(urlStatus);
+  }, []);
+
+  // Update URL when filters change
+  useEffect(() => {
+    const query = { ...router.query };
+    if (type) query.type = type;
+    else delete query.type;
+    if (location) query.location = location;
+    else delete query.location;
+    if (status) query.status = status;
+    else delete query.status;
+
+    router.push({
+      pathname: router.pathname,
+      query: query
+    }, undefined, { shallow: true });
+  }, [type, location, status]);
 
   const filteredProducts = projects.filter((project) => {
-    console.log(project);
     const matchesType = type ? project.property_type === type : true;
-    const matchesLocation = location
-      ? project.location.value === location
-      : true;
+    const matchesLocation = location ? project.location.value === location : true;
     const matchesStatus = status ? project.current_status === status : true;
     return matchesType && matchesLocation && matchesStatus;
   });
@@ -139,36 +156,39 @@ export default function Projects({ projects, locations }) {
 
       <section>
         <div className="container -mt-56 flex justify-between gap-12 bg-transparent pb-48 md:-mt-32 md:gap-3 md:pb-7 sm:-mt-56 sm:flex-wrap sm:gap-1">
-          <div className="w-full">
-            <UniversalCombobox
-              data={[
-                { name: "All", value: "" },
-                { name: "Commercial", value: "commercial" },
-                { name: "Residential", value: "residential" },
-              ]}
-              onSelect={(type) => setType(type.value)}
-              placeholder="Property Type"
-            />
-          </div>
-          <div className="w-full">
-            <UniversalCombobox
-              data={[{ name: "All", value: "" }, ...locations]}
-              placeholder="Location"
-              onSelect={(location) => setLocation(location.value)}
-            />
-          </div>
-          <div className="w-full">
-            <UniversalCombobox
-              data={[
-                { name: "All", value: "" },
-                { name: "Completed", value: "completed" },
-                { name: "Ongoing", value: "ongoing" },
-                { name: "Upcoming", value: "upcoming" },
-              ]}
-              placeholder="Status"
-              onSelect={(status) => setStatus(status.value)}
-            />
-          </div>
+        <div className="w-full">
+        <UniversalCombobox
+          data={[
+            { name: "All", value: "" },
+            { name: "Commercial", value: "commercial" },
+            { name: "Residential", value: "residential" },
+          ]}
+          onSelect={(type) => setType(type.value)}
+          placeholder="Property Type"
+          value={type}
+        />
+      </div>
+      <div className="w-full">
+        <UniversalCombobox
+          data={[{ name: "All", value: "" }, ...locations]}
+          placeholder="Location"
+          onSelect={(location) => setLocation(location.value)}
+          value={location}
+        />
+      </div>
+      <div className="w-full">
+        <UniversalCombobox
+          data={[
+            { name: "All", value: "" },
+            { name: "Completed", value: "completed" },
+            { name: "Ongoing", value: "ongoing" },
+            { name: "Upcoming", value: "upcoming" },
+          ]}
+          placeholder="Status"
+          onSelect={(status) => setStatus(status.value)}
+          value={status}
+        />
+      </div>
         </div>
 
         <div className="container relative z-10 -mt-32 mb-16 grid grid-cols-12 gap-10 md:mb-8 md:mt-0 md:gap-3 sm:gap-3">
@@ -185,7 +205,8 @@ export default function Projects({ projects, locations }) {
                   key={property.slug}
                   transition={{ duration: 0.4 }}
                   whileHover="hover"
-                  className="group relative h-full w-full cursor-pointer overflow-hidden"
+                  whileTap="hover"
+                  className="group relative col-span-4 aspect-[1/1.4] h-full w-full cursor-pointer overflow-hidden lg:col-span-4 md:col-span-4 sm:col-span-6"
                 >
                   <motion.div
                     style={{
@@ -228,61 +249,81 @@ export default function Projects({ projects, locations }) {
                   />
                   <motion.div
                     initial={{
-                      height: "30%",
+                      height: "27%",
                       background:
                         "linear-gradient(to bottom, transparent, #1E1E1E)",
                     }}
+
                     variants={{
                       hover: {
                         height: "100%",
                         background:
-                          "linear-gradient(to bottom, transparent, #1E1E1E)",
+                          "linear-gradient(to bottom, transparent, rbga(29, 29, 29, 0.8))",
                         transition: {
                           duration: 0.5,
                         },
                       },
                     }}
-                    className="absolute bottom-0 z-50 w-full pb-6 pl-10 group-hover:pt-7 md:pl-6 sm:pl-6"
+                    className="absolute bottom-0 z-50 w-full pb-8 pl-10 group-hover:pt-7 md:pl-6 sm:pl-6"
                   >
-                    <motion.h4 className="mb-2 text-2xl leading-[1.20] text-secondary-300 md:mb-1 md:text-base md:font-medium md:leading-none sm:mb-1 sm:text-base sm:font-medium sm:leading-none">
+                    <motion.h4 className="mb-2 text-4xl leading-[1.20] text-secondary-300 md:mb-1 md:text-xl md:font-medium md:leading-none sm:mb-1 sm:text-base sm:font-medium sm:leading-none">
                       <SentenceSplitter sentence={property.name} />
                     </motion.h4>
-                    <motion.h6 className="flex items-center group-hover:text-primary">
+                    <motion.h6 className="flex items-center md:mt-2 sm:leading-none">
                       <motion.svg
-                        width="12"
-                        height="13"
+                        initial={{
+                          width: 18,
+                          height: 18,
+                          opacity: 1,
+                        }}
+                      
                         viewBox="0 0 12 13"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="mr-1 inline-block stroke-secondary-300 group-hover:stroke-primary"
+                        className="mr-1 inline-block h-5 !w-5 md:h-[10px] md:w-[10px] sm:h-[10px] sm:w-[10px]"
                       >
                         <g clip-path="url(#clip0_2096_9035)">
-                          <path d="M7.25 4.66016C7.25 5.35051 6.69036 5.91016 6 5.91016C5.30964 5.91016 4.75 5.35051 4.75 4.66016C4.75 3.9698 5.30964 3.41016 6 3.41016C6.69036 3.41016 7.25 3.9698 7.25 4.66016Z" />
+                          <path
+                            d="M7.25 4.66016C7.25 5.35051 6.69036 5.91016 6 5.91016C5.30964 5.91016 4.75 5.35051 4.75 4.66016C4.75 3.9698 5.30964 3.41016 6 3.41016C6.69036 3.41016 7.25 3.9698 7.25 4.66016Z"
+                            stroke="#F6F3EC"
+                          />
                           <path
                             d="M9.11111 8.66016C9.80837 9.65439 10.1419 10.1839 9.94323 10.6101C9.9233 10.6529 9.89997 10.6941 9.87344 10.7335C9.58618 11.1602 8.84375 11.1602 7.35889 11.1602H4.64111C3.15625 11.1602 2.41382 11.1602 2.12656 10.7335C2.10003 10.6941 2.0767 10.6529 2.05677 10.6101C1.8581 10.1839 2.19163 9.65439 2.88889 8.66016"
+                            stroke="#F6F3EC"
                             stroke-linecap="round"
                             stroke-linejoin="round"
                           />
-                          <path d="M6.6287 8.90694C6.46006 9.06936 6.23466 9.16016 6.00008 9.16016C5.7655 9.16016 5.54009 9.06936 5.37145 8.90694C3.82715 7.41055 1.75759 5.73892 2.76685 3.31202C3.31255 1.99982 4.62247 1.16016 6.00008 1.16016C7.37768 1.16016 8.6876 1.99982 9.2333 3.31202C10.2413 5.73586 8.17681 7.41571 6.6287 8.90694Z" />
+                          <path
+                            d="M6.6287 8.90694C6.46006 9.06936 6.23466 9.16016 6.00008 9.16016C5.7655 9.16016 5.54009 9.06936 5.37145 8.90694C3.82715 7.41055 1.75759 5.73892 2.76685 3.31202C3.31255 1.99982 4.62247 1.16016 6.00008 1.16016C7.37768 1.16016 8.6876 1.99982 9.2333 3.31202C10.2413 5.73586 8.17681 7.41571 6.6287 8.90694Z"
+                            stroke="#F6F3EC"
+                          />
                         </g>
                         <defs>
                           <clipPath id="clip0_2096_9035">
                             <rect
                               width="12"
                               height="12"
+                              fill="white"
                               transform="translate(0 0.160156)"
                             />
                           </clipPath>
                         </defs>
                       </motion.svg>
 
-                      <motion.span className="overflow-hidden whitespace-nowrap text-xs text-secondary-300 group-hover:text-primary">
+                      <motion.span
+                        initial={{
+                          width: "auto",
+                          opacity: 1,
+                        }}
+                     
+                        className="overflow-hidden whitespace-nowrap text-lg leading-none text-secondary-300 md:text-[10px] sm:text-[10px]"
+                      >
                         {property.address_line_2}
                       </motion.span>
                     </motion.h6>
                   </motion.div>
 
-                  <motion.h6 className="absolute bottom-0 z-50 translate-y-32 pb-5 pl-10 text-2xl font-bold leading-[1.2] text-primary duration-300 group-hover:translate-y-0 group-hover:duration-75 md:pb-5 md:pl-6 sm:pl-6">
+                  <motion.h6 className="absolute bottom-0 z-50 translate-y-32 pb-8 pl-10 text-4xl font-bold leading-[1.2] text-primary duration-1000 group-hover:translate-y-0 group-hover:duration-300 md:pb-5 sm:text-base md:pl-6 sm:pl-6">
                     Coming <br /> Soon...
                   </motion.h6>
                 </motion.div>
@@ -292,7 +333,7 @@ export default function Projects({ projects, locations }) {
                   onClick={() => router.push(`/projects/${property.slug}`)}
                   transition={{ duration: 0.4 }}
                   whileHover="hover"
-                  className="relative col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-6 aspect-[1/1.4]  w-full cursor-pointer overflow-hidden"
+                  className="relative col-span-4 aspect-[1/1.4] w-full cursor-pointer overflow-hidden lg:col-span-4 md:col-span-4 sm:col-span-6"
                 >
                   <motion.div
                     style={{
@@ -333,11 +374,11 @@ export default function Projects({ projects, locations }) {
                       property.thumbnail
                     }
                   />
-                  <div className="absolute bottom-0 z-20 w-full  bg-gradient-to-b from-transparent to-[#1E1E1E] pb-8 pl-10 pt-7 md:pb-5 md:pl-6 sm:pb-4 sm:pl-6">
-                    <motion.h4 className="mb-2 md:text-xl text-4xl sm:text-base leading-[1.20] text-secondary-300 md:mb-1  md:font-medium md:leading-none sm:mb-1  sm:font-medium sm:leading-none">
+                  <div className="absolute bottom-0 z-20 w-full bg-gradient-to-b from-transparent to-[#1E1E1E] pb-8 pl-10 pt-7 md:pb-5 md:pl-6 sm:pb-4 sm:pl-6">
+                    <motion.h4 className="mb-2 text-4xl leading-[1.20] text-secondary-300 md:mb-1 md:text-xl md:font-medium md:leading-none sm:mb-1 sm:text-base sm:font-medium sm:leading-none">
                       <SentenceSplitter sentence={property.name} />
                     </motion.h4>
-                    <motion.h6 className="flex md:mt-2 items-center sm:leading-none">
+                    <motion.h6 className="flex items-center md:mt-2 sm:leading-none">
                       <motion.svg
                         initial={{
                           width: 18,
@@ -355,7 +396,7 @@ export default function Projects({ projects, locations }) {
                         viewBox="0 0 12 13"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="mr-1 inline-block md:w-[10px] md:h-[10px] !w-5 h-5 sm:w-[10px] sm:h-[10px]"
+                        className="mr-1 inline-block h-5 !w-5 md:h-[10px] md:w-[10px] sm:h-[10px] sm:w-[10px]"
                       >
                         <g clip-path="url(#clip0_2096_9035)">
                           <path
@@ -401,7 +442,7 @@ export default function Projects({ projects, locations }) {
                             },
                           },
                         }}
-                        className="overflow-hidden md:text-[10px] whitespace-nowrap text-lg leading-none sm:text-[10px] text-secondary-300"
+                        className="overflow-hidden whitespace-nowrap text-lg leading-none text-secondary-300 md:text-[10px] sm:text-[10px]"
                       >
                         {property.address_line_2}
                       </motion.span>
@@ -416,7 +457,7 @@ export default function Projects({ projects, locations }) {
                           hover: {
                             width: "auto",
                             opacity: 1,
-                          x: -20,
+                            x: -20,
 
                             transition: {
                               delay: 0.4,
@@ -424,7 +465,7 @@ export default function Projects({ projects, locations }) {
                             },
                           },
                         }}
-                        className="mr-1 overflow-hidden whitespace-nowrap leading-none md:text-[10px] sm:text[10px] text-lg text-primary"
+                        className="sm:text[10px] mr-1 overflow-hidden whitespace-nowrap text-lg leading-none text-primary md:text-[10px]"
                       >
                         Show Project
                       </motion.span>
@@ -450,7 +491,7 @@ export default function Projects({ projects, locations }) {
                         viewBox="0 0 12 13"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="inline-block !w-5 h-5 sm:w-[10px] sm:h-[10px] md:w-[10px] md:h-[10px]"
+                        className="inline-block h-5 !w-5 md:h-[10px] md:w-[10px] sm:h-[10px] sm:w-[10px]"
                       >
                         <path
                           d="M1.33301 6.16016H10.6663"

@@ -18,8 +18,16 @@ export default function Layout({ children }) {
     <>
       <Navbar />
       <motion.div key={router.route}>
-        <main>{children}</main>
+        <main>
+          {children}
+          <div className="fixed bottom-5 right-5 w-14 h-14">
+            <a href="https://wa.me/8801740062270">
+              <img src="/wa.png" />
+            </a>
+          </div>
+        </main>
       </motion.div>
+
       <Footer />
     </>
   );

@@ -11,7 +11,6 @@ export function Newsletter(props) {
     if (!email) {
       setError("Please enter your email address");
     } else {
-      alert("dfgsd");
       fetch(process.env.NEXT_PUBLIC_API_URL + "/items/newsletter_contacts", {
         method: "POST",
         headers: {

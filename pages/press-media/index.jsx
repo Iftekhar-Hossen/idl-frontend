@@ -48,7 +48,7 @@ export default function PressMedia({
   let socialMedia = [
     {
       name: "Facebook",
-      link: "/facebook",
+      link: "https://www.facebook.com/inheritancebd?mibextid=ZbWKwL",
       icon: (
         <svg
           width={24}
@@ -78,7 +78,7 @@ export default function PressMedia({
 
     {
       name: "LinkedIn",
-      link: "/linkedin",
+      link: "https://www.linkedin.com/company/inheritance-development-ltd-idl/",
       icon: (
         <svg
           width={24}
@@ -118,7 +118,7 @@ export default function PressMedia({
 
     {
       name: "Instagram",
-      link: "/instagram",
+      link: "https://www.instagram.com/inheritancedevelopmentltd/",
       icon: (
         <svg
           width={24}
@@ -290,16 +290,17 @@ export default function PressMedia({
             </div>
             <div className="mt-2 sm:hidden">
               <h3 className="text-[23px] text-secondary-300">Follow Us</h3>
-              <ul>
+              <ul className="grid gap-y-2 mt-2">
                 {socialMedia.map((item, index) => (
                   <li
                     key={index}
-                    className="mt-2 flex items-center gap-6 bg-neutral-300 p-4"
+                    className=""
                   >
-                    <div className="h-6 w-6">{item.icon}</div>
+                    <Link href={item.link} className="flex items-center gap-6 bg-neutral-300 p-4">
+                    <div className="h-5 w-5">{item.icon}</div>
                     <h6 className="text-[19px] text-secondary-300">
                       {item.name}
-                    </h6>
+                    </h6></Link>
                   </li>
                 ))}
               </ul>
@@ -430,6 +431,9 @@ export async function getServerSideProps({ params }) {
   let topPosts = await directusClient.request(
     readItems("posts", {
       sort: "-views",
+      filter: {
+        status: "published",
+      },
       fields: ["id", "title", "slug", "cover", "date_created", "category.*"],
       limit: 3,
     }),

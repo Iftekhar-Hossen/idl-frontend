@@ -65,7 +65,7 @@ export const Project = ({ properties, pageContent }) => {
 
   return (
     <>
-      <motion.section className="bg-accent py-24 sm:py-10">
+      <motion.section className="bg-accent py-24 sm:py-10"  >
         <div className="container m-auto flex flex-wrap pb-24 lg:pb-0 md:pb-0 sm:flex-nowrap sm:pb-0 sm:pt-0">
           <div className="m-auto flex flex-wrap items-end">
             <div className="w-3/12 self-baseline lg:mb-0 lg:w-full md:mb-0 md:w-full sm:w-full">

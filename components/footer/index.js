@@ -109,15 +109,15 @@ export  function Footer() {
   const projects = [
     {
       label: "Ongoing Projects",
-      url: "/",
+      url: "/projects?status=ongoing",
     },
     {
       label: "Upcoming Projects",
-      url: "/about",
+      url: "/projects?status=upcoming",
     },
     {
       label: "Complete Projects",
-      url: "/services",
+      url: "/projects?status=completed",
     },
   ];
 
@@ -258,7 +258,7 @@ export  function Footer() {
           </defs>
         </svg>
       ),
-      url: "https://www.whatsapp.com/",
+      url: "https://wa.me/8801740062270",
     },
   ];
 
@@ -342,7 +342,7 @@ export  function Footer() {
             </h3>
             <ul className="text-neutral-300">
               <li className="py-0">
-                <Link href={"/"} className="font-roboto text-xl">
+                <Link href={"/press-media/brochure"} className="font-roboto text-xl">
                   Brochure
                 </Link>
               </li>

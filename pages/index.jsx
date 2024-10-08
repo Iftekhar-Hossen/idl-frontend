@@ -12,7 +12,6 @@ export default function Home({
   locationsData,
   latestPosts,
   properties,
-  statics,
   testimonials,
   pageContent,
 }) {
@@ -26,11 +25,10 @@ export default function Home({
       <Hero
         locationsData={locationsData}
         properties={properties}
-        statics={statics}
         testimonials={testimonials}
         pageContent={pageContent}
       />
-      <About services={statics.services} pageContent={pageContent}/>
+      <About  pageContent={pageContent}/>
       <Project properties={properties} pageContent={pageContent}/>
       <Review testimonials={testimonials} />
       <PressMedia latestPosts={latestPosts} />
@@ -41,12 +39,6 @@ export default function Home({
 
 export async function getServerSideProps({ params }) {
   let pageContent = await directusClient.request(readItem("homepage", 1));
-
-  let statics = await directusClient.request(
-    readItem("static", 1, {
-      fields: ["heading", "sub_heading", "video", "lifecycle", "services"],
-    }),
-  );
 
   let testimonials = await directusClient.request(readItems("testimonials"));
 
@@ -81,7 +73,6 @@ export async function getServerSideProps({ params }) {
       locationsData: locations,
       latestPosts: latestPosts,
       properties: properties,
-      statics: statics,
       testimonials: testimonials,
       pageContent: pageContent,
     },

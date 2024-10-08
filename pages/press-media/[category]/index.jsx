@@ -102,6 +102,7 @@ export async function getServerSideProps({ params }) {
     readItems("posts", {
       filter: {
         category: params.category,
+        status: "published",
       },
     }),
   );

@@ -170,7 +170,7 @@ const DownloadBrochure = ({ brochure }) => {
             )}
 
             <input
-              placeholder="Type your name"
+              placeholder="Type your email"
               {...register("email", {
                 required: "Email is required",
                 pattern: {

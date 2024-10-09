@@ -267,9 +267,9 @@ export const Hero = ({
             animate="visible"
           >
             {animateText("Smart", "font-saol italic text-primary")}
-            {animateText(" living")}
+            {animateText(" living ")}
             {animateText("starts with ")} <br />
-            {animateText("smart")}{" "}
+            {animateText("smart ")}{" "}
             {animateText("buildings", "font-saol italic text-primary")}
           </motion.h4>
 

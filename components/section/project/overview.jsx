@@ -68,7 +68,7 @@ import axios from "axios";
 import { Icons } from "@/components/icon";
 
 // Download Brochure Component
-const DownloadBrochure = () => {
+const DownloadBrochure = ({ brochure }) => {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const {
@@ -85,12 +85,24 @@ const DownloadBrochure = () => {
       })
         .then(() => {
           alert("Contact details sent successfully");
+          brochure &&
+            window.open(
+              process.env.NEXT_PUBLIC_API_URL +
+                "/assets/" +
+                brochure +
+                "?download",
+            );
         })
         .catch(() => {
           alert("Failed to send contact details");
+          brochure &&
+            window.open(
+              process.env.NEXT_PUBLIC_API_URL +
+                "/assets/" +
+                brochure +
+                "?download",
+            );
         });
-
-      alert("Contact form submitted successfully");
     } catch (error) {
       alert(
         "An error occurred while submitting the form. Please try again later.",
@@ -180,7 +192,7 @@ const DownloadBrochure = () => {
               {...register("phone", {
                 required: "Phone number is required",
                 pattern: {
-                  value: /^[0-9]{10}$/,
+                  value: /^[0-9]{11}$/,
                   message: "Invalid phone number",
                 },
               })}
@@ -213,6 +225,7 @@ export const Overview = ({
   current_status,
   completion_date,
   bedrooms,
+  brochure,
 }) => {
   const { isOpenFormModal, open, close } = useModal();
 
@@ -255,7 +268,7 @@ export const Overview = ({
                 Schedule a meeting
               </button>
               <div className="sm:col-span-6">
-                <DownloadBrochure />
+                <DownloadBrochure brochure={brochure} />
               </div>
             </motion.div>
           </div>
@@ -310,9 +323,12 @@ export const Overview = ({
                 {current_status}
               </h4>
             </motion.div>
-            <div className="col-span-2 ">
-              <p className="text-secondary-300 text-sm flex items-center gap-2"><Icons.disclaimer className="w-4 h-4"/> Disclaimer: It may vary depending on requirements.</p>
-              </div>
+            <div className="col-span-2">
+              <p className="flex items-center gap-2 text-sm text-secondary-300">
+                <Icons.disclaimer className="h-4 w-4" /> Disclaimer: It may vary
+                depending on requirements.
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>

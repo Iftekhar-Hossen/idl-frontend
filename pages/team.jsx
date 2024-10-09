@@ -1,6 +1,8 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { directusClient } from "@/lib/directus";
+import { readItems } from "@directus/sdk";
 
 export default function team({ team }) {
   const carouselRef = useRef(null);
@@ -18,7 +20,6 @@ export default function team({ team }) {
       }
       i++;
     }
-    
   }, []);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function team({ team }) {
           transition={{ duration: 0.3, bounce: 0 }} // Duration of the animation
           className="container flex flex-wrap items-center justify-between md:justify-around"
         >
-          <div className="relative pr-12 lg:pr-8 md:pr-0 2xl:w-4/12 xl:w-4/12 lg:w-4/12 md:w-5/12 sm:w-full sm:pr-0">
+          <div className="relative pr-12 2xl:w-4/12 xl:w-4/12 lg:w-4/12 lg:pr-8 md:w-5/12 md:pr-0 sm:w-full sm:pr-0">
             <motion.div
               key={team[activeIndex]?.image} // Key prop ensures animation runs on change
               className="relative bg-red-500 md:h-full md:w-full"
@@ -72,7 +73,7 @@ export default function team({ team }) {
               transition={{ duration: 0.5 }} // Duration of the animation
             >
               <img
-                className="aspect-square h-full w-fit object-cover "
+                className="aspect-square h-full w-fit object-cover"
                 src={
                   process.env.NEXT_PUBLIC_API_URL +
                   "/assets/" +
@@ -81,7 +82,7 @@ export default function team({ team }) {
               />
             </motion.div>
           </div>
-          <div className="w-7/12 pl-12 lg:pl-8 md:pl-6 sm:pt-3 sm:pl-0 2xl:w-8/12 xl:w-8/12 lg:w-8/12 md:w-7/12 sm:w-full">
+          <div className="w-7/12 pl-12 2xl:w-8/12 xl:w-8/12 lg:w-8/12 lg:pl-8 md:w-7/12 md:pl-6 sm:w-full sm:pl-0 sm:pt-3">
             <motion.div
               key={team[activeIndex]?.designation} // Key to trigger re-animation when designation changes
               initial={{ opacity: 0, y: 20 }} // Initial hidden state and slide down
@@ -109,7 +110,7 @@ export default function team({ team }) {
                 {team[activeIndex]?.paragraph_1}
               </p>
               <div className="mt-5 flex justify-end gap-10 md:hidden">
-                <p className="max-w-[295px] text-[15px]  text-neutral-300">
+                <p className="max-w-[295px] text-[15px] text-neutral-300">
                   {team[activeIndex]?.paragraph_2}
                 </p>
                 <p className="max-w-[295px] text-[15px] text-neutral-300">
@@ -222,12 +223,12 @@ export default function team({ team }) {
 
       <section className="bg-neutral-300 py-28 md:py-16 sm:py-11">
         <div className="container">
-          <div className="mb-20 sm:mb-5 md:mb-10">
-            <h3 className="text-[57px] md:text-4xl sm:text-3xl text-secondary-300">
+          <div className="mb-20 md:mb-10 sm:mb-5">
+            <h3 className="text-[57px] text-secondary-300 md:text-4xl sm:text-3xl">
               Our{" "}
               <span className="font-saol italic text-primary-300">Team</span>
             </h3>
-            <p className="max-w-[560px] md:text-xl sm:text-base text-2xl text-secondary-400">
+            <p className="max-w-[560px] text-2xl text-secondary-400 md:text-xl sm:text-base">
               Our team is a diverse mix of construction consultancy experts and
               essential support staff.
             </p>
@@ -238,7 +239,7 @@ export default function team({ team }) {
             {team
               .filter((item) => item.is_regular == true)
               .map((member, index) => (
-                <div className="w-3/12 md:w-4/12 sm:w-6/12 px-2 py-2">
+                <div className="w-3/12 px-2 py-2 md:w-4/12 sm:w-6/12">
                   <div className="">
                     <div className="aspect-square overflow-hidden">
                       <img
@@ -250,11 +251,11 @@ export default function team({ team }) {
                         }
                       />
                     </div>
-                    <div className="bg-secondary-300 py-3 sm:pl-3 sm:py-2 pl-5 pr-0">
-                      <h5 className="mb-1 text-xl sm:text-lg sm:mb-0 font-bold leading-none text-neutral-300">
+                    <div className="bg-secondary-300 py-3 pl-5 pr-0 sm:py-2 sm:pl-3">
+                      <h5 className="mb-1 text-xl font-bold leading-none text-neutral-300 sm:mb-0 sm:text-lg">
                         {member.name}
                       </h5>
-                      <h6 className="text-[15px] sm:text-sm font-normal leading-none text-neutral-300">
+                      <h6 className="text-[15px] font-normal leading-none text-neutral-300 sm:text-sm">
                         {member.designation}
                       </h6>
                     </div>
@@ -269,28 +270,16 @@ export default function team({ team }) {
 }
 
 export async function getServerSideProps({ params }) {
-  try {
-    let headers = {
-      Authorization: `Bearer ${process.env.DIRECTUS_TOKEN}`,
-    };
-
-    let teamRoute = `${process.env.DIRECTUS_URL}/items/team`;
-
-    const [teamData] = await Promise.all([fetch(teamRoute, { headers })]);
-
-    const team = await teamData.json();
-    console.log(team.data);
-
-    return {
-      props: {
-        team: team.data,
+  let team = await directusClient.request(
+    readItems("team", {
+      filter: {
+        status: "published",
       },
-    };
-  } catch (e) {
-    return {
-      props: {
-        team: "error",
-      },
-    };
-  }
+    }),
+  );
+  return {
+    props: {
+      team: team,
+    },
+  };
 }

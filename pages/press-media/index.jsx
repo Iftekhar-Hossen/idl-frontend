@@ -15,6 +15,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
+import { Icons } from "@/components/icon";
 export default function PressMedia({
   categories,
   posts,
@@ -290,17 +291,18 @@ export default function PressMedia({
             </div>
             <div className="mt-2 sm:hidden">
               <h3 className="text-[23px] text-secondary-300">Follow Us</h3>
-              <ul className="grid gap-y-2 mt-2">
+              <ul className="mt-2 grid gap-y-2">
                 {socialMedia.map((item, index) => (
-                  <li
-                    key={index}
-                    className=""
-                  >
-                    <Link href={item.link} className="flex items-center gap-6 bg-neutral-300 p-4">
-                    <div className="h-5 w-5">{item.icon}</div>
-                    <h6 className="text-[19px] text-secondary-300">
-                      {item.name}
-                    </h6></Link>
+                  <li key={index} className="">
+                    <Link
+                      href={item.link}
+                      className="flex items-center gap-6 bg-neutral-300 p-4"
+                    >
+                      <div className="h-5 w-5">{item.icon}</div>
+                      <h6 className="text-[19px] text-secondary-300">
+                        {item.name}
+                      </h6>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -386,34 +388,12 @@ export default function PressMedia({
                     {item.title}
                   </h4>
                   <Link
-                    className="flex items-center gap-2 text-base text-secondary-400 sm:text-xs"
+                    className="flex items-end gap-2 text-base text-secondary-400 sm:text-xs"
                     href={`/press-media/${item.category.slug}/${item.slug}`}
                   >
                     See More{" "}
-                    <div className="h-6 w-6 sm:h-4 sm:w-4">
-                      <svg
-                        width={"100%"}
-                        height={"100%"}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 12H19"
-                          stroke="#A07758"
-                          strokeWidth="1.25"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M12 5L19 12L12 19"
-                          stroke="#A07758"
-                          strokeWidth="1.25"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
+                    <Icons.rightArrow className="h-5 w-6 stroke-primary-100 sm:h-4 sm:w-4" />
+
                   </Link>
                 </div>
               </div>
@@ -427,12 +407,15 @@ export default function PressMedia({
 }
 
 export async function getServerSideProps({ params }) {
-  let categories = await directusClient.request(readItems("categories"));
+  let categories = await directusClient.request(readItems("categories", {}));
   let topPosts = await directusClient.request(
     readItems("posts", {
       sort: "-views",
       filter: {
         status: "published",
+        category: {
+          _neq: "brochure",
+        },
       },
       fields: ["id", "title", "slug", "cover", "date_created", "category.*"],
       limit: 3,
@@ -442,10 +425,15 @@ export async function getServerSideProps({ params }) {
     readItems("posts", {
       filter: {
         status: "published",
+        category: {
+          _neq: "brochure",
+        },
       },
       fields: ["id", "title", "slug", "cover", "date_created", "category.*"],
     }),
   );
+
+  console.log(posts);
 
   let featuredPost = await directusClient.request(
     readItems("posts", {

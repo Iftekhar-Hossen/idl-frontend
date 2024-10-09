@@ -187,28 +187,7 @@ export default function Navbar() {
         <nav className="container flex items-center justify-between py-4 md:py-2 sm:py-2">
           <div className="md:flex md:h-8 md:items-center">
             <Link href={"/"}>
-              <svg
-                className="md:h-6"
-                width="80"
-                height="32"
-                viewBox="0 0 80 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M6.37969 0L0 10.264V0H6.37969Z" fill="#A07758" />
-                <path
-                  d="M8.75856 0V31.9933H0V14.0633L8.73948 0H8.75856Z"
-                  fill="#A07758"
-                />
-                <path
-                  d="M60.0818 25.38V0H51.3232V32H60.0818H78.4894L79.5453 25.38H60.0818Z"
-                  fill="#A07758"
-                />
-                <path
-                  d="M47.0943 9.17756C45.167 3.61704 40.0721 0 34.4812 0H17.9054L12.3145 9.29228H32.2486C35.7342 9.29228 38.6855 12.221 38.711 15.919V16.081C38.6792 19.779 35.7406 22.7145 32.2486 22.7145H21.0666V13.3345H12.3145V32H34.4812C40.0276 32 45.0843 28.4369 47.0497 22.9507C47.0752 22.8697 47.107 22.7887 47.1324 22.7077C47.8448 20.609 48.2328 18.3551 48.2328 15.9933C48.2328 13.6381 47.8448 11.3842 47.1324 9.28553C47.1197 9.25179 47.107 9.21805 47.0943 9.17756Z"
-                  fill="#A07758"
-                />
-              </svg>
+              <Icons.logo className="h-8 md:h-6" />
             </Link>
           </div>
           <div className="md:hidden">

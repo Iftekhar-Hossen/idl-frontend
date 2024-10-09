@@ -1,5 +1,6 @@
 
 import Link from "next/link";
+import { Icons } from "../icon";
 export  function Footer() {
   const links = [
     {
@@ -227,7 +228,7 @@ export  function Footer() {
           </defs>
         </svg>
       ),
-      url: "https://www.instagram.com/",
+      url: "https://www.instagram.com/inheritancedevelopmentltd/",
     },
     {
       icon: (
@@ -267,7 +268,8 @@ export  function Footer() {
       <footer className="bg-secondary-300 pb-12 pt-16">
         <div className="container flex items-stretch justify-between md:flex-wrap sm:flex-wrap">
           <div className="w-3/12 md:w-4/12 sm:w-full">
-            <img src="/idl.svg" className="w-fit" alt="IDL Logo" />
+          <Icons.logo className="h-8 md:h-6" />
+
             <p className="mt-5 font-roboto text-xl leading-[120%] text-neutral-200 md:text-sm sm:mt-4 sm:max-w-72 sm:text-base">
               IDL is a new way of thinking about living, buying, and owning real
               estate, as well for renting purposes.

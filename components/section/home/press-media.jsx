@@ -20,7 +20,7 @@ export const PressMedia = ({ latestPosts }) => {
               </span>
             </h3>
             <div className="md:hidden sm:hidden">
-              <Link href={"/news"} className="flex text-base text-primary">
+              <Link href={"/press-media"} className="flex text-base text-primary">
                 <span>Check our news and media</span>{" "}
                 <svg
                   width="24"
@@ -62,7 +62,7 @@ export const PressMedia = ({ latestPosts }) => {
                       key={index}
                       className="group basis-1/3 transition-all ease-in md:basis-1/3 sm:basis-5/6"
                     >
-                      <div className="dur bg-secondary-75  px-10 py-12 hover:bg-neutral-300 duration-700 ease-in-out  md:p-6 sm:p-6">
+                      <div className="dur bg-secondary-75 h-full  px-10 py-12 hover:bg-neutral-300 duration-700 ease-in-out  md:p-6 sm:p-6">
                         <h6 className="mb-1 text-base text-neutral-100 md:text-xs sm:text-xs">
                           {new Date(post.date_created).toDateString()}
                         </h6>

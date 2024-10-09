@@ -94,6 +94,7 @@ export default function Index({ project }) {
 
   return (
     <>
+
       <Overview
         project={project}
         address={{
@@ -104,8 +105,11 @@ export default function Index({ project }) {
         completion_date={project.completion_date}
         bedrooms={project.bedrooms}
         name={project.name}
+        brochure={project?.brochure?.id}
         current_status={project.current_status}
       />
+
+   
 
       <Cover coverImage={project.cover.id} video={project.promo_video} text={project.promo_video_text} />
 

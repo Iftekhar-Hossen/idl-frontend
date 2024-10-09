@@ -36,7 +36,6 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
 
   const onSubmitWrapper = (data) => {
     onSubmit(data);
-    alert(process.env.NEXT_PUBLIC_API_URL);
 
     fetch("/api/contact", {
       method: "POST",
@@ -150,7 +149,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
                   {...register("phone", {
                     required: "Phone is required",
                     pattern: {
-                      value: /^[0-9]{10}$/,
+                      value: /^[0-9]{11}$/,
                       message: "Invalid phone number",
                     },
                   })}

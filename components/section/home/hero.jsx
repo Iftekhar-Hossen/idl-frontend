@@ -70,7 +70,7 @@ function SearchProperty({ locationsData, properties }) {
                     animate={{ opacity: 1, y: 0, scaleY: 1 }}
                     exit={{ opacity: 0, y: -10, scaleY: 0.97 }}
                     transition={{ duration: 0.2, ease: "easeInOut" }}
-                    className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-neutral-300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    className="absolute mt-1 max-h-44 no-scrollbar z-[500] w-full overflow-auto rounded-md bg-neutral-300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                   >
                     <Listbox.Options>
                       {locationsData.map((location) => (
@@ -134,7 +134,7 @@ function SearchProperty({ locationsData, properties }) {
                 </svg>
               </span>
             </Listbox.Button>
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-neutral-300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options className="absolute z-[5000] mt-1 max-h-44 no-scrollbar w-full overflow-auto rounded-md bg-neutral-300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {filteredProperties.length === 0 && (
                 <>
                   <span className="inline-block py-2 text-base text-secondary-300">

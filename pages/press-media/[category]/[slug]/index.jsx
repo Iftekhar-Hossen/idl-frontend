@@ -244,6 +244,14 @@ export default function Page({ post }) {
               {post.title}
             </motion.h1>
             <main className="grid gap-x-5 gap-y-4 2xl:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 sm:gap-x-1 sm:gap-y-2">
+              {post.brochure && (
+              <iframe
+                className="col-span-2 h-screen w-full"
+                src={
+                  process.env.NEXT_PUBLIC_API_URL + "/assets/" + post.brochure
+                }
+                width="100%"
+              ></iframe>)}
               {RenderAllBlocks(post.content.blocks)}
             </main>
           </div>
@@ -389,6 +397,7 @@ export async function getServerSideProps({ params }) {
       fields: ["*", "category.*", "content.*"],
     }),
   );
+  console.log(posts);
 
   if (!posts.length) {
     return {

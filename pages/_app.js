@@ -1,6 +1,5 @@
 import "../styles/globals.css";
-import { PagesProgressBar as ProgressBar } from "next-nprogress-bar";
-
+import Preloader from "@/components/animation/preloader";
 import Layout from "@/components/layout";
 import localFont from "next/font/local";
 import { Roboto } from "next/font/google";
@@ -36,17 +35,15 @@ const saolDisplay = localFont({
 });
 
 export default function App({ Component, pageProps }) {
+
   return (
     <Layout>
       <main className={`${saolDisplay.variable} ${roboto.variable}`}>
         {" "}
+
+        <Preloader />
         <Component {...pageProps} />
-        <ProgressBar
-          height="4px"
-          color="#a07758"
-          options={{ showSpinner: false, easing: "ease-out", speed: 500 }}
-          shallowRouting
-        />
+     
       </main>
     </Layout>
   );

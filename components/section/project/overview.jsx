@@ -226,6 +226,7 @@ export const Overview = ({
   completion_date,
   bedrooms,
   brochure,
+  map_url
 }) => {
   const { isOpenFormModal, open, close } = useModal();
 
@@ -261,15 +262,20 @@ export const Overview = ({
               className="mt-6 flex gap-x-10"
               transition={{ delay: 0.2 }}
             >
-              <button
+               <Link
+               href={map_url ? map_url : "#"}
+                className="inline-block border-2 border-primary px-4 py-3 text-center text-xl text-background duration-300 hover:bg-primary sm:block sm:px-2 sm:py-2 sm:text-sm"
+              >
+               See Location
+              </Link>
+              {/* <button
                 onClick={open}
                 className="inline-block border-2 border-primary px-4 py-3 text-center text-xl text-background duration-300 hover:bg-primary sm:block sm:px-2 sm:py-2 sm:text-sm"
               >
                 Schedule a meeting
-              </button>
-              <div className="sm:col-span-6">
-                <DownloadBrochure brochure={brochure} />
-              </div>
+              </button> */}
+              {brochure && <DownloadBrochure brochure={brochure} />}
+             
             </motion.div>
           </div>
         </motion.div>

@@ -107,6 +107,7 @@ export default function Index({ project }) {
         name={project.name}
         brochure={project?.brochure?.id}
         current_status={project.current_status}
+        map_url={project.map_url}
       />
 
    

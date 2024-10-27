@@ -1,20 +1,24 @@
+/* ===== Global Styles ===== */
 html {
   scroll-behavior: smooth;
 }
+
+/* ===== Tailwind Base and Utilities ===== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer utilities {
-  /* Chrome, Safari and Opera */
+  /* Hide scrollbar for certain browsers */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
 
+  /* Flex container styling */
   .renderer {
     display: flex;
     flex-wrap: wrap;
@@ -24,6 +28,167 @@ html {
     padding: 0 16px;
   }
 }
+
+/* ===== Full Page Slider ===== */
+.creative-showcase--slider {
+  /* Slide styling */
+  .swiper-slide {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    min-height: 100vh;
+    padding: 80px 0;
+  }
+
+  /* Slide Background */
+  .swiper-slide .slide-bg {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Video Container */
+  .swiper-slide .video-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .swiper-slide .video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Slide Content */
+  .swiper-slide .slide-bg .slide-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 15px;
+  }
+  .slide-bg .slide-container .slide-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .slide-container .slide-row .slider-content {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+    margin-left: 8.33333333%;
+    padding: 0 15px;
+  }
+
+  /* Heading Transition */
+  .slider-content .slide-heading {
+    transition: 3s cubic-bezier(0.4, 0, 0, 1);
+    transform: translateY(100%);
+    font-size: 100px;
+    font-weight: 500;
+    line-height: 1.3;
+    text-align: center;
+    overflow: hidden;
+    opacity: 0;
+    @apply font-saol text-[114px] font-normal leading-tight text-secondary-300;
+  }
+  .swiper-slide-active .slide-heading.slide-mounted {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+.slide-mounted {
+  animation: fadeIn 3s cubic-bezier(0.4, 0, 0, 1) forwards;
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ===== Custom Pagination Dot Styling ===== */
+.custom-pagination {
+  @apply flex items-center justify-center;
+}
+.custom-pagination .swiper-pagination-bullet {
+  @apply relative z-50 h-3 w-3 rounded-full border-2 border-secondary-300 bg-secondary-300 opacity-70 transition-all duration-700 ease-in-out;
+}
+.custom-pagination .swiper-pagination-bullet-active {
+  @apply h-4 w-4 border-secondary-300 bg-transparent opacity-100;
+}
+.creative-showcase--slider .banner-horizental .swiper-pagination-bullet {
+  background: transparent;
+  margin: 0 10px !important;
+}
+.creative-showcase--slider .banner-horizental .path {
+  display: none;
+}
+.creative-showcase--slider .banner-horizental .swiper-pagination-bullet-active .path {
+  display: inline-block !important;
+  animation: dash linear 10s;
+  animation-iteration-count: unset;
+}
+
+/* ===== Responsive Breakpoints ===== */
+
+/* Ipad */
+/* @media (max-width: 991px) {
+  .slide-container .slide-row .slider-content {
+    width: 100%;
+    margin-left: 0;
+  }
+  .slider-content .slide-heading {
+    font-size: 72px;
+  }
+  .creative-showcase--slider .banner-horizental .swiper-pagination {
+    display: none;
+  }
+  .creative-showcase--slider .creative-button--wrapper .swiper-button-prev {
+    left: 15px;
+  }
+  .creative-showcase--slider .creative-button--wrapper .swiper-button-next {
+    right: 15px;
+  }
+} */
+
+/* iPhone */
+/* @media screen and (max-width: 767px) {
+  .slide-container .slide-row .slider-content {
+    padding: 0;
+  }
+  .slider-content .slide-heading {
+    font-size: 40px;
+  }
+  .slider-content .slide-subtitle {
+    margin-bottom: 15px;
+  }
+} */
+
+/* ===== Theme Colors ===== */
 @layer base {
   :root {
     --background: 42 36% 95%;
@@ -71,7 +236,7 @@ html {
   }
 }
 
-
+/* ===== Card Styles ===== */
 .pc-bg {
   background: linear-gradient(
     180deg,
@@ -95,27 +260,25 @@ html {
   color: var(--card-foreground);
   border-radius: var(--radius);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
   overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease;
 }
+
 .card::after {
   content: "";
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  transition: 0.3s ease-in-out;
-  background: rgb(30,30,30);
-  background: -moz-linear-gradient(180deg, rgba(30,30,30,0) 17%, rgba(30,30,30,0.5690651260504201) 50%, rgba(30,30,30,1) 100%);
-  background: -webkit-linear-gradient(180deg, rgba(30,30,30,0) 17%, rgba(30,30,30,0.5690651260504201) 50%, rgba(30,30,30,1) 100%);
-  background: linear-gradient(180deg, rgba(30,30,30,0) 17%, rgba(30,30,30,0.5690651260504201) 50%, rgba(30,30,30,1) 100%); background-size: 100% 200%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(30, 30, 30, 0) 17%, rgba(30, 30, 30, 0.5690651260504201) 50%, rgba(30, 30, 30, 1) 100%);
+  background-size: 100% 200%;
   transition: background-position 0.5s ease;
 }
 
 .card:hover::after {
-  background-position: 00% 100%;
+  background-position: 0% 100%;
 }
 .card img {
   transition: transform 0.3s ease;
@@ -126,12 +289,10 @@ html {
 .card:hover .card-content {
   @apply sm:bottom-[80%] !important;
 }
-
 .card:hover .card-link {
   @apply bottom-[7%] opacity-100 !important;
 }
 
 .filter-primary {
-  filter: brightness(0) saturate(100%) invert(46%) sepia(52%) saturate(357%)
-    hue-rotate(343deg) brightness(95%) contrast(80%);
+  filter: brightness(0) saturate(100%) invert(46%) sepia(52%) saturate(357%) hue-rotate(343deg) brightness(95%) contrast(80%);
 }

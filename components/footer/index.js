@@ -301,7 +301,6 @@ export function Footer() {
                   target="_blank"
                 >
                   <link.icon className="block h-8 w-8 fill-secondary-500 duration-200 ease-in-out hover:fill-primary-300" />
-                  {/* {link.icon({ fill: "#969490" })} */}
                 </a>
               ))}
             </div>

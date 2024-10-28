@@ -283,7 +283,7 @@ export default function Navbar() {
               <div className="md:hidden">
                 <button
                   onClick={open}
-                  className={`flex items-center gap-x-2 border-2 border-primary px-5 py-3 text-lg text-secondary-300 ease-in-out hover:bg-primary-500 ${isInBanner && isHomePage ? "bg-transparent" : "bg-primary-300"}`}
+                  className={`flex items-center gap-x-2 border-2 border-primary px-5 py-3 text-lg text-secondary-300 ease-in-out hover:bg-primary-300 duration-200 ${isInBanner && isHomePage ? "bg-transparent" : "bg-primary-300"}`}
                 >
                   Schedule a Meeting <Icons.TopRight />
                 </button>

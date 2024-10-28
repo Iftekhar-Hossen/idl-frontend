@@ -146,7 +146,7 @@ export default function Index({ project }) {
             </div>
             <div>
               <Link
-                href={"/press/"}
+                href={project.gallery_post? project.gallery_post : `/press-media/gallery`}
                 className="flex items-center justify-between gap-x-1 text-base text-primary"
               >
                 See More{" "}

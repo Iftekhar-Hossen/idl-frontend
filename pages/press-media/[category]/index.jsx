@@ -37,9 +37,9 @@ export default function CategoryPage({ posts, categories }) {
 
       <div className="container mb-8 mt-4 grid grid-cols-3 gap-10 sm:grid-cols-2">
         {posts.map((item, index) => (
-          <div className="bg-secondary-400">
+          <div className="bg-secondary-300">
             <div>
-              <div className="flex aspect-[10/9] items-center">
+              <div className="flex aspect-[10/9] bg-secondary-400 overflow-hidden items-center">
                 <img
                   className="w-full object-cover object-center"
                   src={

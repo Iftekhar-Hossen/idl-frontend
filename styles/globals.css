@@ -52,6 +52,7 @@ html {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
   }
 
   /* Video Container */
@@ -83,8 +84,6 @@ html {
   .slide-container .slide-row .slider-content {
     flex: 0 0 auto;
     width: 91.66666667%;
-    margin-left: 8.33333333%;
-    padding: 0 15px;
   }
 
   /* Heading Transition */
@@ -132,25 +131,13 @@ html {
 
 /* ===== Custom Pagination Dot Styling ===== */
 .custom-pagination {
-  @apply flex items-center justify-center;
+ @apply flex items-center
 }
 .custom-pagination .swiper-pagination-bullet {
-  @apply relative z-50 h-3 w-3 rounded-full border-2 border-secondary-300 bg-secondary-300 opacity-70 transition-all duration-700 ease-in-out;
+  @apply relative z-50 h-3 w-3 rounded-full border-2 border-secondary-300 bg-secondary-300 opacity-100  transition-all duration-700 ease-in-out;
 }
 .custom-pagination .swiper-pagination-bullet-active {
-  @apply h-4 w-4 border-secondary-300 bg-transparent opacity-100;
-}
-.creative-showcase--slider .banner-horizental .swiper-pagination-bullet {
-  background: transparent;
-  margin: 0 10px !important;
-}
-.creative-showcase--slider .banner-horizental .path {
-  display: none;
-}
-.creative-showcase--slider .banner-horizental .swiper-pagination-bullet-active .path {
-  display: inline-block !important;
-  animation: dash linear 10s;
-  animation-iteration-count: unset;
+  @apply h-4 w-4 border-secondary-300 bg-transparent;
 }
 
 /* ===== Responsive Breakpoints ===== */

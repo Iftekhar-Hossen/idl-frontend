@@ -13,7 +13,7 @@ const MenuButton = ({
   width = 24,
   height = 24,
   strokeWidth = 1,
-  color = "#000",
+  color = "#fff",
   transition = null,
   lineProps = null,
   ...props
@@ -42,6 +42,7 @@ const MenuButton = ({
 
   return (
     <motion.svg
+      className={"relative z-[9999999]"}
       viewBox={`0 0 ${unitWidth} ${unitHeight}`}
       overflow="visible"
       preserveAspectRatio="none"
@@ -91,6 +92,72 @@ const navigations = [
   { label: "Contact", url: "/contact" },
 ];
 
+const menuVariants = {
+  closed: {
+    opacity: 0,
+    y: "-100%",
+    transition: {
+      duration: 0.4,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+  open: {
+    opacity: 1,
+    y: "0%",
+    transition: {
+      duration: 0.4,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+};
+
+const submenuVariants = {
+  closed: {
+    opacity: 0,
+    height: 0,
+    transition: {
+      duration: 0.2,
+      ease: "easeInOut",
+    },
+  },
+  open: {
+    opacity: 1,
+    height: "auto",
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+    },
+  },
+};
+
+const containerVariants = {
+  closed: {
+    opacity: 0,
+    transition: {
+      staggerChildren: 0.1,
+      staggerDirection: -1,
+    },
+  },
+  open: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  closed: {
+    opacity: 0,
+    x: -20,
+  },
+  open: {
+    opacity: 1,
+    x: 0,
+  },
+};
+
 export default function Navbar() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -99,6 +166,7 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isInBanner, setIsInBanner] = useState(true);
   const [isHomePage, setIsHomePage] = useState(router.pathname === "/");
+  const [openSubmenu, setOpenSubmenu] = useState(null);
 
   const handleScroll = () => {
     if (typeof window !== "undefined") {
@@ -158,10 +226,14 @@ export default function Navbar() {
               isInBanner && isHomePage ? "bg-transparent" : "bg-secondary-300"
             } transition-all duration-300`}
           >
-            <nav className="container mx-auto flex items-center justify-between py-4 md:py-2">
+            <nav className="container mx-auto flex items-center justify-between py-4 md:py-4">
               <div className="md:flex md:h-8 md:items-center">
                 <Link href={"/"}>
-                  <Icons.logo className="h-8 md:h-6" />
+                  {isInBanner && isHomePage ? (
+                    <img src="/logo-light.svg" alt="logo" className="h-8" />
+                  ) : (
+                    <img src="/logo-dark.svg" alt="logo" className="h-8" />
+                  )}
                 </Link>
               </div>
               <div className="md:hidden">
@@ -211,14 +283,15 @@ export default function Navbar() {
               <div className="md:hidden">
                 <button
                   onClick={open}
-                  className={`flex items-center gap-x-2 border-2 border-primary px-5 py-3 text-lg text-secondary-300 ${isInBanner && isHomePage ? "bg-transparent" : "bg-primary-300"}`}
+                  className={`flex items-center gap-x-2 border-2 border-primary px-5 py-3 text-lg text-secondary-300 ease-in-out hover:bg-primary-500 ${isInBanner && isHomePage ? "bg-transparent" : "bg-primary-300"}`}
                 >
                   Schedule a Meeting <Icons.TopRight />
                 </button>
               </div>
-              <div className="hidden md:flex">
+              <div className="hidden md:flex sm:flex">
                 <MenuButton
                   isOpen={isOpen}
+                  color={isInBanner && isHomePage ? "#fff" : "#000"}
                   onClick={() => setIsOpen(!isOpen)}
                 />
               </div>
@@ -226,6 +299,83 @@ export default function Navbar() {
           </motion.header>
         )}
       </AnimatePresence>
+
+      {/* Mobile Navigation */}
+      <AnimatePresence mode="wait">
+        {isOpen && (
+          <motion.div
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
+            className="fixed inset-0 z-40 bg-primary"
+          >
+            <motion.div
+              className="flex h-full flex-col overflow-y-auto px-4 pb-6 pt-20"
+              variants={containerVariants}
+            >
+              {navigations.map((item) => (
+                <motion.div
+                  key={item.label}
+                  variants={itemVariants}
+                  className="py-1"
+                >
+                  {item.submenu ? (
+                    <div>
+                      <div
+                        className="flex cursor-pointer items-center justify-between px-3 py-1 text-xl font-medium text-secondary-300"
+                        onClick={() =>
+                          setOpenSubmenu(
+                            openSubmenu === item.label ? null : item.label,
+                          )
+                        }
+                      >
+                        <span>{item.label}</span>
+                        {/* <ChevronDown 
+                          className={`h-5 w-5 transition-transform duration-200 ${
+                            openSubmenu === item.label ? 'rotate-180' : ''
+                          }`}
+                        /> */}
+                      </div>
+                      <AnimatePresence>
+                        {openSubmenu === item.label && (
+                          <motion.div
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            variants={submenuVariants}
+                            className="pl-6"
+                          >
+                            {item.submenu.map((subitem) => (
+                              <Link
+                                key={subitem.label}
+                                href={subitem.url}
+                                onClick={() => setIsOpen(false)}
+                                className="block px-3 py-2 text-lg text-secondary-300"
+                              >
+                                {subitem.label}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.url}
+                      onClick={() => setIsOpen(false)}
+                      className="block px-3 py-1 text-xl font-medium text-secondary-300"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <ScheduleFormModal
         isOpen={isOpenFormModal}
         onClose={close}

@@ -69,7 +69,7 @@ export default function Contact() {
 
   return (
     <>
-      <div className="relative z-40 bg-foreground bg-[url(/images/mask_bg.png)] bg-cover bg-no-repeat">
+      <div className="relative z-20 bg-foreground bg-[url(/images/mask_bg.png)] bg-cover bg-no-repeat">
         <div className="container flex flex-wrap items-end py-40 font-roboto">
           <div className="w-7/12 sm:w-full">
             <h5 className="text-lg font-normal text-secondary-500 sm:text-xs">
@@ -112,7 +112,7 @@ export default function Contact() {
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3649.141289314469!2d90.37416030000001!3d23.8491161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c14993b93009%3A0xabd5a0b3c481a02f!2sInheritance%20Development%20Ltd.!5e0!3m2!1sen!2sbd!4v1719579997362!5m2!1sen!2sbd"
           width={600}
           height={580}
-          className="relative z-50 -mt-14 w-full"
+          className="relative z-30 -mt-14 w-full"
           style={{ border: 0 }}
           allowFullScreen=""
           loading="lazy"

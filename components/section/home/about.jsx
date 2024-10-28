@@ -131,7 +131,7 @@ export const About = ({ pageContent }) => {
               }}
             >
               <CarouselNext className="absolute -top-6 right-0 border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
-              <CarouselPrevious className="absolute -top-6 left-[calc(100%-80px)] border-secondary-500 bg-transparent text-secondary-500 md:hidden sm:hidden" />
+              <CarouselPrevious className="absolute -top-6 left-[calc(100%-80px)] border-secondary-500 bg-transparent  text-secondary-500  md:hidden sm:hidden" />
               <CarouselContent className="relative flex md:ml-0 sm:ml-0 sm:w-full sm:flex-nowrap">
                 {pageContent.about_us_cards.map(
                   ({ name, description }, index) => (

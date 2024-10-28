@@ -74,8 +74,8 @@ export default function about({ statics, testimonials, pageContent }) {
 
             <Dialog className="aspect-video">
               <DialogTrigger asChild>
-                <button className="z-50 mt-6 border-2 border-primary px-4 py-3 font-roboto text-base text-primary sm:mt-3 sm:px-3 sm:py-2 sm:text-base">
-                  <span className="flex items-center gap-2 sm:gap-1">
+                <button className= "group hover:bg-primary-300 z-50 mt-6 border-2 border-primary px-4 py-3 font-roboto text-base text-white sm:mt-3 sm:px-3 sm:py-2 sm:text-base ">
+                  <span className="flex items-center gap-2 sm:gap-1 group-hover:text-black ">
                     <svg
                       width={25}
                       height={25}
@@ -322,35 +322,44 @@ export default function about({ statics, testimonials, pageContent }) {
                         },
                       }}
                       viewport={{ once: true }}
-                      className="group relative flex aspect-[414/400] flex-col justify-end bg-primary-300 bg-[url('/images/mask_bg.png')] bg-cover px-12 pb-12 bg-blend-screen duration-300 hover:cursor-pointer hover:bg-secondary-300 md:aspect-[5/4] md:px-6 md:pb-6 md:pt-5 sm:aspect-square sm:px-3 sm:pb-3"
+                      className={`group relative flex aspect-[414/400] flex-col justify-end bg-primary-300 bg-[url('/images/mask_bg.png')] bg-cover px-12 pb-12 bg-blend-screen duration-300 hover:cursor-pointer hover:bg-secondary-300 md:aspect-[5/4] md:px-6 md:pb-6 sm:aspect-[1/1.3] sm:px-3 sm:pb-3`}
                     >
                       <div className="">
-                        <h4 className="font-saol text-[46px] group-hover:text-primary-300 md:text-4xl">
-                          {index + 1}
-                        </h4>
+                      <motion.h4
+                            initial="initial"
+                            variants={{
+                              initial: {
+                                opacity: 0,
+                                scale: 1.5,
+                              },
+                              reveal: {
+                                opacity: 1,
+                                scale: 1,
+                              },
+                            }}
+                            whileInView={"reveal"}
+                            className="font-saol text-[46px] text-secondary-300 group-hover:text-primary-300 md:text-4xl"
+                          >
+                            {index + 1}
+                          </motion.h4>
+                          <motion.p
+                            className="1 mb-2 text-2xl text-secondary-300 duration-300 group-hover:text-3xl group-hover:text-neutral-300 md:text-sm group-hover:md:text-base"
+                            dangerouslySetInnerHTML={{ __html: name }}
+                          />
                         <motion.p
-                          variants={{
-                            hover: {
-                              // fontWeight: "500"
-                            },
-                          }}
-                          className="1 mb-2 text-2xl duration-300 group-hover:text-3xl md:text-sm group-hover:md:text-base"
-                          dangerouslySetInnerHTML={{ __html: name }}
-                        />
-                        <motion.p
-                          initial={{
-                            height: "0px",
-                            overflow: "hidden",
-                          }}
-                          variants={{
-                            hover: {
-                              height: "auto",
-                            },
-                          }}
-                          className="overflow-hidden text-base leading-5 text-neutral-100 md:text-sm sm:text-xs"
-                        >
-                          {description}
-                        </motion.p>
+                            initial={{
+                              height: "0px",
+                              overflow: "hidden",
+                            }}
+                            variants={{
+                              hover: {
+                                height: "auto",
+                              },
+                            }}
+                            className="overflow-hidden text-base leading-5 text-neutral-100 md:text-sm sm:text-xs"
+                          >
+                            {description}
+                          </motion.p>
                       </div>
                     </motion.div>
                   </CarouselItem>

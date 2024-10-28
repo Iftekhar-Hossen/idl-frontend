@@ -148,7 +148,7 @@ export const Project = ({ properties, pageContent }) => {
               <div className="md:flex md:items-end sm:hidden">
                 <Link
                   href="/projects"
-                  className="flex items-center gap-x-1 text-base text-primary md:text-sm"
+                  className="flex items-center gap-x-1 text-base text-primary md:text-sm hover:text-black"
                 >
                   See all projects{" "}
                   <svg

@@ -367,17 +367,16 @@ export default function PressMedia({
       <section className="-mt-32 pb-20">
         <div className="container grid grid-cols-3 gap-10 sm:grid-cols-2">
           {posts.map((item, index) => (
-            <div className="bg-secondary-400">
-              <div>
-                <div className="flex aspect-[10/9] items-center">
+            <div className="bg-secondary-300">
+                <div className="flex aspect-[10/9] bg-secondary-400 overflow-hidden items-center">
                   <img
-                    className="h-full object-cover object-center"
+                    className="w-full object-cover object-center"
                     src={
                       process.env.NEXT_PUBLIC_API_URL + "/assets/" + item.cover
                     }
                   />
                 </div>
-                <div className="bg-secondary-300 px-8 py-6 sm:px-2 sm:py-1">
+                <div className="bg-secondary-300  px-8 py-6 sm:px-2 sm:py-1">
                   <h6 className="text-[12px] text-secondary-500 sm:text-[10px]">
                     {item.category?.name && item.category.name + " | "}{" "}
                     {item.date_created
@@ -396,7 +395,7 @@ export default function PressMedia({
 
                   </Link>
                 </div>
-              </div>
+           
             </div>
           ))}
         </div>

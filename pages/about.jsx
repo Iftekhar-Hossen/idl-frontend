@@ -47,9 +47,6 @@ export default function about({ statics, testimonials, pageContent }) {
     ));
   };
 
- 
-
-
   return (
     <>
       <section className="flex h-[724px] items-center bg-foreground sm:h-full sm:py-20 sm:pt-32">
@@ -74,8 +71,8 @@ export default function about({ statics, testimonials, pageContent }) {
 
             <Dialog className="aspect-video">
               <DialogTrigger asChild>
-                <button className= "group hover:bg-primary-300 z-50 mt-6 border-2 border-primary px-4 py-3 font-roboto text-base text-white sm:mt-3 sm:px-3 sm:py-2 sm:text-base ">
-                  <span className="flex items-center gap-2 sm:gap-1 group-hover:text-black ">
+                <button className="group z-50 mt-6 border-2 border-primary px-4 py-3 font-roboto text-base text-primary-300 hover:text-white hover:bg-primary-300 sm:mt-3 sm:px-3 sm:py-2 sm:text-base">
+                  <span className="flex items-center gap-2 group-hover:text-white sm:gap-1 stroke-primary-300 group-hover:stroke-white">
                     <svg
                       width={25}
                       height={25}
@@ -85,7 +82,6 @@ export default function about({ statics, testimonials, pageContent }) {
                     >
                       <path
                         d="M5.5 3.5L19.5 12.5L5.5 21.5V3.5Z"
-                        stroke="#A07758"
                         strokeWidth="1.25"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -325,41 +321,41 @@ export default function about({ statics, testimonials, pageContent }) {
                       className={`group relative flex aspect-[414/400] flex-col justify-end bg-primary-300 bg-[url('/images/mask_bg.png')] bg-cover px-12 pb-12 bg-blend-screen duration-300 hover:cursor-pointer hover:bg-secondary-300 md:aspect-[5/4] md:px-6 md:pb-6 sm:aspect-[1/1.3] sm:px-3 sm:pb-3`}
                     >
                       <div className="">
-                      <motion.h4
-                            initial="initial"
-                            variants={{
-                              initial: {
-                                opacity: 0,
-                                scale: 1.5,
-                              },
-                              reveal: {
-                                opacity: 1,
-                                scale: 1,
-                              },
-                            }}
-                            whileInView={"reveal"}
-                            className="font-saol text-[46px] text-secondary-300 group-hover:text-primary-300 md:text-4xl"
-                          >
-                            {index + 1}
-                          </motion.h4>
-                          <motion.p
-                            className="1 mb-2 text-2xl text-secondary-300 duration-300 group-hover:text-3xl group-hover:text-neutral-300 md:text-sm group-hover:md:text-base"
-                            dangerouslySetInnerHTML={{ __html: name }}
-                          />
+                        <motion.h4
+                          initial="initial"
+                          variants={{
+                            initial: {
+                              opacity: 0,
+                              scale: 1.5,
+                            },
+                            reveal: {
+                              opacity: 1,
+                              scale: 1,
+                            },
+                          }}
+                          whileInView={"reveal"}
+                          className="font-saol text-[46px] text-secondary-300 group-hover:text-primary-300 md:text-4xl"
+                        >
+                          {index + 1}
+                        </motion.h4>
                         <motion.p
-                            initial={{
-                              height: "0px",
-                              overflow: "hidden",
-                            }}
-                            variants={{
-                              hover: {
-                                height: "auto",
-                              },
-                            }}
-                            className="overflow-hidden text-base leading-5 text-neutral-100 md:text-sm sm:text-xs"
-                          >
-                            {description}
-                          </motion.p>
+                          className="1 mb-2 text-2xl text-secondary-300 duration-300 group-hover:text-3xl group-hover:text-neutral-300 md:text-sm group-hover:md:text-base"
+                          dangerouslySetInnerHTML={{ __html: name }}
+                        />
+                        <motion.p
+                          initial={{
+                            height: "0px",
+                            overflow: "hidden",
+                          }}
+                          variants={{
+                            hover: {
+                              height: "auto",
+                            },
+                          }}
+                          className="overflow-hidden text-base leading-5 text-neutral-100 md:text-sm sm:text-xs"
+                        >
+                          {description}
+                        </motion.p>
                       </div>
                     </motion.div>
                   </CarouselItem>
@@ -374,24 +370,47 @@ export default function about({ statics, testimonials, pageContent }) {
         <div className="container grid grid-cols-3 sm:px-3 [&>*:nth-child(2)]:border-x-2 sm:[&>*:nth-child(2)]:border-x-0 sm:[&>*:nth-child(2)]:border-y-2">
           {pageContent.beliefs.map((item, i) => {
             const { icon, name, description } = item.beliefs_id;
+
+            // Helper to split text into letters for animation
+            const splitText = (text) =>
+              text.split("").map((char, idx) => (
+                <motion.span
+                  key={idx}
+                  initial={{ opacity: 0, y: "100%" }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.05, delay: idx * 0.02 }}
+                >
+                  {char}
+                </motion.span>
+              ));
+
             return (
-              <div className="px-11 py-5 text-background md:px-4 sm:col-span-3 sm:px-2 sm:py-4">
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: i * 0.2 }}
+                viewport={{ once: true }}
+                className="px-11 py-5 text-background md:px-4 sm:col-span-3 sm:px-2 sm:py-4"
+              >
                 <div className="flex items-center gap-3 font-roboto">
-                  <img
-                  className="filter invert"
+                  <motion.img
+                    className="invert filter"
                     src={process.env.NEXT_PUBLIC_API_URL + "/assets/" + icon}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.4, delay: i * 0.2 + 0.2 }}
                   />
-                  {/* <h6>{vision.icon}</h6> */}
                   <h6 className="text-xl font-normal text-secondary-300 md:text-base">
-                    {name}
+                    {splitText(name)}
                   </h6>
                 </div>
-                <div>
+                <motion.div>
                   <p className="mt-6 text-start text-3xl text-secondary-300 md:mt-1 md:text-justify md:text-base sm:mt-1 sm:text-base">
-                    {description}
+                    {splitText(description)}
                   </p>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             );
           })}
         </div>

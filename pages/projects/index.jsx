@@ -535,7 +535,7 @@ export async function getServerSideProps({ params }) {
         { location: ["value"] },
       ],
       filter: { status: "published" },
-      sort: "completion_date",
+      sort: "sort",
     }),
   );
   let locations = await directusClient.request(

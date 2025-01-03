@@ -61,9 +61,9 @@ export const Banner = ({ slides }) => {
             }
           }
         }}
-
+        
         allowTouchMove={false}
-
+        
         autoplay={{
           delay: reverse ? 500 : 2500,
           disableOnInteraction: true,
@@ -73,7 +73,6 @@ export const Banner = ({ slides }) => {
         }}
         parallax
         loop
-        wrapperClass="swiper-wrapper swiper-wrapper-3d"
         pagination={{
           clickable: true,
           el: ".custom-pagination",
@@ -92,8 +91,9 @@ export const Banner = ({ slides }) => {
                 <div className="slide-row">
                   <div className="slider-content block w-full overflow-hidden">
                     <h1
-                      className={`slide-heading w-full xl:text-[114px] lg:text-[110px] md:text-[100px] sm:text-5xl ${reverseLast ? "hidden" : "block"} ${mounted ? "slide-mounted" : ""
-                        }`}
+                      className={`slide-heading w-full xl:text-[114px] lg:text-[110px] md:text-[100px] sm:text-5xl ${reverseLast ? "hidden" : "block"} ${
+                        mounted ? "slide-mounted" : ""
+                      }`}
                     >
                       {slide.line_1} <br />
                       {slide.line_2}

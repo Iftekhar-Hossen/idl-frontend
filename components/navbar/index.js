@@ -84,7 +84,7 @@ const navigations = [
     label: "About",
     submenu: [
       { label: "About Us", url: "/about" },
-      { label: "Massage", url: "/team" },
+      { label: "Message", url: "/team" },
     ],
   },
   { label: "Properties", url: "/projects" },

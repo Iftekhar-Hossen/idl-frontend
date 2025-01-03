@@ -206,19 +206,6 @@ export const Hero = ({
   testimonials,
   banners,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isOpen, setOpen] = useState(false);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.03,
-        delayChildren: 0.3,
-      },
-    },
-  };
 
   const letterVariants = {
     hidden: { y: -20, opacity: 0 },
@@ -227,14 +214,6 @@ export const Hero = ({
       opacity: 1,
       transition: { duration: 0.3 },
     },
-  };
-
-  const animateText = (text, className = "") => {
-    return text.split("").map((char, index) => (
-      <motion.span key={index} variants={letterVariants} className={className}>
-        {char === " " ? "\u00A0" : char}
-      </motion.span>
-    ));
   };
 
   const [currentIndex, setCurrentIndex] = useState(0);

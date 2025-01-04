@@ -148,7 +148,7 @@ export default function Contact() {
                   <input
                     className="w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                     placeholder="Type your name"
-                    {...register("name", { required: "Name is required" })}
+                    {...register("name", { required: false })}
                   />
                   {errors.name && (
                     <p className="text-red-500">{errors.name.message}</p>
@@ -174,7 +174,7 @@ export default function Contact() {
                   <input
                     className="w-full rounded-none border-b border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                     placeholder="Phone"
-                    {...register("phone", { required: "Phone is required" })}
+                    {...register("phone", { required: false })}
                   />
                   {errors.phone && (
                     <p className="text-red-500">{errors.phone.message}</p>

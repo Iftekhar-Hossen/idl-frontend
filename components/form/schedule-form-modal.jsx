@@ -118,7 +118,9 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
             >
               <div className="col-span-2">
                 <input
-                  {...register("name", { required: "Name is required" })}
+                  {...register("name", {
+                    required: false
+                  })}
                   className="w-full rounded-none border-y border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:pt-8 sm:text-base"
                   placeholder="Type your name"
                 />
@@ -147,7 +149,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
               <div className="col-span-1 sm:col-span-2">
                 <input
                   {...register("phone", {
-                    required: "Phone is required",
+                    required: false,
                     pattern: {
                       value: /^[0-9]{11}$/,
                       message: "Invalid phone number",

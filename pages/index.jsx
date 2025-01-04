@@ -130,6 +130,7 @@ export async function getServerSideProps({ params }) {
         "thumbnail",
         "location",
       ],
+      filter: { status: "published" },
     }),
   );
 

@@ -6,23 +6,23 @@ export default function Preloader() {
   const [loading, setLoading] = useState(true);
   const [showLoader, setShowLoader] = useState(true);
 
+  // Hide loader on initial page load
   useEffect(() => {
-    // Hide loader on initial page load
     const hideInitialLoader = () => {
       setLoading(false);
-      setTimeout(() => setShowLoader(false), 700);
+      setTimeout(() => setShowLoader(false), 500);
     };
 
-    // Hide loader once the initial content is loaded
     if (document.readyState === "complete") {
       hideInitialLoader();
     } else {
       window.addEventListener("load", hideInitialLoader);
       return () => window.removeEventListener("load", hideInitialLoader);
     }
-  }, []); // Empty dependency array for initial load only
+  }, []);
 
   useEffect(() => {
+    // Manage loader visibility based on URL change
     const handleStart = (url) => {
       if (url !== router.asPath) {
         setLoading(true);
@@ -33,10 +33,11 @@ export default function Preloader() {
     const handleComplete = (url) => {
       if (url === router.asPath) {
         setLoading(false);
-        setTimeout(() => setShowLoader(false), 700); // Delay removal to allow fade-out
+        setTimeout(() => setShowLoader(false), 700); // Delay for fade-out
       }
     };
 
+    // Handle full page navigation (page reload)
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);
@@ -48,7 +49,16 @@ export default function Preloader() {
     };
   }, [router]);
 
+  useEffect(() => {
+    // Detect shallow routing changes (filter updates)
+    if (loading && showLoader) {
+      setLoading(false);
+      setTimeout(() => setShowLoader(false), 500); // Fade out after filter change
+    }
+  }, [router.query]); // Listen to query changes for shallow routing
+
   if (!showLoader) return null;
+
 
   return (
     <div

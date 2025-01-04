@@ -16,30 +16,33 @@ export default function Projects({ projects, locations }) {
   const [location, setLocation] = useState("");
   const [status, setStatus] = useState("");
 
-  // Read initial values from URL on component mount
+  // Sync state with URL query on component mount and when query changes
   useEffect(() => {
     const { type: urlType, location: urlLocation, status: urlStatus } = router.query;
-    if (urlType) setType(urlType);
-    if (urlLocation) setLocation(urlLocation);
-    if (urlStatus) setStatus(urlStatus);
-  }, []);
+    if (urlType !== undefined) setType(urlType);
+    if (urlLocation !== undefined) setLocation(urlLocation);
+    if (urlStatus !== undefined) setStatus(urlStatus);
+  }, [router.query]);
 
   // Update URL when filters change
   useEffect(() => {
-    const query = { ...router.query };
-    if (type) query.type = type;
-    else delete query.type;
-    if (location) query.location = location;
-    else delete query.location;
-    if (status) query.status = status;
-    else delete query.status;
+    const query = {
+      ...(type && { type }),
+      ...(location && { location }),
+      ...(status && { status }),
+    };
 
-    router.push({
-      pathname: router.pathname,
-      query: query
-    }, undefined, { shallow: true });
+    router.push(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true } // Prevent full reload
+    );
   }, [type, location, status]);
 
+  // Filter projects based on selected filters
   const filteredProducts = projects.filter((project) => {
     const matchesType = type ? project.property_type === type : true;
     const matchesLocation = location ? project.location.value === location : true;

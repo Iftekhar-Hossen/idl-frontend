@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Newsletter } from "@/components/ui/newsletter";
 import { useForm } from "react-hook-form";
+import Meta from "@/components/meta";
 
 const Hidden = (props) => {
   return <div className="hidden">{props.children}</div>;
@@ -69,6 +70,7 @@ export default function Contact() {
 
   return (
     <>
+    <Meta />
       <div className="relative z-20 bg-foreground bg-[url(/images/mask_bg.png)] bg-cover bg-no-repeat">
         <div className="container flex flex-wrap items-end py-40 font-roboto">
           <div className="w-7/12 sm:w-full">
@@ -157,7 +159,7 @@ export default function Contact() {
                     className="w-full rounded-none border-b border-r border-primary bg-transparent px-4 py-5 text-2xl text-primary-200 outline-none placeholder:text-secondary-400 md:py-2 md:text-base sm:border-r-0 sm:pt-8 sm:text-base"
                     placeholder="Email"
                     {...register("email", {
-                      required: false,
+                      required: "Email is required",
                       pattern: {
                         value: /^\S+@\S+$/i,
                         message: "Invalid email address",

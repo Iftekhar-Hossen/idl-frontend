@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { directusClient } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
+import Meta from "@/components/meta";
 
 export default function team({ team }) {
   const carouselRef = useRef(null);
@@ -46,6 +47,7 @@ export default function team({ team }) {
 
   return (
     <>
+    <Meta />
       <section className="bg-primary-300 py-20 pt-40">
         <div className="container">
           <h4 className="text-center text-[19px] text-secondary-300 lg:text-base md:text-base sm:text-sm">

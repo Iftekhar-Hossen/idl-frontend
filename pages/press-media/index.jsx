@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import { Icons } from "@/components/icon";
+import Meta from "@/components/meta";
 export default function PressMedia({
   categories,
   posts,
@@ -180,6 +181,7 @@ export default function PressMedia({
 
   return (
     <>
+    <Meta title="Press and Media - Inheritance Development LTD" />
       <section className="mt-20 bg-neutral-300 py-8 text-secondary-300 sm:mt-9">
         <div className="container flex flex-wrap items-center justify-between">
           <div className="w-4/12 sm:w-full">

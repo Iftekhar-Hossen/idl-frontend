@@ -16,6 +16,7 @@ import { ApartmentFeatures } from "@/components/section/project/apartment-featur
 import Link from "next/link";
 
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import Meta from "@/components/meta";
 
 const FullScreenGallery = ({ images, initialIndex, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -95,6 +96,7 @@ export default function Index({ project }) {
   return (
     <>
 
+      <Meta title={project.name} />
       <Overview
         project={project}
         address={{
@@ -110,7 +112,7 @@ export default function Index({ project }) {
         map_url={project.map_url}
       />
 
-   
+
 
       <Cover coverImage={project.cover.id} video={project.promo_video} text={project.promo_video_text} />
 
@@ -146,7 +148,7 @@ export default function Index({ project }) {
             </div>
             <div>
               <Link
-                href={project.gallery_post? project.gallery_post : `/press-media/gallery`}
+                href={project.gallery_post ? project.gallery_post : `/press-media/gallery`}
                 className="flex items-center justify-between gap-x-1 text-base text-primary"
               >
                 See More{" "}

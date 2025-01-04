@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { directusClient } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 import { motion } from "framer-motion";
+import Meta from "@/components/meta";
 
 export default function Projects({ projects, locations }) {
   const router = useRouter();
@@ -94,6 +95,9 @@ export default function Projects({ projects, locations }) {
 
   return (
     <>
+    <Meta title="IDL Projects"  />
+
+
       <section className="bg-foreground bg-[url(/images/mask_bg.png)] bg-[20%] font-roboto">
         <div className="container mx-auto flex flex-wrap items-center py-52 pb-72 md:items-end md:py-32 md:pb-40 sm:py-20 sm:pb-56">
           <div className="w-1/2 sm:w-full sm:text-center">

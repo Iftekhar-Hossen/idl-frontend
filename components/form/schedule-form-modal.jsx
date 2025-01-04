@@ -130,7 +130,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSubmit, title }) => {
                 <input
                   {...register("email", {
 
-                    required: false,
+                    required: "Email is required",
                     pattern: {
                       value:
                         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,

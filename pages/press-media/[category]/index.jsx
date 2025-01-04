@@ -2,9 +2,11 @@ import Link from "next/link";
 import { readItems } from "@directus/sdk";
 import { directusClient } from "@/lib/directus";
 import { Icons } from "@/components/icon";
+import Meta from "@/components/meta";
 export default function CategoryPage({ posts, categories }) {
   return (
     <>
+    <Meta title="Press and Media - Inheritance Development LTD" />
       <section className="mt-20 py-8 text-secondary-300 sm:mt-9">
         <div className="container flex flex-wrap items-center justify-between">
           <div className="w-4/12 sm:w-full">

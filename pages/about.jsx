@@ -17,6 +17,7 @@ import { directusClient } from "@/lib/directus";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 import { Reveal } from "@/components/animation/reveal";
+import Meta from "@/components/meta";
 
 export default function about({ statics, testimonials, pageContent }) {
   const containerVariants = {
@@ -49,6 +50,7 @@ export default function about({ statics, testimonials, pageContent }) {
 
   return (
     <>
+    <Meta />
       <section className="flex h-[724px] items-center bg-foreground sm:h-full sm:py-20 sm:pt-32">
         <div className="container">
           <div className="text-center">
